@@ -1,4 +1,4 @@
-﻿
+﻿using Basket.API.Repositories;
 
 namespace Basket.FunctionalTests
 {
@@ -9,8 +9,8 @@ namespace Basket.FunctionalTests
         [Fact]
         public async Task UpdateBasket_return_and_add_basket()
         {
-            using var server = CreateServer();
-            var redis = server.Host.Services.GetRequiredService<ConnectionMultiplexer>();
+            var server = CreateServer();
+            var redis = server.Services.GetRequiredService<ConnectionMultiplexer>();
 
             var redisBasketRepository = BuildBasketRepository(redis);
 
@@ -22,16 +22,13 @@ namespace Basket.FunctionalTests
 
             Assert.NotNull(basket);
             Assert.Single(basket.Items);
-
-
         }
 
         [Fact]
         public async Task Delete_Basket_return_null()
         {
-
-            using var server = CreateServer();
-            var redis = server.Host.Services.GetRequiredService<ConnectionMultiplexer>();
+            var server = CreateServer();
+            var redis = server.Services.GetRequiredService<ConnectionMultiplexer>();
 
             var redisBasketRepository = BuildBasketRepository(redis);
 
@@ -52,7 +49,7 @@ namespace Basket.FunctionalTests
         RedisBasketRepository BuildBasketRepository(ConnectionMultiplexer connMux)
         {
             var loggerFactory = new LoggerFactory();
-            return new RedisBasketRepository(loggerFactory, connMux);
+            return new RedisBasketRepository(loggerFactory.CreateLogger<RedisBasketRepository>(), connMux);
         }
 
         List<BasketItem> BuildBasketItems()

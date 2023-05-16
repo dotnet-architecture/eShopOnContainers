@@ -1,36 +1,39 @@
-﻿namespace Ordering.FunctionalTests;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Hosting;
+
+namespace Ordering.FunctionalTests;
 
 public class OrderingScenarioBase
 {
-    public TestServer CreateServer()
+    private class OrderingApplication : WebApplicationFactory<Program>
     {
-        var path = Assembly.GetAssembly(typeof(OrderingScenarioBase))
-            .Location;
+        public TestServer CreateServer()
+        {
+            return Server;
+        }
 
-        var hostBuilder = new WebHostBuilder()
-            .UseContentRoot(Path.GetDirectoryName(path))
-            .ConfigureAppConfiguration(cb =>
+        protected override IHost CreateHost(IHostBuilder builder)
+        {
+            builder.ConfigureServices(services =>
             {
-                cb.AddJsonFile("appsettings.json", optional: false)
-                .AddEnvironmentVariables();
+                services.AddSingleton<IStartupFilter, AuthStartupFilter>();
             });
 
-        var testServer = new TestServer(hostBuilder);
-
-        testServer.Host
-            .MigrateDbContext<OrderingContext>((context, services) =>
+            builder.ConfigureAppConfiguration(c =>
             {
-                var env = services.GetService<IWebHostEnvironment>();
-                var settings = services.GetService<IOptions<OrderingSettings>>();
-                var logger = services.GetService<ILogger<OrderingContextSeed>>();
+                var directory = Path.GetDirectoryName(typeof(OrderingScenarioBase).Assembly.Location)!;
 
-                new OrderingContextSeed()
-                    .SeedAsync(context, env, settings, logger)
-                    .Wait();
-            })
-            .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+                c.AddJsonFile(Path.Combine(directory, "appsettings.Ordering.json"), optional: false);
+            });
 
-        return testServer;
+            return base.CreateHost(builder);
+        }
+    }
+
+    public TestServer CreateServer()
+    {
+        var factory = new OrderingApplication();
+        return factory.CreateServer();
     }
 
     public static class Get
@@ -47,5 +50,18 @@ public class OrderingScenarioBase
     {
         public static string CancelOrder = "api/v1/orders/cancel";
         public static string ShipOrder = "api/v1/orders/ship";
+    }
+
+    private class AuthStartupFilter : IStartupFilter
+    {
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+        {
+            return app =>
+            {
+                app.UseMiddleware<AutoAuthorizeMiddleware>();
+
+                next(app);
+            };
+        }
     }
 }

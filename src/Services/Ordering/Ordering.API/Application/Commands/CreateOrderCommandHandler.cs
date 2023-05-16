@@ -44,7 +44,7 @@ public class CreateOrderCommandHandler
             order.AddOrderItem(item.ProductId, item.ProductName, item.UnitPrice, item.Discount, item.PictureUrl, item.Units);
         }
 
-        _logger.LogInformation("----- Creating Order - Order: {@Order}", order);
+        _logger.LogInformation("Creating Order - Order: {@Order}", order);
 
         _orderRepository.Add(order);
 
@@ -67,6 +67,6 @@ public class CreateOrderIdentifiedCommandHandler : IdentifiedCommandHandler<Crea
 
     protected override bool CreateResultForDuplicateRequest()
     {
-        return true;                // Ignore duplicate requests for creating order.
+        return true; // Ignore duplicate requests for creating order.
     }
 }

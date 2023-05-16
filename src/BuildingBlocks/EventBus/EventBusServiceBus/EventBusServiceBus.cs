@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 
@@ -12,7 +12,6 @@ public class EventBusServiceBus : IEventBus, IAsyncDisposable
     private readonly string _subscriptionName;
     private readonly ServiceBusSender _sender;
     private readonly ServiceBusProcessor _processor;
-    private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
     private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
     public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
@@ -141,7 +140,7 @@ public class EventBusServiceBus : IEventBus, IAsyncDisposable
         var ex = args.Exception;
         var context = args.ErrorSource;
 
-        _logger.LogError(ex, "ERROR handling message: {ExceptionMessage} - Context: {@ExceptionContext}", ex.Message, context);
+        _logger.LogError(ex, "Error handling message - Context: {@ExceptionContext}", context);
 
         return Task.CompletedTask;
     }

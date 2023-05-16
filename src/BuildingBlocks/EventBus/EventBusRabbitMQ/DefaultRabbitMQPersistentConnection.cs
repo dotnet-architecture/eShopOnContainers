@@ -59,7 +59,7 @@ public class DefaultRabbitMQPersistentConnection
                 .Or<BrokerUnreachableException>()
                 .WaitAndRetry(_retryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
                 {
-                    _logger.LogWarning(ex, "RabbitMQ Client could not connect after {TimeOut}s ({ExceptionMessage})", $"{time.TotalSeconds:n1}", ex.Message);
+                    _logger.LogWarning(ex, "RabbitMQ Client could not connect after {TimeOut}s", $"{time.TotalSeconds:n1}");
                 }
             );
 
@@ -81,7 +81,7 @@ public class DefaultRabbitMQPersistentConnection
             }
             else
             {
-                _logger.LogCritical("FATAL ERROR: RabbitMQ connections could not be created and opened");
+                _logger.LogCritical("Fatal error: RabbitMQ connections could not be created and opened");
 
                 return false;
             }

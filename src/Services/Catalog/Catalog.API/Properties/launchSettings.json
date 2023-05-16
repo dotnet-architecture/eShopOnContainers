@@ -1,29 +1,9 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:57424/",
-      "sslPort": 0
-    }
-  },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "/swagger",
-      "environmentVariables": {
-        "ConnectionString": "server=localhost,5433;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
-        "Serilog:LogstashgUrl": "http://locahost:8080",
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "EventBusConnection": "localhost",
-        "Serilog:SeqServerUrl": "http://locahost:5340"
-      }
-    },
-    "Microsoft.eShopOnContainers.Services.Catalog.API": {
+    "Catalog.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:55101/",
+      "applicationUrl": "http://localhost:5222/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

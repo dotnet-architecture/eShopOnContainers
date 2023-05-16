@@ -10,6 +10,7 @@
 // https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/how-to-implement-a-lightweight-class-with-auto-implemented-properties
 
 using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Models;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Extensions;
 
 [DataContract]
 public class CreateOrderCommand
@@ -79,22 +80,6 @@ public class CreateOrderCommand
         CardExpiration = cardExpiration;
         CardSecurityNumber = cardSecurityNumber;
         CardTypeId = cardTypeId;
-    }
-
-
-    public record OrderItemDTO
-    {
-        public int ProductId { get; init; }
-
-        public string ProductName { get; init; }
-
-        public decimal UnitPrice { get; init; }
-
-        public decimal Discount { get; init; }
-
-        public int Units { get; init; }
-
-        public string PictureUrl { get; init; }
     }
 }
 

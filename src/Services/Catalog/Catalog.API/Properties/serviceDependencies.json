@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "rabbitmq1": {
+      "type": "rabbitmq",
+      "connectionId": "ConnectionStrings:EventBus",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:CatalogDB",
+      "dynamicId": null
+    }
+  }
+}

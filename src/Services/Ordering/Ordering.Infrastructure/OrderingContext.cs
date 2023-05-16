@@ -38,7 +38,7 @@ public class OrderingContext : DbContext, IUnitOfWork
         modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration());
     }
 
-    public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
     {
         // Dispatch Domain Events collection. 
         // Choices:
@@ -120,12 +120,12 @@ public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<Ordering
     {
         public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = default)
         {
-            return default(IAsyncEnumerable<TResponse>);
+            return default;
         }
 
         public IAsyncEnumerable<object?> CreateStream(object request, CancellationToken cancellationToken = default)
         {
-            return default(IAsyncEnumerable<object?>);
+            return default;
         }
 
         public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default) where TNotification : INotification
@@ -140,7 +140,7 @@ public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<Ordering
 
         public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<TResponse>(default(TResponse));
+            return Task.FromResult<TResponse>(default);
         }
 
         public Task<object> Send(object request, CancellationToken cancellationToken = default)

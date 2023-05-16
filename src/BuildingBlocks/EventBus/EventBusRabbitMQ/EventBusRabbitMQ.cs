@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 public class EventBusRabbitMQ : IEventBus, IDisposable
 {
     const string BROKER_NAME = "eshop_event_bus";
-    const string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
 
     private readonly IRabbitMQPersistentConnection _persistentConnection;
     private readonly ILogger<EventBusRabbitMQ> _logger;
@@ -58,7 +57,7 @@ public class EventBusRabbitMQ : IEventBus, IDisposable
             .Or<SocketException>()
             .WaitAndRetry(_retryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
             {
-                _logger.LogWarning(ex, "Could not publish event: {EventId} after {Timeout}s ({ExceptionMessage})", @event.Id, $"{time.TotalSeconds:n1}", ex.Message);
+                _logger.LogWarning(ex, "Could not publish event: {EventId} after {Timeout}s", @event.Id, $"{time.TotalSeconds:n1}");
             });
 
         var eventName = @event.GetType().Name;
@@ -194,7 +193,7 @@ public class EventBusRabbitMQ : IEventBus, IDisposable
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "----- ERROR Processing message \"{Message}\"", message);
+            _logger.LogWarning(ex, "Error Processing message \"{Message}\"", message);
         }
 
         // Even on exception we take the message off the queue.

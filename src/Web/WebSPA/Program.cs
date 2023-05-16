@@ -37,23 +37,8 @@ builder.Services.AddSpaStaticFiles(configuration =>
 
 builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 builder.Logging.AddAzureWebAppDiagnostics();
-builder.Host.UseSerilog((builderContext, config) =>
-{
-    config
-        .MinimumLevel.Information()
-        .Enrich.FromLogContext()
-        .WriteTo.Seq("http://seq")
-        .ReadFrom.Configuration(builderContext.Configuration)
-        .WriteTo.Console();
-})
-.UseConsoleLifetime();
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
 
 // Here we add Angular default Anti-forgery cookie name on first load. https://angular.io/guide/http#security-xsrf-protection
 // This cookie will be read by Angular app and its value will be sent back to the application as the header configured in .AddAntiforgery()
@@ -76,14 +61,13 @@ app.Use(next => context =>
 });
 
 // Seed Data
-var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
-WebContextSeed.Seed(app, app.Environment, loggerFactory);
+WebContextSeed.Seed(app, app.Environment, app.Services.GetRequiredService<ILogger<WebContextSeed>>());
 
 var pathBase = app.Configuration["PATH_BASE"];
 
 if (!string.IsNullOrEmpty(pathBase))
 {
-    loggerFactory.CreateLogger<Program>().LogDebug("Using PATH_BASE '{PathBase}'", pathBase);
+    app.Services.GetRequiredService<ILogger<WebContextSeed>>().LogDebug("Using PATH_BASE '{PathBase}'", pathBase);
     app.UsePathBase(pathBase);
 }
 

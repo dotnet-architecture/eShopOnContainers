@@ -3,7 +3,6 @@ global using Microsoft.AspNetCore;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Logging;
-global using Serilog;
 global using System.IO;
 global using eShopOnContainers.WebSPA;
 global using HealthChecks.UI.Client;

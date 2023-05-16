@@ -56,7 +56,7 @@ public class BasketController : ControllerBase
             return BadRequest();
         }
 
-        var userName = this.HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
+        var userName = User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
 
         var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, userName, basketCheckout.City, basketCheckout.Street,
             basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber, basketCheckout.CardHolderName,
@@ -71,7 +71,7 @@ public class BasketController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "ERROR Publishing integration event: {IntegrationEventId} from {AppName}", eventMessage.Id, Program.AppName);
+            _logger.LogError(ex, "Error Publishing integration event: {IntegrationEventId}", eventMessage.Id);
 
             throw;
         }

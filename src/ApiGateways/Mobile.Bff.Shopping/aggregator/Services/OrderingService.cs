@@ -2,10 +2,10 @@
 
 public class OrderingService : IOrderingService
 {
-    private readonly OrderingGrpc.OrderingGrpcClient _orderingGrpcClient;
+    private readonly GrpcOrdering.OrderingGrpc.OrderingGrpcClient _orderingGrpcClient;
     private readonly ILogger<OrderingService> _logger;
 
-    public OrderingService(OrderingGrpc.OrderingGrpcClient orderingGrpcClient, ILogger<OrderingService> logger)
+    public OrderingService(GrpcOrdering.OrderingGrpc.OrderingGrpcClient orderingGrpcClient, ILogger<OrderingService> logger)
     {
         _orderingGrpcClient = orderingGrpcClient;
         _logger = logger;
@@ -48,14 +48,14 @@ public class OrderingService : IOrderingService
         return data;
     }
 
-    private CreateOrderDraftCommand MapToOrderDraftCommand(BasketData basketData)
+    private GrpcOrdering.CreateOrderDraftCommand MapToOrderDraftCommand(BasketData basketData)
     {
-        var command = new CreateOrderDraftCommand
+        var command = new GrpcOrdering.CreateOrderDraftCommand
         {
             BuyerId = basketData.BuyerId,
         };
 
-        basketData.Items.ForEach(i => command.Items.Add(new BasketItem
+        basketData.Items.ForEach(i => command.Items.Add(new GrpcOrdering.BasketItem
         {
             Id = i.Id,
             OldUnitPrice = (double)i.OldUnitPrice,

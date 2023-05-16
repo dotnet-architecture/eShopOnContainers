@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Payment.API.IntegrationEvents.EventHandling;
+﻿using System.Collections.Generic;
+
+namespace Microsoft.eShopOnContainers.Payment.API.IntegrationEvents.EventHandling;
 
 public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
     IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
@@ -21,9 +23,9 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
 
     public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
     {
-        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             IntegrationEvent orderPaymentIntegrationEvent;
 
@@ -42,7 +44,7 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
                 orderPaymentIntegrationEvent = new OrderPaymentFailedIntegrationEvent(@event.OrderId);
             }
 
-            _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, Program.AppName, orderPaymentIntegrationEvent);
+            _logger.LogInformation("Publishing integration event: {IntegrationEventId} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, orderPaymentIntegrationEvent);
 
             _eventBus.Publish(orderPaymentIntegrationEvent);
 

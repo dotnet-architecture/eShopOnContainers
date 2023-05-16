@@ -12,9 +12,10 @@ namespace EventBus.Tests
             Handled = false;
         }
 
-        public async Task Handle(TestIntegrationEvent @event)
+        public Task Handle(TestIntegrationEvent @event)
         {
             Handled = true;
+            return Task.CompletedTask;
         }
     }
 }

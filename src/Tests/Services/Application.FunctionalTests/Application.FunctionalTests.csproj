@@ -11,43 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Services\Basket\appsettings.json" />
-    <None Remove="Setup\CatalogBrands.csv" />
-    <None Remove="Setup\CatalogItems.csv" />
-    <None Remove="Setup\CatalogItems.zip" />
-    <None Remove="Setup\CatalogTypes.csv" />
-    <None Remove="Services\Ordering\appsettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Services\Basket\appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Services\Catalog\appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Setup\CatalogBrands.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Setup\CatalogItems.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Setup\CatalogItems.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Setup\CatalogTypes.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Services\Ordering\appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" />
     <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.runner.visualstudio" >
+    <PackageReference Include="xunit.runner.visualstudio">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -55,15 +23,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Services\Basket\Basket.API\Basket.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Basket\Basket.FunctionalTests\Basket.FunctionalTests.csproj" />
     <ProjectReference Include="..\..\..\Services\Catalog\Catalog.API\Catalog.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Catalog\Catalog.FunctionalTests\Catalog.FunctionalTests.csproj" />
     <ProjectReference Include="..\..\..\Services\Ordering\Ordering.API\Ordering.API.csproj" />
+    <ProjectReference Include="..\..\..\Services\Ordering\Ordering.FunctionalTests\Ordering.FunctionalTests.csproj" />
     <ProjectReference Include="..\..\..\Web\WebMVC\WebMVC.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Services\Locations\appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

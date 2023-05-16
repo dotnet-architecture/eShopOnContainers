@@ -23,17 +23,16 @@ public class IdentifiedCommandHandlerTest
         _requestManager.Setup(x => x.ExistAsync(It.IsAny<Guid>()))
             .Returns(Task.FromResult(false));
 
-        _mediator.Setup(x => x.Send(It.IsAny<IRequest<bool>>(), default(System.Threading.CancellationToken)))
+        _mediator.Setup(x => x.Send(It.IsAny<IRequest<bool>>(), default))
             .Returns(Task.FromResult(true));
 
-        //Act
-        var handler = new IdentifiedCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object, _loggerMock.Object);
-        var cltToken = new System.Threading.CancellationToken();
-        var result = await handler.Handle(fakeOrderCmd, cltToken);
+        // Act
+        var handler = new CreateOrderIdentifiedCommandHandler(_mediator.Object, _requestManager.Object, _loggerMock.Object);
+        var result = await handler.Handle(fakeOrderCmd, CancellationToken.None);
 
-        //Assert
+        // Assert
         Assert.True(result);
-        _mediator.Verify(x => x.Send(It.IsAny<IRequest<bool>>(), default(System.Threading.CancellationToken)), Times.Once());
+        _mediator.Verify(x => x.Send(It.IsAny<IRequest<bool>>(), default), Times.Once());
     }
 
     [Fact]
@@ -46,17 +45,15 @@ public class IdentifiedCommandHandlerTest
         _requestManager.Setup(x => x.ExistAsync(It.IsAny<Guid>()))
             .Returns(Task.FromResult(true));
 
-        _mediator.Setup(x => x.Send(It.IsAny<IRequest<bool>>(), default(System.Threading.CancellationToken)))
+        _mediator.Setup(x => x.Send(It.IsAny<IRequest<bool>>(), default))
             .Returns(Task.FromResult(true));
 
-        //Act
-        var handler = new IdentifiedCommandHandler<CreateOrderCommand, bool>(_mediator.Object, _requestManager.Object, _loggerMock.Object);
-        var cltToken = new System.Threading.CancellationToken();
-        var result = await handler.Handle(fakeOrderCmd, cltToken);
+        // Act
+        var handler = new CreateOrderIdentifiedCommandHandler(_mediator.Object, _requestManager.Object, _loggerMock.Object);
+        var result = await handler.Handle(fakeOrderCmd, CancellationToken.None);
 
-        //Assert
-        Assert.False(result);
-        _mediator.Verify(x => x.Send(It.IsAny<IRequest<bool>>(), default(System.Threading.CancellationToken)), Times.Never());
+        // Assert
+        _mediator.Verify(x => x.Send(It.IsAny<IRequest<bool>>(), default), Times.Never());
     }
 
     private CreateOrderCommand FakeOrderRequest(Dictionary<string, object> args = null)
