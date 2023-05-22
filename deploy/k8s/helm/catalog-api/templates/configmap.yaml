@@ -13,7 +13,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  catalog__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.catalog.db }};User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};
+  catalog__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.catalog.db }};User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};TrustServerCertificate={{ .Values.inf.sql.common.TrustServerCertificate }};
   catalog__PicBaseUrl: {{ $protocol }}://{{ $webshoppingapigw }}/c/api/v1/catalog/items/[0]/pic/
   catalog__AzureStorageEnabled: "{{ .Values.inf.misc.useAzureStorage }}"
   all__EventBusConnection: {{ .Values.inf.eventbus.constr }}

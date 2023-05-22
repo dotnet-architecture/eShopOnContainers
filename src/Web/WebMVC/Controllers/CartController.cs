@@ -1,6 +1,6 @@
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers;
 
-[Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
+[Authorize]
 public class CartController : Controller
 {
     private readonly IBasketService _basketSvc;

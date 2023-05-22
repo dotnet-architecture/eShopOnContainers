@@ -16,9 +16,9 @@ public class OrderStatusChangedToPaidIntegrationEventHandler :
 
     public async Task Handle(OrderStatusChangedToPaidIntegrationEvent @event)
     {
-        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             //we're not blocking stock/inventory
             foreach (var orderStockItem in @event.OrderStockItems)

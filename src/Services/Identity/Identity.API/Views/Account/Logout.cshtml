@@ -1,21 +1,15 @@
-﻿@model Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels.LogoutViewModel
+@model LogoutViewModel
 
-<div class="container logout-page">
-    <div class="page-header">
+<div class="logout-page">
+    <div class="lead">
         <h1>Logout</h1>
+        <p>Would you like to logut of IdentityServer?</p>
     </div>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <p>Would you like to logout of IdentityServer?</p>
-            <form asp-action="Logout">
-                <input type="hidden" name="logoutId" value="@Model.LogoutId"  />
-                <fieldset>
-                    <div class="form-group">
-                        <button class="btn btn-primary">Yes</button>
-                    </div>
-                </fieldset>
-            </form>
+    <form asp-action="Logout">
+        <input type="hidden" name="logoutId" value="@Model.LogoutId"  />
+        <div class="form-group">
+            <button class="btn btn-primary">Yes</button>
         </div>
-    </div>
+    </form>
 </div>

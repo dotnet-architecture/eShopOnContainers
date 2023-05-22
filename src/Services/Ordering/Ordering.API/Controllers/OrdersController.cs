@@ -40,7 +40,7 @@ public class OrdersController : ControllerBase
             var requestCancelOrder = new IdentifiedCommand<CancelOrderCommand, bool>(command, guid);
 
             _logger.LogInformation(
-                "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 requestCancelOrder.GetGenericTypeName(),
                 nameof(requestCancelOrder.Command.OrderNumber),
                 requestCancelOrder.Command.OrderNumber,
@@ -70,7 +70,7 @@ public class OrdersController : ControllerBase
             var requestShipOrder = new IdentifiedCommand<ShipOrderCommand, bool>(command, guid);
 
             _logger.LogInformation(
-                "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 requestShipOrder.GetGenericTypeName(),
                 nameof(requestShipOrder.Command.OrderNumber),
                 requestShipOrder.Command.OrderNumber,
@@ -132,7 +132,7 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult<OrderDraftDTO>> CreateOrderDraftFromBasketDataAsync([FromBody] CreateOrderDraftCommand createOrderDraftCommand)
     {
         _logger.LogInformation(
-            "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+            "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
             createOrderDraftCommand.GetGenericTypeName(),
             nameof(createOrderDraftCommand.BuyerId),
             createOrderDraftCommand.BuyerId,

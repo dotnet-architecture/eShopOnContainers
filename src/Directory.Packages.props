@@ -1,0 +1,93 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="AspNetCore.HealthChecks.AzureServiceBus" Version="6.1.0" />
+    <PackageVersion Include="AspNetCore.HealthChecks.AzureStorage" Version="6.1.2" />
+    <PackageVersion Include="AspNetCore.HealthChecks.Rabbitmq" Version="6.0.2" />
+    <PackageVersion Include="AspNetCore.HealthChecks.Redis" Version="6.0.4" />
+    <PackageVersion Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <PackageVersion Include="AspNetCore.HealthChecks.UI" Version="6.0.5" />
+    <PackageVersion Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
+    <PackageVersion Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="6.0.5" />
+    <PackageVersion Include="AspNetCore.HealthChecks.Uris" Version="6.0.3" />
+    <PackageVersion Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
+    <PackageVersion Include="Azure.Identity" Version="1.8.2" />
+    <PackageVersion Include="Azure.Messaging.ServiceBus" Version="7.12.0" />
+    <PackageVersion Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageVersion Include="Dapper" Version="2.0.123" />
+    <PackageVersion Include="Duende.IdentityServer" Version="6.2.3" />
+    <PackageVersion Include="Duende.IdentityServer.AspNetIdentity" Version="6.2.3" />
+    <PackageVersion Include="Duende.IdentityServer.EntityFramework" Version="6.2.3" />
+    <PackageVersion Include="Duende.IdentityServer.EntityFramework.Storage" Version="6.2.3" />
+    <PackageVersion Include="Duende.IdentityServer.Storage" Version="6.2.3" />
+    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.2.2" />
+    <PackageVersion Include="Google.Protobuf" Version="3.22.0" />
+    <PackageVersion Include="Grpc.AspNetCore.Server" Version="2.51.0" />
+    <PackageVersion Include="Grpc.AspNetCore" Version="2.51.0" />
+    <PackageVersion Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.51.0" />
+    <PackageVersion Include="Grpc.Core" Version="2.46.6" />
+    <PackageVersion Include="Grpc.Net.Client" Version="2.51.0" />
+    <PackageVersion Include="Grpc.Net.ClientFactory" Version="2.51.0" />
+    <PackageVersion Include="Grpc.Tools" Version="2.51.0" PrivateAssets="All" />
+    <PackageVersion Include="MediatR" Version="12.0.0" />
+    <PackageVersion Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0-beta1" />
+    <PackageVersion Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.22.0-beta1" />
+    <PackageVersion Include="Microsoft.ApplicationInsights.Kubernetes" Version="6.0.0" />
+    <PackageVersion Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authorization" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.Build.Utilities.Core" Version="17.4.0" />
+    <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Identity.Stores" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.3" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageVersion Include="Microsoft.NETCore.Platforms" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4" />
+    <PackageVersion Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
+    <PackageVersion Include="Moq" Version="4.18.4" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageVersion Include="Polly" Version="7.2.3" />
+    <PackageVersion Include="RabbitMQ.Client" Version="6.4.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
+    <PackageVersion Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
+    <PackageVersion Include="System.Reflection.TypeExtensions" Version="4.7.0" />
+    <PackageVersion Include="xunit" Version="2.4.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
+    <PackageVersion Include="Yarp.ReverseProxy" Version="2.0.0" />
+  </ItemGroup>
+</Project>

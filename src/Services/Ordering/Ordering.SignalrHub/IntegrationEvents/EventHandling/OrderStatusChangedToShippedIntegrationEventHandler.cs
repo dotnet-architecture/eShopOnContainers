@@ -13,12 +13,11 @@ public class OrderStatusChangedToShippedIntegrationEventHandler : IIntegrationEv
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-
     public async Task Handle(OrderStatusChangedToShippedIntegrationEvent @event)
     {
-        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             await _hubContext.Clients
                 .Group(@event.BuyerName)

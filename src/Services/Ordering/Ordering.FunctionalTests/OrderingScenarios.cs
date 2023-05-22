@@ -1,9 +1,6 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using WebMVC.Services.ModelDTOs;
 using Xunit;
 
 namespace Ordering.FunctionalTests
@@ -18,6 +15,7 @@ namespace Ordering.FunctionalTests
             var response = await server.CreateClient()
                 .GetAsync(Get.Orders);
 
+            var s = await response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();
         }
 
@@ -25,10 +23,14 @@ namespace Ordering.FunctionalTests
         public async Task Cancel_order_no_order_created_bad_request_response()
         {
             using var server = CreateServer();
-            var content = new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json");
-            var response = await server.CreateIdempotentClient()
+            var content = new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json")
+            {
+                Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
+            };
+            var response = await server.CreateClient()
                 .PutAsync(Put.CancelOrder, content);
 
+            var s = await response.Content.ReadAsStringAsync();
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
@@ -36,8 +38,11 @@ namespace Ordering.FunctionalTests
         public async Task Ship_order_no_order_created_bad_request_response()
         {
             using var server = CreateServer();
-            var content = new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json");
-            var response = await server.CreateIdempotentClient()
+            var content = new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json")
+            {
+                Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
+            };
+            var response = await server.CreateClient()
                 .PutAsync(Put.ShipOrder, content);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -45,7 +50,7 @@ namespace Ordering.FunctionalTests
 
         string BuildOrder()
         {
-            var order = new OrderDTO()
+            var order = new
             {
                 OrderNumber = "-1"
             };

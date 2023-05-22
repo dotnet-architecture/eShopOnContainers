@@ -15,4 +15,4 @@ export const routes: Routes = [
     { path: 'order', component: OrdersNewComponent },
 ];
 
-export const routing = RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' });
+export const routing = RouterModule.forRoot(routes, { });

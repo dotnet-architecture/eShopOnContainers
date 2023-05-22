@@ -34,9 +34,9 @@ public class SetStockConfirmedOrderStatusCommandHandler : IRequestHandler<SetSto
 
 
 // Use for Idempotency in Command process
-public class SetStockConfirmedOrderStatusIdenfifiedCommandHandler : IdentifiedCommandHandler<SetStockConfirmedOrderStatusCommand, bool>
+public class SetStockConfirmedOrderStatusIdentifiedCommandHandler : IdentifiedCommandHandler<SetStockConfirmedOrderStatusCommand, bool>
 {
-    public SetStockConfirmedOrderStatusIdenfifiedCommandHandler(
+    public SetStockConfirmedOrderStatusIdentifiedCommandHandler(
         IMediator mediator,
         IRequestManager requestManager,
         ILogger<IdentifiedCommandHandler<SetStockConfirmedOrderStatusCommand, bool>> logger)
@@ -46,6 +46,6 @@ public class SetStockConfirmedOrderStatusIdenfifiedCommandHandler : IdentifiedCo
 
     protected override bool CreateResultForDuplicateRequest()
     {
-        return true;                // Ignore duplicate requests for processing order.
+        return true; // Ignore duplicate requests for processing order.
     }
 }

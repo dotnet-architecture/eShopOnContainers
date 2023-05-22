@@ -1,3 +1,5 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+
 namespace Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
 
 public class EventBusServiceBus : IEventBus, IAsyncDisposable
@@ -5,21 +7,20 @@ public class EventBusServiceBus : IEventBus, IAsyncDisposable
     private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
     private readonly ILogger<EventBusServiceBus> _logger;
     private readonly IEventBusSubscriptionsManager _subsManager;
-    private readonly ILifetimeScope _autofac;
+    private readonly IServiceProvider _serviceProvider;
     private readonly string _topicName = "eshop_event_bus";
     private readonly string _subscriptionName;
     private readonly ServiceBusSender _sender;
     private readonly ServiceBusProcessor _processor;
-    private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
     private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
     public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
-        ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, ILifetimeScope autofac, string subscriptionClientName)
+        ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, IServiceProvider serviceProvider, string subscriptionClientName)
     {
         _serviceBusPersisterConnection = serviceBusPersisterConnection;
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
-        _autofac = autofac;
+        _serviceProvider = serviceProvider;
         _subscriptionName = subscriptionClientName;
         _sender = _serviceBusPersisterConnection.TopicClient.CreateSender(_topicName);
         ServiceBusProcessorOptions options = new ServiceBusProcessorOptions { MaxConcurrentCalls = 10, AutoCompleteMessages = false };
@@ -139,7 +140,7 @@ public class EventBusServiceBus : IEventBus, IAsyncDisposable
         var ex = args.Exception;
         var context = args.ErrorSource;
 
-        _logger.LogError(ex, "ERROR handling message: {ExceptionMessage} - Context: {@ExceptionContext}", ex.Message, context);
+        _logger.LogError(ex, "Error handling message - Context: {@ExceptionContext}", context);
 
         return Task.CompletedTask;
     }
@@ -149,20 +150,20 @@ public class EventBusServiceBus : IEventBus, IAsyncDisposable
         var processed = false;
         if (_subsManager.HasSubscriptionsForEvent(eventName))
         {
-            var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME);
+            await using var scope = _serviceProvider.CreateAsyncScope();
             var subscriptions = _subsManager.GetHandlersForEvent(eventName);
             foreach (var subscription in subscriptions)
             {
                 if (subscription.IsDynamic)
                 {
-                    if (scope.ResolveOptional(subscription.HandlerType) is not IDynamicIntegrationEventHandler handler) continue;
+                    if (scope.ServiceProvider.GetService(subscription.HandlerType) is not IDynamicIntegrationEventHandler handler) continue;
 
                     using dynamic eventData = JsonDocument.Parse(message);
                     await handler.Handle(eventData);
                 }
                 else
                 {
-                    var handler = scope.ResolveOptional(subscription.HandlerType);
+                    var handler = scope.ServiceProvider.GetService(subscription.HandlerType);
                     if (handler == null) continue;
                     var eventType = _subsManager.GetEventTypeByName(eventName);
                     var integrationEvent = JsonSerializer.Deserialize(message, eventType);

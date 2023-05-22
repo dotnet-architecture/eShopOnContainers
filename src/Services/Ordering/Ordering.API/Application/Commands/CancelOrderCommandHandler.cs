@@ -43,6 +43,6 @@ public class CancelOrderIdentifiedCommandHandler : IdentifiedCommandHandler<Canc
 
     protected override bool CreateResultForDuplicateRequest()
     {
-        return true;                // Ignore duplicate requests for processing order.
+        return true; // Ignore duplicate requests for processing order.
     }
 }

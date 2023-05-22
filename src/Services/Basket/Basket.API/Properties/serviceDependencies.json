@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets"
+    },
+    "rabbitmq1": {
+      "type": "rabbitmq",
+      "connectionId": "eventbus",
+      "dynamicId": null
+    },
+    "redis1": {
+      "type": "redis",
+      "connectionId": "ConnectionStrings:Redis",
+      "dynamicId": null
+    }
+  }
+}

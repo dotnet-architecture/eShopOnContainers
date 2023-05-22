@@ -1,5 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
-    
+
 public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler :
     IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>
 {
@@ -19,9 +19,9 @@ public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler :
 
     public async Task Handle(OrderStatusChangedToAwaitingValidationIntegrationEvent @event)
     {
-        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             var confirmedOrderStockItems = new List<ConfirmedOrderStockItem>();
 

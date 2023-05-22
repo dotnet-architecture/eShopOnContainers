@@ -13,7 +13,7 @@ public static class LinqSelectExtensions
             }
             catch (Exception ex)
             {
-                returnedValue = new SelectTryResult<TSource, TResult>(element, default(TResult), ex);
+                returnedValue = new SelectTryResult<TSource, TResult>(element, default, ex);
             }
             yield return returnedValue;
         }

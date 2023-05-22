@@ -90,7 +90,7 @@ public class BasketWebApiTest
     }
 
     [Fact]
-    public async Task Doing_Checkout_Wit_Basket_Should_Publish_UserCheckoutAccepted_Integration_Event()
+    public async Task Doing_Checkout_With_Basket_Should_Publish_UserCheckoutAccepted_Integration_Event()
     {
         var fakeCustomerId = "1";
         var fakeCustomerBasket = GetCustomerBasketFake(fakeCustomerId);

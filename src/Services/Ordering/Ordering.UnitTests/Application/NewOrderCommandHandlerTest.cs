@@ -31,7 +31,7 @@ public class NewOrderRequestHandlerTest
         _orderRepositoryMock.Setup(orderRepo => orderRepo.GetAsync(It.IsAny<int>()))
             .Returns(Task.FromResult<Order>(FakeOrder()));
 
-        _orderRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
+        _orderRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default))
             .Returns(Task.FromResult(1));
 
         _identityServiceMock.Setup(svc => svc.GetUserIdentity()).Returns(buyerId);

@@ -1,0 +1,31 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "basket-api": "StartDebugging",
+        "basketdata": "StartWithoutDebugging",
+        "catalog-api": "StartDebugging",
+        "identity-api": "StartDebugging",
+        "mobileshoppingagg": "StartDebugging",
+        "mobileshoppingapigw": "StartWithoutDebugging",
+        "nosqldata": "StartWithoutDebugging",
+        "ordering-api": "StartDebugging",
+        "ordering-backgroundtasks": "StartDebugging",
+        "ordering-signalrhub": "StartDebugging",
+        "payment-api": "StartDebugging",
+        "rabbitmq": "StartWithoutDebugging",
+        "seq": "StartWithoutDebugging",
+        "sqldata": "StartWithoutDebugging",
+        "webhooks-api": "StartDebugging",
+        "webhooks-client": "StartDebugging",
+        "webmvc": "StartDebugging",
+        "webshoppingagg": "StartDebugging",
+        "webshoppingapigw": "StartWithoutDebugging",
+        "webspa": "StartDebugging",
+        "webstatus": "StartDebugging"
+      }
+    }
+  }
+}

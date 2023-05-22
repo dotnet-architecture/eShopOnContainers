@@ -4,10 +4,8 @@ using Microsoft.Extensions.Logging;
 
 public class WebContextSeed
 {
-    public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+    public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env, ILogger<WebContextSeed> logger)
     {
-        var log = loggerFactory.CreateLogger<WebContextSeed>();
-
         var settings = applicationBuilder
             .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
 
@@ -17,18 +15,18 @@ public class WebContextSeed
 
         if (useCustomizationData)
         {
-            GetPreconfiguredImages(contentRootPath, webroot, log);
+            GetPreconfiguredImages(contentRootPath, webroot, logger);
         }
     }
 
-    static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger log)
+    static void GetPreconfiguredImages(string contentRootPath, string webroot, ILogger logger)
     {
         try
         {
             string imagesZipFile = Path.Combine(contentRootPath, "Setup", "images.zip");
             if (!File.Exists(imagesZipFile))
             {
-                log.LogError("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
+                logger.LogError("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
                 return;
             }
 
@@ -53,13 +51,13 @@ public class WebContextSeed
                 }
                 else
                 {
-                    log.LogWarning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
+                    logger.LogWarning("Skipped file '{FileName}' in zip file '{ZipFileName}'", entry.Name, imagesZipFile);
                 }
             }
         }
         catch (Exception ex)
         {
-            log.LogError(ex, "ERROR in GetPreconfiguredImages: {Message}", ex.Message);
+            logger.LogError(ex, "Error getting preconfigured images");
         }
     }
 }

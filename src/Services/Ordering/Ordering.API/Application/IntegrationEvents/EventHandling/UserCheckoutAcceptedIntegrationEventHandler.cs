@@ -24,15 +24,15 @@ public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHand
     /// <returns></returns>
     public async Task Handle(UserCheckoutAcceptedIntegrationEvent @event)
     {
-        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             var result = false;
 
             if (@event.RequestId != Guid.Empty)
             {
-                using (LogContext.PushProperty("IdentifiedCommandId", @event.RequestId))
+                using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IdentifiedCommandId", @event.RequestId) }))
                 {
                     var createOrderCommand = new CreateOrderCommand(@event.Basket.Items, @event.UserId, @event.UserName, @event.City, @event.Street,
                         @event.State, @event.Country, @event.ZipCode,
@@ -42,7 +42,7 @@ public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHand
                     var requestCreateOrder = new IdentifiedCommand<CreateOrderCommand, bool>(createOrderCommand, @event.RequestId);
 
                     _logger.LogInformation(
-                        "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                        "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                         requestCreateOrder.GetGenericTypeName(),
                         nameof(requestCreateOrder.Id),
                         requestCreateOrder.Id,
@@ -52,7 +52,7 @@ public class UserCheckoutAcceptedIntegrationEventHandler : IIntegrationEventHand
 
                     if (result)
                     {
-                        _logger.LogInformation("----- CreateOrderCommand suceeded - RequestId: {RequestId}", @event.RequestId);
+                        _logger.LogInformation("CreateOrderCommand suceeded - RequestId: {RequestId}", @event.RequestId);
                     }
                     else
                     {

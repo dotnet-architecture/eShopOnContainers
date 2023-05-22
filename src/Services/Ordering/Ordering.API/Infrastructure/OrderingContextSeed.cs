@@ -59,7 +59,7 @@ public class OrderingContextSeed
         }
         catch (Exception ex)
         {
-            log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
+            log.LogError(ex, "Error reading CSV headers");
             return GetPredefinedCardTypes();
         }
 
@@ -67,13 +67,13 @@ public class OrderingContextSeed
         return File.ReadAllLines(csvFileCardTypes)
                                     .Skip(1) // skip header column
                                     .SelectTry(x => CreateCardType(x, ref id))
-                                    .OnCaughtException(ex => { log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
+                                    .OnCaughtException(ex => { log.LogError(ex, "Error creating card while seeding database"); return null; })
                                     .Where(x => x != null);
     }
 
     private CardType CreateCardType(string value, ref int id)
     {
-        if (String.IsNullOrEmpty(value))
+        if (string.IsNullOrEmpty(value))
         {
             throw new Exception("Orderstatus is null or empty");
         }
@@ -103,7 +103,7 @@ public class OrderingContextSeed
         }
         catch (Exception ex)
         {
-            log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
+            log.LogError(ex, "Error reading CSV headers");
             return GetPredefinedOrderStatus();
         }
 
@@ -111,13 +111,13 @@ public class OrderingContextSeed
         return File.ReadAllLines(csvFileOrderStatus)
                                     .Skip(1) // skip header row
                                     .SelectTry(x => CreateOrderStatus(x, ref id))
-                                    .OnCaughtException(ex => { log.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
+                                    .OnCaughtException(ex => { log.LogError(ex, "Error creating order status while seeding database"); return null; })
                                     .Where(x => x != null);
     }
 
     private OrderStatus CreateOrderStatus(string value, ref int id)
     {
-        if (String.IsNullOrEmpty(value))
+        if (string.IsNullOrEmpty(value))
         {
             throw new Exception("Orderstatus is null or empty");
         }
@@ -144,7 +144,7 @@ public class OrderingContextSeed
 
         if (csvheaders.Count() != requiredHeaders.Count())
         {
-            throw new Exception($"requiredHeader count '{ requiredHeaders.Count()}' is different then read header '{csvheaders.Count()}'");
+            throw new Exception($"requiredHeader count '{requiredHeaders.Count()}' is different then read header '{csvheaders.Count()}'");
         }
 
         foreach (var requiredHeader in requiredHeaders)
@@ -167,7 +167,7 @@ public class OrderingContextSeed
                 sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
                 onRetry: (exception, timeSpan, retry, ctx) =>
                 {
-                    logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
+                    logger.LogWarning(exception, "[{prefix}] Error seeding database (attempt {retry} of {retries})", prefix, retry, retries);
                 }
             );
     }

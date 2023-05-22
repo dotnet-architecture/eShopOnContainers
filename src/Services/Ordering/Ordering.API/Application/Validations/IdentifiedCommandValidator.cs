@@ -6,6 +6,6 @@ public class IdentifiedCommandValidator : AbstractValidator<IdentifiedCommand<Cr
     {
         RuleFor(command => command.Id).NotEmpty();
 
-        logger.LogTrace("----- INSTANCE CREATED - {ClassName}", GetType().Name);
+        logger.LogTrace("INSTANCE CREATED - {ClassName}", GetType().Name);
     }
 }

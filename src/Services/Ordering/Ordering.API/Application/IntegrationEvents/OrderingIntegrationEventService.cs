@@ -27,7 +27,7 @@ public class OrderingIntegrationEventService : IOrderingIntegrationEventService
 
         foreach (var logEvt in pendingLogEvents)
         {
-            _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", logEvt.EventId, Program.AppName, logEvt.IntegrationEvent);
+            _logger.LogInformation("Publishing integration event: {IntegrationEventId} - ({@IntegrationEvent})", logEvt.EventId, logEvt.IntegrationEvent);
 
             try
             {
@@ -37,7 +37,7 @@ public class OrderingIntegrationEventService : IOrderingIntegrationEventService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "ERROR publishing integration event: {IntegrationEventId} from {AppName}", logEvt.EventId, Program.AppName);
+                _logger.LogError(ex, "Error publishing integration event: {IntegrationEventId}", logEvt.EventId);
 
                 await _eventLogService.MarkEventAsFailedAsync(logEvt.EventId);
             }
@@ -46,7 +46,7 @@ public class OrderingIntegrationEventService : IOrderingIntegrationEventService
 
     public async Task AddAndSaveEventAsync(IntegrationEvent evt)
     {
-        _logger.LogInformation("----- Enqueuing integration event {IntegrationEventId} to repository ({@IntegrationEvent})", evt.Id, evt);
+        _logger.LogInformation("Enqueuing integration event {IntegrationEventId} to repository ({@IntegrationEvent})", evt.Id, evt);
 
         await _eventLogService.SaveEventAsync(evt, _orderingContext.GetCurrentTransaction());
     }

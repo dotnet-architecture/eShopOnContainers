@@ -1,4 +1,4 @@
-﻿namespace Ordering.API.Application.IntegrationEvents.EventHandling;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.EventHandling;
 
 public class OrderStockConfirmedIntegrationEventHandler :
     IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
@@ -16,14 +16,14 @@ public class OrderStockConfirmedIntegrationEventHandler :
 
     public async Task Handle(OrderStockConfirmedIntegrationEvent @event)
     {
-        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
         {
-            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
+            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 
             var command = new SetStockConfirmedOrderStatusCommand(@event.OrderId);
 
             _logger.LogInformation(
-                "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 command.GetGenericTypeName(),
                 nameof(command.OrderNumber),
                 command.OrderNumber,

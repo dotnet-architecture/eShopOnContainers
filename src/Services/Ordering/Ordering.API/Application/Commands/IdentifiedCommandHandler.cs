@@ -6,7 +6,7 @@
 /// </summary>
 /// <typeparam name="T">Type of the command handler that performs the operation if request is not duplicated</typeparam>
 /// <typeparam name="R">Return value of the inner command handler</typeparam>
-public class IdentifiedCommandHandler<T, R> : IRequestHandler<IdentifiedCommand<T, R>, R>
+public abstract class IdentifiedCommandHandler<T, R> : IRequestHandler<IdentifiedCommand<T, R>, R>
     where T : IRequest<R>
 {
     private readonly IMediator _mediator;
@@ -18,19 +18,17 @@ public class IdentifiedCommandHandler<T, R> : IRequestHandler<IdentifiedCommand<
         IRequestManager requestManager,
         ILogger<IdentifiedCommandHandler<T, R>> logger)
     {
+        ArgumentNullException.ThrowIfNull(logger);
         _mediator = mediator;
         _requestManager = requestManager;
-        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+        _logger = logger;
     }
 
     /// <summary>
     /// Creates the result value to return if a previous request was found
     /// </summary>
     /// <returns></returns>
-    protected virtual R CreateResultForDuplicateRequest()
-    {
-        return default(R);
-    }
+    protected abstract R CreateResultForDuplicateRequest();
 
     /// <summary>
     /// This method handles the command. It just ensures that no other request exists with the same ID, and if this is the case
@@ -79,7 +77,7 @@ public class IdentifiedCommandHandler<T, R> : IRequestHandler<IdentifiedCommand<
                 }
 
                 _logger.LogInformation(
-                    "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                    "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                     commandName,
                     idProperty,
                     commandId,
@@ -89,7 +87,7 @@ public class IdentifiedCommandHandler<T, R> : IRequestHandler<IdentifiedCommand<
                 var result = await _mediator.Send(command, cancellationToken);
 
                 _logger.LogInformation(
-                    "----- Command result: {@Result} - {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                    "Command result: {@Result} - {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                     result,
                     commandName,
                     idProperty,
@@ -100,7 +98,7 @@ public class IdentifiedCommandHandler<T, R> : IRequestHandler<IdentifiedCommand<
             }
             catch
             {
-                return default(R);
+                return default;
             }
         }
     }

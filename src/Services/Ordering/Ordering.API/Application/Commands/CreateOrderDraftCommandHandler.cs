@@ -1,23 +1,12 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
 
-using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Extensions;
 using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 
 // Regular CommandHandler
 public class CreateOrderDraftCommandHandler
     : IRequestHandler<CreateOrderDraftCommand, OrderDraftDTO>
 {
-    private readonly IOrderRepository _orderRepository;
-    private readonly IIdentityService _identityService;
-    private readonly IMediator _mediator;
-
-    // Using DI to inject infrastructure persistence Repositories
-    public CreateOrderDraftCommandHandler(IMediator mediator, IIdentityService identityService)
-    {
-        _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
-
     public Task<OrderDraftDTO> Handle(CreateOrderDraftCommand message, CancellationToken cancellationToken)
     {
 
@@ -31,7 +20,6 @@ public class CreateOrderDraftCommandHandler
         return Task.FromResult(OrderDraftDTO.FromOrder(order));
     }
 }
-
 
 public record OrderDraftDTO
 {
@@ -54,5 +42,19 @@ public record OrderDraftDTO
             Total = order.GetTotal()
         };
     }
+}
 
+public record OrderItemDTO
+{
+    public int ProductId { get; init; }
+
+    public string ProductName { get; init; }
+
+    public decimal UnitPrice { get; init; }
+
+    public decimal Discount { get; init; }
+
+    public int Units { get; init; }
+
+    public string PictureUrl { get; init; }
 }

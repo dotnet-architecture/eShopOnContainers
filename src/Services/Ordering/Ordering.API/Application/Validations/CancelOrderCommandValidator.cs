@@ -6,6 +6,6 @@ public class CancelOrderCommandValidator : AbstractValidator<CancelOrderCommand>
     {
         RuleFor(order => order.OrderNumber).NotEmpty().WithMessage("No orderId found");
 
-        logger.LogTrace("----- INSTANCE CREATED - {ClassName}", GetType().Name);
+        logger.LogTrace("INSTANCE CREATED - {ClassName}", GetType().Name);
     }
 }
