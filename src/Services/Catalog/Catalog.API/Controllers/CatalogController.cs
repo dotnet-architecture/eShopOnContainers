@@ -44,9 +44,9 @@ public class CatalogController : ControllerBase
             .OrderBy(c => c.Name)
             .Skip(pageSize * pageIndex)
             .Take(pageSize)
-            .ToListAsync();
+            .ToArrayAsync();
 
-        itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
+        ChangeUriPlaceholder(itemsOnPage);
 
         var model = new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, totalItems, itemsOnPage);
 
@@ -65,11 +65,9 @@ public class CatalogController : ControllerBase
         var idsToSelect = numIds
             .Select(id => id.Value);
 
-        var items = await _catalogContext.CatalogItems.Where(ci => idsToSelect.Contains(ci.Id)).ToListAsync();
+        var items = await _catalogContext.CatalogItems.Where(ci => idsToSelect.Contains(ci.Id)).ToArrayAsync();
 
-        items = ChangeUriPlaceholder(items);
-
-        return items;
+        return ChangeUriPlaceholder(items);
     }
 
     [HttpGet]
@@ -86,13 +84,9 @@ public class CatalogController : ControllerBase
 
         var item = await _catalogContext.CatalogItems.SingleOrDefaultAsync(ci => ci.Id == id);
 
-        var baseUri = _settings.PicBaseUrl;
-        var azureStorageEnabled = _settings.AzureStorageEnabled;
-
-        item.FillProductUrl(baseUri, azureStorageEnabled: azureStorageEnabled);
-
         if (item != null)
         {
+            ChangeUriPlaceholder(item);
             return item;
         }
 
@@ -113,9 +107,9 @@ public class CatalogController : ControllerBase
             .Where(c => c.Name.StartsWith(name))
             .Skip(pageSize * pageIndex)
             .Take(pageSize)
-            .ToListAsync();
+            .ToArrayAsync();
 
-        itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
+        ChangeUriPlaceholder(itemsOnPage);
 
         return new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, totalItems, itemsOnPage);
     }
@@ -141,9 +135,9 @@ public class CatalogController : ControllerBase
         var itemsOnPage = await root
             .Skip(pageSize * pageIndex)
             .Take(pageSize)
-            .ToListAsync();
+            .ToArrayAsync();
 
-        itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
+        ChangeUriPlaceholder(itemsOnPage);
 
         return new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, totalItems, itemsOnPage);
     }
@@ -167,9 +161,9 @@ public class CatalogController : ControllerBase
         var itemsOnPage = await root
             .Skip(pageSize * pageIndex)
             .Take(pageSize)
-            .ToListAsync();
+            .ToArrayAsync();
 
-        itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
+        ChangeUriPlaceholder(itemsOnPage);
 
         return new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, totalItems, itemsOnPage);
     }
@@ -276,7 +270,7 @@ public class CatalogController : ControllerBase
         return NoContent();
     }
 
-    private List<CatalogItem> ChangeUriPlaceholder(List<CatalogItem> items)
+    private List<CatalogItem> ChangeUriPlaceholder(params CatalogItem[] items)
     {
         var baseUri = _settings.PicBaseUrl;
         var azureStorageEnabled = _settings.AzureStorageEnabled;
@@ -286,6 +280,6 @@ public class CatalogController : ControllerBase
             item.FillProductUrl(baseUri, azureStorageEnabled: azureStorageEnabled);
         }
 
-        return items;
+        return items.ToList();
     }
 }
