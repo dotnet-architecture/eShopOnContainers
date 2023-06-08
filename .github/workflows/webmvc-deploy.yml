@@ -26,11 +26,12 @@ jobs:
 
       - uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
       - uses: ./.github/workflows/composite/deploy-helm
         with:
-          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
           cluster_name: ${{ secrets.CLUSTER_NAME }}
           resource_group: ${{ secrets.RESOURCE_GROUP }}
           registry_host: ${{ secrets.REGISTRY_HOST }}

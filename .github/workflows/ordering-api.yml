@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-    - name: Checkout code
+    - name: Checkout source code
       uses: actions/checkout@v2
     - uses: ./.github/workflows/composite/build-test
       with:
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
-    - name: Checkout code
+    - name: Checkout source code
       uses: actions/checkout@v2
     - uses: ./.github/workflows/composite/build-push
       with:

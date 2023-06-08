@@ -2,9 +2,6 @@ name: "Deploy Helm to AKS"
 description: "Deploys a helm chart to AKS"
 
 inputs:
-  azure_credentials:
-    description: "Credentials to connect to AKS"
-    required: true
   cluster_name:
     description: "Name of AKS cluster"
     required: true
@@ -29,12 +26,13 @@ runs:
   steps:
   - uses: azure/login@v1
     with:
-      creds: ${{ inputs.azure_credentials }}
+      client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
-  - uses: azure/aks-set-context@v1
+  - uses: azure/aks-set-context@v3
     name: Set AKS context
     with:
-      creds: '${{ inputs.azure_credentials }}'
       cluster-name: ${{ inputs.cluster_name }}
       resource-group: ${{ inputs.resource_group }}
   
