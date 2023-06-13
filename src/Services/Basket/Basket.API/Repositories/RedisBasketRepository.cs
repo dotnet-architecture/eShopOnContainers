@@ -35,12 +35,12 @@ public class RedisBasketRepository : IBasketRepository
             return null;
         }
 
-        return JsonSerializer.Deserialize<CustomerBasket>(data, JsonHelper.CaseInsensitiveOptions);
+        return JsonSerializer.Deserialize<CustomerBasket>(data, JsonDefaults.CaseInsensitiveOptions);
     }
 
     public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket basket)
     {
-        var created = await _database.StringSetAsync(basket.BuyerId, JsonSerializer.Serialize(basket, JsonHelper.CaseInsensitiveOptions));
+        var created = await _database.StringSetAsync(basket.BuyerId, JsonSerializer.Serialize(basket, JsonDefaults.CaseInsensitiveOptions));
 
         if (!created)
         {

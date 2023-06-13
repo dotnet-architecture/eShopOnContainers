@@ -23,6 +23,6 @@ public class OrderApiClient : IOrderApiClient
 
         var ordersDraftResponse = await response.Content.ReadAsStringAsync();
 
-        return JsonSerializer.Deserialize<OrderData>(ordersDraftResponse, JsonHelper.CaseInsensitiveOptions);
+        return JsonSerializer.Deserialize<OrderData>(ordersDraftResponse, JsonDefaults.CaseInsensitiveOptions);
     }
 }

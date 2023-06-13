@@ -2,7 +2,7 @@
 
 namespace Services.Common;
 
-public static class JsonHelper
+public static class JsonDefaults
 {
     public static readonly JsonSerializerOptions CaseInsensitiveOptions = new()
     {
