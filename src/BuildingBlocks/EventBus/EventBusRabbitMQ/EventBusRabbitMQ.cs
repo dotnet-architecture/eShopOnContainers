@@ -5,6 +5,9 @@ public class EventBusRabbitMQ : IEventBus, IDisposable
 {
     const string BROKER_NAME = "eshop_event_bus";
 
+    private static readonly JsonSerializerOptions s_indentedOptions = new() { WriteIndented = true };
+    private static readonly JsonSerializerOptions s_caseInsensitiveOptions = new() { PropertyNameCaseInsensitive = true };
+
     private readonly IRabbitMQPersistentConnection _persistentConnection;
     private readonly ILogger<EventBusRabbitMQ> _logger;
     private readonly IEventBusSubscriptionsManager _subsManager;
@@ -69,10 +72,7 @@ public class EventBusRabbitMQ : IEventBus, IDisposable
 
         channel.ExchangeDeclare(exchange: BROKER_NAME, type: "direct");
 
-        var body = JsonSerializer.SerializeToUtf8Bytes(@event, @event.GetType(), new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
+        var body = JsonSerializer.SerializeToUtf8Bytes(@event, @event.GetType(), s_indentedOptions);
 
         policy.Execute(() =>
         {
@@ -256,7 +256,7 @@ public class EventBusRabbitMQ : IEventBus, IDisposable
                     var handler = scope.ServiceProvider.GetService(subscription.HandlerType);
                     if (handler == null) continue;
                     var eventType = _subsManager.GetEventTypeByName(eventName);
-                    var integrationEvent = JsonSerializer.Deserialize(message, eventType, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                    var integrationEvent = JsonSerializer.Deserialize(message, eventType, s_caseInsensitiveOptions);
                     var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
 
                     await Task.Yield();

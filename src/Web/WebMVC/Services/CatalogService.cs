@@ -23,10 +23,7 @@ public class CatalogService : ICatalogService
 
         var responseString = await _httpClient.GetStringAsync(uri);
 
-        var catalog = JsonSerializer.Deserialize<Catalog>(responseString, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        var catalog = JsonSerializer.Deserialize<Catalog>(responseString, JsonDefaults.CaseInsensitiveOptions);
 
         return catalog;
     }

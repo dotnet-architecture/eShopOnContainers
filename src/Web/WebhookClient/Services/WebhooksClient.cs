@@ -14,10 +14,7 @@ public class WebhooksClient : IWebhooksClient
         var client = _httpClientFactory.CreateClient("GrantClient");
         var response = await client.GetAsync(_options.WebhooksUrl + "/api/v1/webhooks");
         var json = await response.Content.ReadAsStringAsync();
-        var subscriptions = JsonSerializer.Deserialize<IEnumerable<WebhookResponse>>(json, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        var subscriptions = JsonSerializer.Deserialize<IEnumerable<WebhookResponse>>(json, JsonDefaults.CaseInsensitiveOptions);
         return subscriptions;
     }
 }
