@@ -110,10 +110,10 @@ public class OrdersWebApiTest
 
         //Act
         var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
-        var actionResult = await orderController.GetOrderAsync(fakeOrderId) as OkObjectResult;
+        var actionResult = await orderController.GetOrderAsync(fakeOrderId);
 
         //Assert
-        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
+        Assert.Same(actionResult.Value, fakeDynamicResult);
     }
 
     [Fact]

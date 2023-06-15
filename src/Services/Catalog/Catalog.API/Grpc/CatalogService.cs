@@ -2,7 +2,6 @@
 using static CatalogApi.Catalog;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API.Grpc;
-using Microsoft.Extensions.Logging;
 
 public class CatalogService : CatalogBase
 {

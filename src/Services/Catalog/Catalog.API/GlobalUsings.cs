@@ -6,7 +6,6 @@ global using System.Globalization;
 global using System.IO;
 global using System.IO.Compression;
 global using System.Linq;
-global using System.Net;
 global using System.Text.RegularExpressions;
 global using System.Threading.Tasks;
 global using Grpc.Core;
