@@ -138,7 +138,6 @@ services:
         NODE_IMAGE: ${NODE_IMAGE:-node:16-bullseye}
     depends_on:
       - webshoppingagg
-      - webshoppingapigw
 
   webmvc:
     image: ${REGISTRY:-eshop}/webmvc:${PLATFORM:-linux}-${TAG:-latest}
