@@ -71,7 +71,7 @@ public class WebhooksController : ControllerBase
         }
         else
         {
-            return StatusCode(StatusCodes.Status418ImATeapot, "Grant url can't be validated");
+            return StatusCode(StatusCodes.Status418ImATeapot, "Grant URL invalid");
         }
     }
 
