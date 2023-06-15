@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <UserSecretsId>aspnet-Ordering.API-20161122013547</UserSecretsId>
+    <ImplicitUsings>enable</ImplicitUsings>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <RootNamespace>Microsoft.eShopOnContainers.Services.Ordering.API</RootNamespace>
   </PropertyGroup>
