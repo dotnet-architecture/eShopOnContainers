@@ -23,7 +23,6 @@ public class BasketController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<CustomerBasket>> GetBasketByIdAsync(string id)
     {
         var basket = await _repository.GetBasketAsync(id);
@@ -32,7 +31,6 @@ public class BasketController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync([FromBody] CustomerBasket value)
     {
         return Ok(await _repository.UpdateBasketAsync(value));
@@ -40,8 +38,8 @@ public class BasketController : ControllerBase
 
     [Route("checkout")]
     [HttpPost]
-    [ProducesResponseType((int)HttpStatusCode.Accepted)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CheckoutAsync([FromBody] BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
     {
         var userId = _identityService.GetUserIdentity();
@@ -81,7 +79,7 @@ public class BasketController : ControllerBase
 
     // DELETE api/values/5
     [HttpDelete("{id}")]
-    [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task DeleteBasketByIdAsync(string id)
     {
         await _repository.DeleteBasketAsync(id);

@@ -20,9 +20,9 @@ public class CatalogController : ControllerBase
     // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
     [HttpGet]
     [Route("items")]
-    [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(IEnumerable<CatalogItem>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<CatalogItem>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ItemsAsync([FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0, string ids = null)
     {
         if (!string.IsNullOrEmpty(ids))
@@ -74,9 +74,8 @@ public class CatalogController : ControllerBase
 
     [HttpGet]
     [Route("items/{id:int}")]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(CatalogItem), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CatalogItem>> ItemByIdAsync(int id)
     {
         if (id <= 0)
@@ -102,7 +101,6 @@ public class CatalogController : ControllerBase
     // GET api/v1/[controller]/items/withname/samplename[?pageSize=3&pageIndex=10]
     [HttpGet]
     [Route("items/withname/{name:minlength(1)}")]
-    [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PaginatedItemsViewModel<CatalogItem>>> ItemsWithNameAsync(string name, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
         var totalItems = await _catalogContext.CatalogItems
@@ -123,7 +121,6 @@ public class CatalogController : ControllerBase
     // GET api/v1/[controller]/items/type/1/brand[?pageSize=3&pageIndex=10]
     [HttpGet]
     [Route("items/type/{catalogTypeId}/brand/{catalogBrandId:int?}")]
-    [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PaginatedItemsViewModel<CatalogItem>>> ItemsByTypeIdAndBrandIdAsync(int catalogTypeId, int? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
         var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
@@ -151,7 +148,6 @@ public class CatalogController : ControllerBase
     // GET api/v1/[controller]/items/type/all/brand[?pageSize=3&pageIndex=10]
     [HttpGet]
     [Route("items/type/all/brand/{catalogBrandId:int?}")]
-    [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PaginatedItemsViewModel<CatalogItem>>> ItemsByBrandIdAsync(int? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
         var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
@@ -177,7 +173,6 @@ public class CatalogController : ControllerBase
     // GET api/v1/[controller]/CatalogTypes
     [HttpGet]
     [Route("catalogtypes")]
-    [ProducesResponseType(typeof(List<CatalogType>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<CatalogType>>> CatalogTypesAsync()
     {
         return await _catalogContext.CatalogTypes.ToListAsync();
@@ -186,7 +181,6 @@ public class CatalogController : ControllerBase
     // GET api/v1/[controller]/CatalogBrands
     [HttpGet]
     [Route("catalogbrands")]
-    [ProducesResponseType(typeof(List<CatalogBrand>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<CatalogBrand>>> CatalogBrandsAsync()
     {
         return await _catalogContext.CatalogBrands.ToListAsync();
@@ -195,8 +189,8 @@ public class CatalogController : ControllerBase
     //PUT api/v1/[controller]/items
     [Route("items")]
     [HttpPut]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult> UpdateProductAsync([FromBody] CatalogItem productToUpdate)
     {
         var catalogItem = await _catalogContext.CatalogItems.SingleOrDefaultAsync(i => i.Id == productToUpdate.Id);
@@ -235,7 +229,7 @@ public class CatalogController : ControllerBase
     //POST api/v1/[controller]/items
     [Route("items")]
     [HttpPost]
-    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult> CreateProductAsync([FromBody] CatalogItem product)
     {
         var item = new CatalogItem
@@ -258,8 +252,8 @@ public class CatalogController : ControllerBase
     //DELETE api/v1/[controller]/id
     [Route("{id}")]
     [HttpDelete]
-    [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteProductAsync(int id)
     {
         var product = _catalogContext.CatalogItems.SingleOrDefault(x => x.Id == id);

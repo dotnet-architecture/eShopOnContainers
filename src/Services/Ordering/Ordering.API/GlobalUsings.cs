@@ -4,7 +4,6 @@ global using System.Data.Common;
 global using System.Data.SqlClient;
 global using System.IO;
 global using System.Linq;
-global using System.Net;
 global using System.Runtime.Serialization;
 global using System.Threading;
 global using System.Threading.Tasks;

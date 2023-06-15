@@ -16,8 +16,8 @@ public class BasketController : ControllerBase
 
     [HttpPost]
     [HttpPut]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(BasketData), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(BasketData), StatusCodes.Status200OK)]
     public async Task<ActionResult<BasketData>> UpdateAllBasketAsync([FromBody] UpdateBasketRequest data)
     {
         if (data.Items == null || !data.Items.Any())
@@ -74,7 +74,7 @@ public class BasketController : ControllerBase
 
     [HttpPut]
     [Route("items")]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BasketData), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<BasketData>> UpdateQuantitiesAsync([FromBody] UpdateBasketItemsRequest data)
     {
@@ -109,8 +109,8 @@ public class BasketController : ControllerBase
 
     [HttpPost]
     [Route("items")]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> AddBasketItemAsync([FromBody] AddBasketItemRequest data)
     {
         if (data == null || data.Quantity == 0)
