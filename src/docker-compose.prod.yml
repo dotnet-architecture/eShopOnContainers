@@ -128,7 +128,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - PurchaseUrl=http://webshoppingapigw
+      - PurchaseUrl=http://webshoppingagg
       - IdentityUrl=http://10.0.75.1:5105  # Local Mac: Use http://docker.for.mac.localhost:5105 || Local Windows:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. || #Remote access: Use ${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.
       - CatalogUrlHC=http://catalog-api/hc
       - OrderingUrlHC=http://ordering-api/hc
@@ -190,26 +190,6 @@ services:
     ports:
       - "15672:15672"  # Important: In a production environment your should remove the external port
       - "5672:5672"    # Important: In a production environment your should remove the external port
-
-  mobileshoppingapigw:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityUrl=http://identity-api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
-    ports:
-      - "5200:80"   # Important: In a production environment your should remove the external port (5200) kept here for microservice debugging purposes.
-                    # The API Gateway redirects and access through the internal port (80).
-    volumes:
-      - ./ApiGateways/Mobile.Bff.Shopping/apigw:/app/configuration
-
-  webshoppingapigw:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityUrl=http://identity-api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
-    ports:
-      - "5202:80"   # Important: In a production environment your should remove the external port (5202) kept here for microservice debugging purposes.
-                    # The API Gateway redirects and access through the internal port (80).
-    volumes:
-      - ./ApiGateways/Web.Bff.Shopping/apigw:/app/configuration
 
   mobileshoppingagg:
     environment:

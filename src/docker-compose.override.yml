@@ -169,20 +169,6 @@ services:
     ports:
       - "5113:80"
 
-  mobileshoppingapigw:
-    volumes:
-      - ./ApiGateways/Envoy/config/mobileshopping:/etc/envoy
-    ports:
-    - "5200:80"
-    - "15200:8001"
-
-  webshoppingapigw:
-    volumes:
-      - ./ApiGateways/Envoy/config/webshopping:/etc/envoy
-    ports:
-    - "5202:80"
-    - "15202:8001"
-
   mobileshoppingagg:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
