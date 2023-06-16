@@ -44,10 +44,10 @@ public class OrderingIntegrationEventService : IOrderingIntegrationEventService
         }
     }
 
-    public async Task AddAndSaveEventAsync(IntegrationEvent evt)
+    public async Task AddAndSaveEventAsync(IntegrationEvent integrationEvent)
     {
-        _logger.LogInformation("Enqueuing integration event {IntegrationEventId} to repository ({@IntegrationEvent})", evt.Id, evt);
+        _logger.LogInformation("Enqueuing integration event {IntegrationEventId} to repository ({@IntegrationEvent})", integrationEvent.Id, integrationEvent);
 
-        await _eventLogService.SaveEventAsync(evt, _orderingContext.GetCurrentTransaction());
+        await _eventLogService.SaveEventAsync(integrationEvent, _orderingContext.GetCurrentTransaction());
     }
 }

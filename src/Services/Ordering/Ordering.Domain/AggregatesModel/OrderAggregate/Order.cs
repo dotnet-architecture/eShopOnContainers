@@ -190,4 +190,17 @@ public class Order
     {
         return _orderItems.Sum(o => o.GetUnits() * o.GetUnitPrice());
     }
+
+    public void SetCompletedStatus()
+    {
+        if (_orderStatusId != OrderStatus.Shipped.Id)
+        {
+            StatusChangeException(OrderStatus.Completed);
+        }
+
+        _orderStatusId = OrderStatus.Completed.Id;
+        _description = $"The order was {OrderStatus.Completed}.";
+        
+        AddDomainEvent(new OrderCompletedDomainEvent(this));
+    }
 }

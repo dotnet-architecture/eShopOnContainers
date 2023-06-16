@@ -3,5 +3,5 @@
 public interface IOrderingIntegrationEventService
 {
     Task PublishEventsThroughEventBusAsync(Guid transactionId);
-    Task AddAndSaveEventAsync(IntegrationEvent evt);
+    Task AddAndSaveEventAsync(IntegrationEvent integrationEvent);
 }
