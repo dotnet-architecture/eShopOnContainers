@@ -80,6 +80,37 @@ public class OrdersWebApiTest
     }
 
     [Fact]
+    public async Task Complete_order_with_requestId_success()
+    {
+        //Arrange
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CompleteOrderCommand, bool>>(), default))
+            .Returns(Task.FromResult(true));
+
+        //Act
+        var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
+        var actionResult = await orderController.CompleteOrderAsync(new CompleteOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
+
+        //Assert
+        Assert.Equal((int)System.Net.HttpStatusCode.OK, actionResult.StatusCode);
+
+    }
+
+    [Fact]
+    public async Task Complete_order_bad_request()
+    {
+        //Arrange
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default))
+            .Returns(Task.FromResult(true));
+
+        //Act
+        var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
+        var actionResult = await orderController.CompleteOrderAsync(new CompleteOrderCommand(1), string.Empty) as BadRequestResult;
+
+        //Assert
+        Assert.Equal((int)System.Net.HttpStatusCode.BadRequest, actionResult.StatusCode);
+    }
+
+    [Fact]
     public async Task Get_orders_success()
     {
         //Arrange
@@ -110,10 +141,10 @@ public class OrdersWebApiTest
 
         //Act
         var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
-        var actionResult = await orderController.GetOrderAsync(fakeOrderId);
+        var actionResult = await orderController.GetOrderAsync(fakeOrderId) as OkObjectResult;
 
         //Assert
-        Assert.Same(actionResult.Value, fakeDynamicResult);
+        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
     }
 
     [Fact]

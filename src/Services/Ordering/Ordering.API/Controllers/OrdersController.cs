@@ -1,7 +1,9 @@
-﻿using CardType = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries.CardType;
-using Order = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries.Order;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers;
 
-namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 
 [Route("api/v1/[controller]")]
 [Authorize]
@@ -85,11 +87,42 @@ public class OrdersController : ControllerBase
         return Ok();
     }
 
+    [Route("complete")]
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CompleteOrderAsync([FromBody] CompleteOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
+    {
+        bool commandResult = false;
+
+        if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
+        {
+            var requestCompleteOrder = new IdentifiedCommand<CompleteOrderCommand, bool>(command, guid);
+
+            _logger.LogInformation(
+                "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                requestCompleteOrder.GetGenericTypeName(),
+                nameof(requestCompleteOrder.Command.OrderNumber),
+                requestCompleteOrder.Command.OrderNumber,
+                requestCompleteOrder);
+
+            commandResult = await _mediator.Send(requestCompleteOrder);
+        }
+
+        if (!commandResult)
+        {
+            return BadRequest();
+        }
+
+        return Ok();
+    }
+
+
     [Route("{orderId:int}")]
     [HttpGet]
     [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Order>> GetOrderAsync(int orderId)
+    public async Task<ActionResult> GetOrderAsync(int orderId)
     {
         try
         {
@@ -97,7 +130,7 @@ public class OrdersController : ControllerBase
             //var order customer = await _mediator.Send(new GetOrderByIdQuery(orderId));
             var order = await _orderQueries.GetOrderAsync(orderId);
 
-            return order;
+            return Ok(order);
         }
         catch
         {
@@ -106,7 +139,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<OrderSummary>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<OrderSummary>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IEnumerable<OrderSummary>>> GetOrdersAsync()
     {
         var userid = _identityService.GetUserIdentity();
@@ -117,7 +150,7 @@ public class OrdersController : ControllerBase
 
     [Route("cardtypes")]
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<CardType>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<CardType>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IEnumerable<CardType>>> GetCardTypesAsync()
     {
         var cardTypes = await _orderQueries.GetCardTypesAsync();

@@ -1,4 +1,8 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+
+namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents;
 
 public class OrderingIntegrationEventService : IOrderingIntegrationEventService
 {

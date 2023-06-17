@@ -70,6 +70,11 @@ public abstract class IdentifiedCommandHandler<T, R> : IRequestHandler<Identifie
                         commandId = $"{shipOrderCommand.OrderNumber}";
                         break;
 
+                    case CompleteOrderCommand completeOrderCommand:
+                        idProperty = nameof(completeOrderCommand.OrderNumber);
+                        commandId = $"{completeOrderCommand.OrderNumber}";
+                        break;
+
                     default:
                         idProperty = "Id?";
                         commandId = "n/a";
