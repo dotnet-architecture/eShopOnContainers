@@ -50,6 +50,7 @@ public class OrderingScenarioBase
     {
         public static string CancelOrder = "api/v1/orders/cancel";
         public static string ShipOrder = "api/v1/orders/ship";
+        public static string CompleteOrder = "api/v1/orders/complete";
     }
 
     private class AuthStartupFilter : IStartupFilter
