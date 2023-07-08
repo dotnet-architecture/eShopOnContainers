@@ -156,6 +156,20 @@ public class Order
         AddDomainEvent(new OrderCancelledDomainEvent(this));
     }
 
+    public void SetCompletedStatus()
+    {
+        // make sure it is shipped and paid before completing
+        if (_orderStatusId == OrderStatus.Paid.Id ||
+            _orderStatusId == OrderStatus.Shipped.Id)
+        {
+            StatusChangeException(OrderStatus.Completed);
+        }
+
+        _orderStatusId = OrderStatus.Completed.Id;
+        _description = $"The order is completed.";
+        AddDomainEvent(new OrderCompletedDomainEvent(this)); // a postponed way to raise domain events
+    }
+
     public void SetCancelledStatusWhenStockIsRejected(IEnumerable<int> orderStockRejectedItems)
     {
         if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
