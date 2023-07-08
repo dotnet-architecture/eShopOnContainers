@@ -23,6 +23,7 @@ services.AddMediatR(cfg =>
 
 // Register the command validators for the validator behavior (validators based on FluentValidation library)
 services.AddSingleton<IValidator<CancelOrderCommand>, CancelOrderCommandValidator>();
+services.AddSingleton<IValidator<CompleteOrderCommand>, CompleteOrderCommandValidator>();
 services.AddSingleton<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
 services.AddSingleton<IValidator<IdentifiedCommand<CreateOrderCommand, bool>>, IdentifiedCommandValidator>();
 services.AddSingleton<IValidator<ShipOrderCommand>, ShipOrderCommandValidator>();
