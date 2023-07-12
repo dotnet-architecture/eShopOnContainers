@@ -158,9 +158,8 @@ public class Order
 
     public void SetCompletedStatus()
     {
-        // make sure it is shipped and paid before completing
-        if (_orderStatusId == OrderStatus.Paid.Id ||
-            _orderStatusId == OrderStatus.Shipped.Id)
+        // make sure it is shipped before completing
+        if (_orderStatusId == OrderStatus.Shipped.Id)
         {
             StatusChangeException(OrderStatus.Completed);
         }
