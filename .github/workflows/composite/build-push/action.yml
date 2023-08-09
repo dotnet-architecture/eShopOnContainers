@@ -35,7 +35,7 @@ runs:
         docker version -f '{{.Server.Experimental}}'
 
   - name: Login to Container Registry
-    uses: docker/login-action@v1
+    uses: docker/login-action@v2
     with:
       registry: ${{ inputs.registry_host }}
       username: ${{ inputs.registry_username }}
