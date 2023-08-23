@@ -1,8 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Extensions;
 
-using System.Collections.Generic;
-using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Models;
-
 public static class BasketItemExtensions
 {
     public static IEnumerable<OrderItemDTO> ToOrderItemsDTO(this IEnumerable<BasketItem> basketItems)

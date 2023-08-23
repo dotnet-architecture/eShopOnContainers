@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnetcorespa-c23d27a4-eb88-4b18-9b77-2a93f3b15119</UserSecretsId>
     <TypeScriptCompileOnSaveEnabled>false</TypeScriptCompileOnSaveEnabled>
-    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <GeneratedItemPatterns>wwwroot/dist/**</GeneratedItemPatterns>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(GeneratedItemPatterns)</DefaultItemExcludes>
@@ -22,26 +22,20 @@
     <Content Update="appsettings.json;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="web.config;">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Update="wwwroot\**\*;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" />
-    <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" />
-    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" />
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" />    
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Services.Common\Services.Common.csproj" />
   </ItemGroup>
   
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

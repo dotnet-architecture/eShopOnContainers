@@ -27,7 +27,7 @@ var eventBus = app.Services.GetRequiredService<IEventBus>();
 eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
 eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 
-// REVIEW: This is done fore development east but shouldn't be here in production
+// REVIEW: This is done for development ease but shouldn't be here in production
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CatalogContext>();
@@ -36,8 +36,8 @@ using (var scope = app.Services.CreateScope())
     await context.Database.MigrateAsync();
 
     await new CatalogContextSeed().SeedAsync(context, app.Environment, settings, logger);
-    var integEventContext = scope.ServiceProvider.GetRequiredService<IntegrationEventLogContext>();
-    await integEventContext.Database.MigrateAsync();
+    var integrationEventLogContext = scope.ServiceProvider.GetRequiredService<IntegrationEventLogContext>();
+    await integrationEventLogContext.Database.MigrateAsync();
 }
 
 await app.RunAsync();

@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <UserSecretsId>aspnet-eShopOnContainers.Identity-90487118-103c-4ff0-b9da-e5e26f7ab0c5</UserSecretsId>
+    <ImplicitUsings>enable</ImplicitUsings>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" />
-    <PackageReference Include="Duende.IdentityServer.EntityFramework.Storage" />
     <PackageReference Include="Duende.IdentityServer.EntityFramework" />
     <PackageReference Include="Duende.IdentityServer.Storage" />
     <PackageReference Include="Duende.IdentityServer" />

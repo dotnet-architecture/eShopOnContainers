@@ -23,10 +23,7 @@ public class OrderingService : IOrderingService
 
         var responseString = await _httpClient.GetStringAsync(uri);
 
-        var response = JsonSerializer.Deserialize<Order>(responseString, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        var response = JsonSerializer.Deserialize<Order>(responseString, JsonDefaults.CaseInsensitiveOptions);
 
         return response;
     }
@@ -37,10 +34,7 @@ public class OrderingService : IOrderingService
 
         var responseString = await _httpClient.GetStringAsync(uri);
 
-        var response = JsonSerializer.Deserialize<List<Order>>(responseString, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
+        var response = JsonSerializer.Deserialize<List<Order>>(responseString, JsonDefaults.CaseInsensitiveOptions);
 
         return response;
     }

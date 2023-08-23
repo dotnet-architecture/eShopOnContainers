@@ -16,8 +16,7 @@ public class OrderController : ControllerBase
 
     [Route("draft/{basketId}")]
     [HttpGet]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(OrderData), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<OrderData>> GetOrderDraftAsync(string basketId)
     {
         if (string.IsNullOrWhiteSpace(basketId))

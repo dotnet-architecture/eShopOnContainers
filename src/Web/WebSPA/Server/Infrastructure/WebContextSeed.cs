@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 public class WebContextSeed
 {
-    public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env, ILogger<WebContextSeed> logger)
+    public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env, ILogger logger)
     {
         var settings = applicationBuilder
             .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
