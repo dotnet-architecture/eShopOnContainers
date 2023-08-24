@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net.Http.Formatting;
+﻿using System.Net.Http.Formatting;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebhookClient.Pages
 {

@@ -1,6 +1,6 @@
 ﻿namespace Basket.FunctionalTests;
 
-public class BasketScenarios : 
+public class BasketScenarios :
     BasketScenarioBase
 {
     [Fact]
@@ -33,7 +33,7 @@ public class BasketScenarios :
 
         var contentCheckout = new StringContent(BuildCheckout(), UTF8Encoding.UTF8, "application/json")
         {
-             Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
+            Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
         };
 
         var response = await server.CreateClient()
