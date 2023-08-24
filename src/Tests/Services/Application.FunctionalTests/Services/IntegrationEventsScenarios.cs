@@ -1,7 +1,7 @@
 ﻿namespace FunctionalTests.Services;
 
-using global::Basket.FunctionalTests.Base;
-using global::Catalog.FunctionalTests;
+using Basket.FunctionalTests.Base;
+using Catalog.FunctionalTests;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;

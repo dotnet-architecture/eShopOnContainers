@@ -9,7 +9,7 @@ public class OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandle
         ILogger<OrderStockRejectedIntegrationEventHandler> logger)
     {
         _mediator = mediator;
-        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task Handle(OrderStockRejectedIntegrationEvent @event)

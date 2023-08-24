@@ -14,7 +14,7 @@ public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler :
     {
         _catalogContext = catalogContext;
         _catalogIntegrationEventService = catalogIntegrationEventService;
-        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task Handle(OrderStatusChangedToAwaitingValidationIntegrationEvent @event)

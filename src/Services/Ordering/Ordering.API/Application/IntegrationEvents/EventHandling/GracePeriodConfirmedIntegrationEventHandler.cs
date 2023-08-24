@@ -10,7 +10,7 @@ public class GracePeriodConfirmedIntegrationEventHandler : IIntegrationEventHand
         ILogger<GracePeriodConfirmedIntegrationEventHandler> logger)
     {
         _mediator = mediator;
-        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     /// <summary>

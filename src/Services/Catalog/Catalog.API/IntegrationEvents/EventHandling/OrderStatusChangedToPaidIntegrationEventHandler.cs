@@ -11,7 +11,7 @@ public class OrderStatusChangedToPaidIntegrationEventHandler :
         ILogger<OrderStatusChangedToPaidIntegrationEventHandler> logger)
     {
         _catalogContext = catalogContext;
-        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task Handle(OrderStatusChangedToPaidIntegrationEvent @event)

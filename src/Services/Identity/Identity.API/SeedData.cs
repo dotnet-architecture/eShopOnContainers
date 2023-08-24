@@ -92,7 +92,7 @@ public class SeedData
         });
     }
 
-    private static AsyncPolicy CreateRetryPolicy(IConfiguration configuration, Microsoft.Extensions.Logging.ILogger logger)
+    private static AsyncPolicy CreateRetryPolicy(IConfiguration configuration, ILogger logger)
     {
         var retryMigrations = false;
         bool.TryParse(configuration["RetryMigrations"], out retryMigrations);

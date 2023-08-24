@@ -14,7 +14,7 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
     {
         _eventBus = eventBus;
         _settings = settings.Value;
-        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         _logger.LogTrace("PaymentSettings: {@PaymentSettings}", _settings);
     }

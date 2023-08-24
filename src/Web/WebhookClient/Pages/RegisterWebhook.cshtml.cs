@@ -50,7 +50,7 @@ namespace WebhookClient.Pages
                 Url = url,
                 Token = Token
             };
-            var response = await client.PostAsync<WebhookSubscriptionRequest>(_options.WebhooksUrl + "/api/v1/webhooks", payload, new JsonMediaTypeFormatter());
+            var response = await client.PostAsync(_options.WebhooksUrl + "/api/v1/webhooks", payload, new JsonMediaTypeFormatter());
 
             if (response.IsSuccessStatusCode)
             {
