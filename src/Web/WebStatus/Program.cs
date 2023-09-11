@@ -1,5 +1,5 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
-if (builder.Configuration.GetValue<bool>("UseVault", false))
+if (builder.Configuration.GetValue("UseVault", false))
 {
     TokenCredential credential = new ClientSecretCredential(
         builder.Configuration["Vault:TenantId"],

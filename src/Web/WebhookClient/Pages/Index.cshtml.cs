@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using WebhookClient.Models;
-using WebhookClient.Services;
 
 namespace WebhookClient.Pages
 {

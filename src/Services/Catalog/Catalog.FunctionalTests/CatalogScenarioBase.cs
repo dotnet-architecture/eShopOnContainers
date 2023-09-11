@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Catalog.FunctionalTests;
 
-public class CatalogScenariosBase 
+public class CatalogScenariosBase
 {
     private class CatalogApplication : WebApplicationFactory<Program>
     {

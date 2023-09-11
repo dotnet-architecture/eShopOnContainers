@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.EventHandling;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.EventHandling;
 
 public class OrderStatusChangedToSubmittedIntegrationEventHandler :
     IIntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent>
@@ -19,7 +17,7 @@ public class OrderStatusChangedToSubmittedIntegrationEventHandler :
 
     public async Task Handle(OrderStatusChangedToSubmittedIntegrationEvent @event)
     {
-        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new("IntegrationEventContext", @event.Id) }))
         {
             _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 

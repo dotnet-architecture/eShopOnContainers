@@ -1,8 +1,7 @@
 ﻿using GrpcOrdering;
-
-using OrderDraftDTO = GrpcOrdering.OrderDraftDTO;
-using CreateOrderDraftCommand = GrpcOrdering.CreateOrderDraftCommand;
 using BasketItem = GrpcOrdering.BasketItem;
+using CreateOrderDraftCommand = GrpcOrdering.CreateOrderDraftCommand;
+using OrderDraftDTO = GrpcOrdering.OrderDraftDTO;
 using OrderItemDTO = GrpcOrdering.OrderItemDTO;
 
 public class OrderingService : OrderingGrpc.OrderingGrpcBase

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Microsoft.eShopOnContainers.Payment.API.IntegrationEvents.EventHandling;
+﻿namespace Microsoft.eShopOnContainers.Payment.API.IntegrationEvents.EventHandling;
 
 public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
     IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
@@ -16,14 +14,14 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
     {
         _eventBus = eventBus;
         _settings = settings.Value;
-        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         _logger.LogTrace("PaymentSettings: {@PaymentSettings}", _settings);
     }
 
     public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
     {
-        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new ("IntegrationEventContext", @event.Id) }))
+        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new("IntegrationEventContext", @event.Id) }))
         {
             _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
 

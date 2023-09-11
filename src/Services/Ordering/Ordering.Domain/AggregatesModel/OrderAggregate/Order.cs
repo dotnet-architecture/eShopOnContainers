@@ -19,15 +19,15 @@ public class Order
 
     private string _description;
 
-
-
     // Draft orders have this set to true. Currently we don't check anywhere the draft status of an Order, but we could do it if needed
+#pragma warning disable CS0414 // The field 'Order._isDraft' is assigned but its value is never used
     private bool _isDraft;
+#pragma warning restore CS0414
 
     // DDD Patterns comment
     // Using a private collection field, better for DDD Aggregate's encapsulation
     // so OrderItems cannot be added from "outside the AggregateRoot" directly to the collection,
-    // but only through the method OrderAggrergateRoot.AddOrderItem() which includes behaviour.
+    // but only through the method OrderAggregateRoot.AddOrderItem() which includes behavior.
     private readonly List<OrderItem> _orderItems;
     public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
@@ -35,8 +35,10 @@ public class Order
 
     public static Order NewDraft()
     {
-        var order = new Order();
-        order._isDraft = true;
+        var order = new Order
+        {
+            _isDraft = true
+        };
         return order;
     }
 
@@ -56,13 +58,13 @@ public class Order
         Address = address;
 
         // Add the OrderStarterDomainEvent to the domain events collection 
-        // to be raised/dispatched when comitting changes into the Database [ After DbContext.SaveChanges() ]
+        // to be raised/dispatched when committing changes into the Database [ After DbContext.SaveChanges() ]
         AddOrderStartedDomainEvent(userId, userName, cardTypeId, cardNumber,
                                     cardSecurityNumber, cardHolderName, cardExpiration);
     }
 
     // DDD Patterns comment
-    // This Order AggregateRoot's method "AddOrderitem()" should be the only way to add Items to the Order,
+    // This Order AggregateRoot's method "AddOrderItem()" should be the only way to add Items to the Order,
     // so any behavior (discounts, etc.) and validations are controlled by the AggregateRoot 
     // in order to maintain consistency between the whole Aggregate. 
     public void AddOrderItem(int productId, string productName, decimal unitPrice, decimal discount, string pictureUrl, int units = 1)
