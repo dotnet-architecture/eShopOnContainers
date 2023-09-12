@@ -20,6 +20,20 @@ namespace Ordering.FunctionalTests
         }
 
         [Fact]
+        public async Task Complete_order_no_order_created_bad_request_response()
+        {
+            using var server = CreateServer();
+            var content = new StringContent(BuildOrder(), UTF8Encoding.UTF8, "application/json")
+            {
+                Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
+            };
+            var response = await server.CreateClient()
+                .PutAsync(Put.CompleteOrder, content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
         public async Task Cancel_order_no_order_created_bad_request_response()
         {
             using var server = CreateServer();
@@ -29,8 +43,7 @@ namespace Ordering.FunctionalTests
             };
             var response = await server.CreateClient()
                 .PutAsync(Put.CancelOrder, content);
-
-            var s = await response.Content.ReadAsStringAsync();
+ 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
