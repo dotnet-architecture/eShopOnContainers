@@ -46,7 +46,7 @@
     "core-js": "^3.14.0",
     "file-loader": "^6.2.0",
     "font-awesome": "4.7.0",
-    "is-svg": ">=4.2.2",
+    "is-svg": ">=5.0.0",
     "isomorphic-fetch": "3.0.0",
     "jquery": "3.5.0",
     "ngx-toastr": "15.2.2",
