@@ -28,7 +28,7 @@ env:
   configmap:
     - name: ConnectionString
       key: basket__ConnectionString
-    - name: EventBusConnection
+    - name: ConnectionStrings__EventBus
       key: all__EventBusConnection
     - name: ApplicationInsights__InstrumentationKey
       key: all__InstrumentationKey
@@ -36,6 +36,8 @@ env:
       key: all__UseAzureServiceBus
     - name: IdentityUrl
       key: urls__IdentityUrl
+    - name: ConnectionStrings__Redis
+      key: all__Redis
   # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
   values:
     - name: OrchestratorType

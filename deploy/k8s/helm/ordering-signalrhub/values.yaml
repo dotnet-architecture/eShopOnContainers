@@ -38,7 +38,7 @@ env:
   configmap:
     - name: ApplicationInsights__InstrumentationKey
       key: all__InstrumentationKey
-    - name: EventBusConnection
+    - name: ConnectionStrings__EventBus
       key: all__EventBusConnection
     - name: AzureServiceBusEnabled
       key: all__UseAzureServiceBus
