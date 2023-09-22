@@ -9,6 +9,7 @@
 {{- $xamarincallback := include "url-of" (list "xamarincallback" .) -}}
 {{- $webhooks_url := include "url-of" (list .Values.app.ingress.entries.webhooks .) -}}
 {{- $webhooksweb_url := include "url-of" (list .Values.app.ingress.entries.webhooksweb .) -}}
+{{- $protocol := include "protocol" . -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -23,13 +24,13 @@ data:
   identity__ConnectionString: Server={{ $sqlsrv }};Initial Catalog={{ .Values.inf.sql.identity.db }};User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};TrustServerCertificate={{ .Values.inf.sql.common.TrustServerCertificate }};
   identity__keystore: {{ .Values.inf.redis.keystore.constr }}
   all__InstrumentationKey: "{{ .Values.inf.appinsights.key }}"
-  mvc_e: http://{{ $mvc_url }}
-  spa_e: http://{{ $spa_url }}
-  basket_e: http://{{ $basket_url }}
-  ordering_e: http://{{ $ordering_url }}
-  mobileshoppingagg_e: http://{{ $mobileshoppingagg }}
-  webshoppingagg_e: http://{{ $webhoppingagg }}
-  xamarin_callback_e: http://{{ $xamarincallback }}
-  webhooksapi_e:  http://{{ $webhooks_url }}
-  webhooksweb_e: http://{{ $webhooksweb_url }}
+  mvc_e: {{ $protocol }}://{{ $mvc_url }}
+  spa_e: {{ $protocol }}://{{ $spa_url }}
+  basket_e: {{ $protocol }}://{{ $basket_url }}
+  ordering_e: {{ $protocol }}://{{ $ordering_url }}
+  mobileshoppingagg_e: {{ $protocol }}://{{ $mobileshoppingagg }}
+  webshoppingagg_e: {{ $protocol }}://{{ $webhoppingagg }}
+  xamarin_callback_e: {{ $protocol }}://{{ $xamarincallback }}
+  webhooksapi_e:  {{ $protocol }}://{{ $webhooks_url }}
+  webhooksweb_e: {{ $protocol }}://{{ $webhooksweb_url }}
   enableDevspaces: "{{ .Values.enableDevspaces }}"

@@ -42,7 +42,7 @@ env:
       key: all__EventBusConnection
     - name: AzureServiceBusEnabled
       key: all__UseAzureServiceBus
-    - name: IdentityUrl
+    - name: Identity__Url
       key: urls__IdentityUrl
     - name: SignalrStoreConnectionString
       key: signalr__StoreConnectionString

@@ -34,7 +34,7 @@ env:
       key: all__InstrumentationKey
     - name: AzureServiceBusEnabled
       key: all__UseAzureServiceBus
-    - name: IdentityUrl
+    - name: Identity__Url
       key: urls__IdentityUrl
     - name: ConnectionStrings__Redis
       key: all__Redis
