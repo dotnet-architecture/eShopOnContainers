@@ -11,6 +11,7 @@ Param(
     [parameter(Mandatory=$false)][string]$aksRg="",
     [parameter(Mandatory=$false)][string]$imageTag="latest",
     [parameter(Mandatory=$false)][bool]$useLocalk8s=$false,
+    [parameter(Mandatory=$false)][bool]$useNginxk8s=$false,
     [parameter(Mandatory=$false)][bool]$useMesh=$false,
     [parameter(Mandatory=$false)][string][ValidateSet('Always','IfNotPresent','Never', IgnoreCase=$false)]$imagePullPolicy="Always",
     [parameter(Mandatory=$false)][string][ValidateSet('prod','staging','none','custom', IgnoreCase=$false)]$sslSupport = "none",
@@ -62,6 +63,9 @@ $ingressValuesFile="ingress_values.yaml"
 if ($useLocalk8s -eq $true) {
     $ingressValuesFile="ingress_values_dockerk8s.yaml"
     $dns="localhost"
+}
+elseif ($useNginxk8s -eq $true){
+    $ingressValuesFile="ingress_values_nginxk8s.yaml"
 }
 
 if ($externalDns -eq "aks") {
