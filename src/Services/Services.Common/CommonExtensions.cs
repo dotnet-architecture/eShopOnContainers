@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
@@ -48,20 +49,14 @@ public static class CommonExtensions
 
     public static WebApplication UseServiceDefaults(this WebApplication app)
     {
-        // Use dynamic scheme detection
-        app.Use((context, next) =>
+        var forwardingOptions = new ForwardedHeadersOptions()
         {
-            // Check if the request is over HTTPS or if X-Forwarded-Proto is HTTPS
-            var isHttps = context.Request.IsHttps || string.Equals(context.Request.Headers["X-Forwarded-Proto"], "https", StringComparison.OrdinalIgnoreCase);
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        };
+        forwardingOptions.KnownNetworks.Clear();
+        forwardingOptions.KnownProxies.Clear();
 
-            // Set the request scheme to HTTPS if necessary
-            if (isHttps)
-            {
-                context.Request.Scheme = "https";
-            }
-
-            return next();
-        });
+        app.UseForwardedHeaders(forwardingOptions);
 
         if (!app.Environment.IsDevelopment())
         {
