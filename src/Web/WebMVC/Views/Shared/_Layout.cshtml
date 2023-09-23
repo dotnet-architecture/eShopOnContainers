@@ -94,8 +94,14 @@
         }
 
         async function connect() {
+            // Get the current URL base path
+            var baseUrl = "@Url.Content("~/")";
+
+            // Build the SignalR hub URL based on the current path
+            const hubUrl = `${baseUrl}hub/notificationhub`;
+
             let connection = new signalR.HubConnectionBuilder()
-                .withUrl('/hub/notificationhub')
+                .withUrl(hubUrl)
                 .withAutomaticReconnect()
                 .build();
 
@@ -110,6 +116,7 @@
                 }
             });
         }
+
 
         function refreshOrderList() {
             clearTimeout(timerId);

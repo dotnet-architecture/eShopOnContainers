@@ -48,6 +48,21 @@ public static class CommonExtensions
 
     public static WebApplication UseServiceDefaults(this WebApplication app)
     {
+        // Use dynamic scheme detection
+        app.Use((context, next) =>
+        {
+            // Check if the request is over HTTPS or if X-Forwarded-Proto is HTTPS
+            var isHttps = context.Request.IsHttps || string.Equals(context.Request.Headers["X-Forwarded-Proto"], "https", StringComparison.OrdinalIgnoreCase);
+
+            // Set the request scheme to HTTPS if necessary
+            if (isHttps)
+            {
+                context.Request.Scheme = "https";
+            }
+
+            return next();
+        });
+
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
