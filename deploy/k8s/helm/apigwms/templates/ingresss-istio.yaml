@@ -1,0 +1,46 @@
+{{- if .Values.ingress.enabled -}}
+{{- if .Values.inf.k8s.istio -}}
+{{- $ingressPath := include "pathBase" . -}}
+{{- $serviceName := .Values.app.svc.mobileshoppingapigw -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ template "apigwms.fullname" . }}
+  labels:
+    app: {{ template "apigwms.name" . }}
+    chart: {{ template "apigwms.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- if and .Values.inf.tls.enabled .Values.inf.tls.issuer }}
+  annotations:
+    cert-manager.io/issuer: {{ .Values.inf.tls.issuer }}
+{{- end }}
+{{- if .Values.inf.mesh.enabled }}
+{{- with .Values.ingress.mesh.annotations }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- end }}
+spec:
+  hosts:
+  {{- range .Values.ingress.hosts }}
+  - {{ . }}
+  {{- end }}
+  gateways:
+    - {{ .Values.ingress.gatewayName }}
+  http:
+  {{- range .Values.ingress.hosts }}
+  - route:
+    - destination:
+        host: {{ $serviceName }}
+        port:
+          number: 80
+    match:
+    - uri:
+        prefix: {{ $ingressPath }}/
+    - uri:
+        prefix: {{ $ingressPath }}
+    rewrite:
+      uri: /
+  {{- end }}
+{{- end }}
+{{- end }}

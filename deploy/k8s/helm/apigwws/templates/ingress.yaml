@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled (not .Values.inf.k8s.istio) -}}
 {{- $ingressPath := include "pathBase" . -}}
 {{- $serviceName := .Values.app.svc.webshoppingapigw -}}
 apiVersion: networking.k8s.io/v1

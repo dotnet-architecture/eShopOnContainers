@@ -1,6 +1,7 @@
 # This file contains common ingress annotations when using AKS with Http Application Routing
 
 ingress:
+  gatewayName: istio-system/default-gateway
   annotations:
     kubernetes.io/ingress.class: public
     ingress.kubernetes.io/ssl-redirect: "false"

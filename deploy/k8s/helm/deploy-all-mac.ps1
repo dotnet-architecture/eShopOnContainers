@@ -11,7 +11,7 @@ Param(
     [parameter(Mandatory=$false)][string]$aksRg="",
     [parameter(Mandatory=$false)][string]$imageTag="latest",
     [parameter(Mandatory=$false)][bool]$useLocalk8s=$false,
-    [parameter(Mandatory=$false)][bool]$useNginxk8s=$false,
+    [parameter(Mandatory=$false)][bool]$useIstio=$false,
     [parameter(Mandatory=$false)][bool]$useMesh=$false,
     [parameter(Mandatory=$false)][string][ValidateSet('Always','IfNotPresent','Never', IgnoreCase=$false)]$imagePullPolicy="Always",
     [parameter(Mandatory=$false)][string][ValidateSet('prod','staging','none','custom', IgnoreCase=$false)]$sslSupport = "none",
@@ -65,8 +65,8 @@ if ($useLocalk8s -eq $true) {
     $ingressValuesFile="ingress_values_dockerk8s.yaml"
     $dns="localhost"
 }
-elseif ($useNginxk8s -eq $true){
-    $ingressValuesFile="ingress_values_nginxk8s.yaml"
+elseif ($useIstio -eq $true){
+    $ingressValuesFile="ingress_values_istio.yaml"
 }
 
 if ($externalDns -eq "aks") {
@@ -141,14 +141,14 @@ if ($deployCharts) {
     foreach ($chart in $charts) {
         if ($chartsToDeploy -eq "*" -or $chartsToDeploy.Contains($chart)) {
             Write-Host "Installing: $chart" -ForegroundColor Green
-            Install-Chart $chart "--values app.yaml --values inf.yaml --values $ingressValuesFile --values $ingressMeshAnnotationsFile --set app.name=$appName --set inf.k8s.dns=$dns --set ingress.hosts=``{$dns``} --set image.tag=$imageTag --set image.pullPolicy=$imagePullPolicy --set inf.tls.enabled=$sslEnabled --set inf.mesh.enabled=$useMesh --set inf.k8s.local=$useLocalk8s" $useCustomRegistry
+            Install-Chart $chart "--values app.yaml --values inf.yaml --values $ingressValuesFile --values $ingressMeshAnnotationsFile --set app.name=$appName --set inf.k8s.dns=$dns --set ingress.hosts=``{$dns``} --set image.tag=$imageTag --set image.pullPolicy=$imagePullPolicy --set inf.tls.enabled=$sslEnabled --set inf.mesh.enabled=$useMesh --set inf.k8s.local=$useLocalk8s --set inf.k8s.istio=$useIstio" $useCustomRegistry
         }
     }
 
     foreach ($chart in $gateways) {
         if ($chartsToDeploy -eq "*" -or $chartsToDeploy.Contains($chart)) {
             Write-Host "Installing Api Gateway Chart: $chart" -ForegroundColor Green
-            Install-Chart $chart "--values app.yaml --values inf.yaml --values $ingressValuesFile  --set app.name=$appName --set inf.k8s.dns=$dns  --set image.pullPolicy=$imagePullPolicy --set inf.mesh.enabled=$useMesh --set ingress.hosts=``{$dns``} --set inf.tls.enabled=$sslEnabled" $false
+            Install-Chart $chart "--values app.yaml --values inf.yaml --values $ingressValuesFile  --set app.name=$appName --set inf.k8s.dns=$dns  --set image.pullPolicy=$imagePullPolicy --set inf.mesh.enabled=$useMesh --set ingress.hosts=``{$dns``} --set inf.tls.enabled=$sslEnabled --set inf.k8s.local=$useLocalk8s --set inf.k8s.istio=$useIstio" $false
             
         }
     }

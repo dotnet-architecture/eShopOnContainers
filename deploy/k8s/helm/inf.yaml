@@ -40,6 +40,7 @@ inf:
   k8s:                      # inf.k8s defines Kubernetes cluster global config
     dns:  ""                # k8s external  DNS. This value or ip value MUST BE PROVIDED
     local: false            # True when deploying on "local K8s" provided by Docker Desktop.
+    istio: false            # True when deploying on K8s with istio.
   misc:                     # inf.misc contains miscellaneous configuration related to infrastructure
     useAzureStorage: false  # If catalog api uses azure storage or not
 #  registry:                # Uncomment "registry" to specify registry secret
