@@ -4,12 +4,12 @@ builder.AddServiceDefaults();
 
 builder.Services.AddSignalR(builder.Configuration);
 
-builder.Services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
-builder.Services.AddTransient<OrderStatusChangedToCancelledIntegrationEventHandler>();
-builder.Services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>();
-builder.Services.AddTransient<OrderStatusChangedToShippedIntegrationEventHandler>();
-builder.Services.AddTransient<OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
-builder.Services.AddTransient<OrderStatusChangedToSubmittedIntegrationEventHandler>();
+builder.Services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+builder.Services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToCancelledIntegrationEvent>, OrderStatusChangedToCancelledIntegrationEventHandler>();
+builder.Services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>, OrderStatusChangedToPaidIntegrationEventHandler>();
+builder.Services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToShippedIntegrationEvent>, OrderStatusChangedToShippedIntegrationEventHandler>();
+builder.Services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>, OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
+builder.Services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent>, OrderStatusChangedToSubmittedIntegrationEventHandler>();
 
 var app = builder.Build();
 
@@ -19,11 +19,11 @@ app.MapHub<NotificationsHub>("/hub/notificationhub");
 
 var eventBus = app.Services.GetRequiredService<IEventBus>();
 
-eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
-eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
-eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
-eventBus.Subscribe<OrderStatusChangedToShippedIntegrationEvent, OrderStatusChangedToShippedIntegrationEventHandler>();
-eventBus.Subscribe<OrderStatusChangedToCancelledIntegrationEvent, OrderStatusChangedToCancelledIntegrationEventHandler>();
-eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, OrderStatusChangedToSubmittedIntegrationEventHandler>();
+eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>>();
+eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>>();
+eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>>();
+eventBus.Subscribe<OrderStatusChangedToShippedIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToShippedIntegrationEvent>>();
+eventBus.Subscribe<OrderStatusChangedToCancelledIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToCancelledIntegrationEvent>>();
+eventBus.Subscribe<OrderStatusChangedToSubmittedIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent>>();
 
 await app.RunAsync();
