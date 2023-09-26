@@ -4,12 +4,12 @@ builder.AddServiceDefaults();
 
 builder.Services.AddSignalR(builder.Configuration);
 
-builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent>, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
-builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToCancelledIntegrationEvent>, OrderStatusChangedToCancelledIntegrationEventHandler>();
-builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent>, OrderStatusChangedToPaidIntegrationEventHandler>();
-builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToShippedIntegrationEvent>, OrderStatusChangedToShippedIntegrationEventHandler>();
-builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>, OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
-builder.Services.AddSingleton<IIntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent>, OrderStatusChangedToSubmittedIntegrationEventHandler>();
+builder.Services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+builder.Services.AddTransient<OrderStatusChangedToCancelledIntegrationEventHandler>();
+builder.Services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>();
+builder.Services.AddTransient<OrderStatusChangedToShippedIntegrationEventHandler>();
+builder.Services.AddTransient<OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
+builder.Services.AddTransient<OrderStatusChangedToSubmittedIntegrationEventHandler>();
 
 var app = builder.Build();
 
