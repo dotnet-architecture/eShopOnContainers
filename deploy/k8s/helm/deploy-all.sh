@@ -43,10 +43,20 @@ Parameters:
     The Docker username used to logon to the custom registry, supplied using the -r parameter.
   --use-local-k8s
     Deploy to a locally installed Kubernetes (default: false).
-  --use-mesh
+  --use-linkerd
     Use Linkerd as service mesh
+  --use-istio
+    Use Istio as service mesh
+  --ingress-mesh-annotations-file )
+    e.g. ingress_values_istio.yaml
   --image-pull-policy <policy>
     Image Pull Policy: Always, IfNotPresent, Never (default: Always)
+  --ssl-enabled
+    Enable SSL for the application.
+  --ssl-support <ssl support>
+    SSL support: prod, staging, custom, none (default) 
+  --tls-secret-name <secret name>
+    The name of the ssl cert.
 
 It is assumed that the Kubernetes cluster has been granted access to the container registry.
 If using AKS and ACR see link for more info: 
@@ -76,9 +86,17 @@ push_images=''
 skip_infrastructure=''
 use_local_k8s=''
 namespace='eshop'
-use_mesh='false'
-ingressMeshAnnotationsFile='ingress_values_linkerd.yaml'
+use_linkerd=''
+use_istio=''
+istio_gateway_name='istio-system/default-gateway'
+ingress_mesh_annotations_file='ingress_values_linkerd.yaml'
 imagePullPolicy='Always'
+ssl_enabled=false
+ssl_issuer=""
+ssl_support="none"
+ssl_options=""
+tls_secret_name='eshop-tls-custom'
+
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -114,10 +132,22 @@ while [[ $# -gt 0 ]]; do
       use_local_k8s='yes'; shift ;;
     --namespace )
       namespace="$2"; shift 2;;
-    --use-mesh )
-      use_mesh='true'; shift ;;
+    --use-linkerd )
+      use_linkerd='yes'; shift ;;
+    --use-istio )
+      use_istio='yes'; shift ;;
+    --istio-gateway-name )
+      istio_gateway_name="$2"; shift 2;;
+    --ingress-mesh-annotations-file )
+      ingress_mesh_annotations_file="$2"; shift 2;;
     --image-pull-policy )
       imagePullPolicy="$2"; shift 2;;
+    --ssl-enabled )
+      ssl_enabled='yes'; shift ;;
+    --ssl-support )
+      ssl_support="$2"; shift 2 ;;
+    --tls-secret-name )
+      tls_secret_name="$2"; shift 2;;
     *)
       echo "Unknown option $1"
       usage; exit 2 ;;
@@ -142,6 +172,40 @@ if [[ $build_images ]]; then
 
   # Remove temporary images
   docker rmi $(docker images -qf "dangling=true") 
+fi
+
+case "$ssl_support" in
+  "staging")
+    ssl_enabled=true
+    tls_secret_name="eshop-letsencrypt-staging"
+    ssl_issuer="letsencrypt-staging"
+    ;;
+  "prod")
+    ssl_enabled=true
+    tls_secret_name="eshop-letsencrypt-prod"
+    ssl_issuer="letsencrypt-prod"
+    ;;
+  "custom")
+    ssl_enabled=true
+    ;;
+esac
+
+if [ -z "$dns" ]; then
+  echo "No DNS specified. Ingress resources will be bound to public IP" >&2
+  if [ $ssl_enabled ]; then
+    echo "Can't bind SSL to public IP. DNS is mandatory when using TLS" >&2
+    exit 1
+  fi
+fi
+
+if [[ $use_istio && $use_linkerd ]]; then
+  echo "You cannot enable both Istio and Linkerd." >&2
+  exit 1
+fi
+
+if [[ $use_local_k8s && $ssl_enabled ]]; then
+  echo "SSL cannot be enabled on local K8s." >&2
+  exit 1
 fi
 
 use_custom_registry=''
@@ -223,6 +287,15 @@ if [[ $clean ]]; then
   fi
 fi
 
+if [ "$ssl_enabled" == 'yes' ]; then
+  ssl_options="--set ingress.tls[0].secretName=$tls_secret_name --set ingress.tls[0].hosts={$dns}"
+
+  if [ "$ssl_support" != "custom" ]; then
+    ssl_options="--set inf.tls.issuer=$ssl_issuer"
+  fi
+fi
+
+
 echo "#################### Begin $app_name installation using Helm ####################"
 infras=(sql-data nosql-data rabbitmq keystore-data basket-data)
 charts=(eshop-common basket-api catalog-api identity-api mobileshoppingagg ordering-api ordering-backgroundtasks ordering-signalrhub payment-api webmvc webshoppingagg webspa webstatus webhooks-api webhooks-web)
@@ -232,7 +305,7 @@ if [[ !$skip_infrastructure ]]; then
   for infra in "${infras[@]}"
   do
     echo "Installing infrastructure: $infra"
-    helm install "$app_name-$infra" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingressMeshAnnotationsFile --set app.name=$app_name --set inf.k8s.dns=$dns $infra --set inf.mesh.enabled=$use_mesh     
+    helm install "$app_name-$infra" --namespace $namespace --set "ingress.hosts={$dns}" --set "ingress.gateways={$istio_gateway_name}" --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingress_mesh_annotations_file --set app.name=$app_name --set inf.k8s.dns=$dns $infra --set inf.mesh.linkerd=$use_linkerd --set inf.mesh.istio=$use_istio --set inf.tls.enabled=$ssl_enabled $ssl_options
   done  
 fi
 
@@ -240,16 +313,16 @@ for chart in "${charts[@]}"
 do
     echo "Installing: $chart"
     if [[ $use_custom_registry ]]; then       
-      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --set inf.registry.server=$container_registry --set inf.registry.login=$docker_username --set inf.registry.pwd=$docker_password --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingressMeshAnnotationsFile  --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=$imagePullPolicy $chart --set inf.mesh.enabled=$use_mesh
+      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --set "ingress.gateways={$istio_gateway_name}" --set inf.registry.server=$container_registry --set inf.registry.login=$docker_username --set inf.registry.pwd=$docker_password --set inf.registry.secretName=eshop-docker-scret --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingress_mesh_annotations_file  --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=$imagePullPolicy $chart --set inf.mesh.linkerd=$use_linkerd --set inf.mesh.istio=$use_istio --set inf.tls.enabled=$ssl_enabled $ssl_options
     elif [[ $chart != "eshop-common" ]]; then  # eshop-common is ignored when no secret must be deployed      
-      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingressMeshAnnotationsFile --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=$imagePullPolicy $chart --set inf.mesh.enabled=$use_mesh
+      helm install "$app_name-$chart" --namespace $namespace --set "ingress.hosts={$dns}" --set "ingress.gateways={$istio_gateway_name}" --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingress_mesh_annotations_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.tag=$image_tag --set image.pullPolicy=$imagePullPolicy $chart --set inf.mesh.linkerd=$use_linkerd --set inf.mesh.istio=$use_istio --set inf.tls.enabled=$ssl_enabled $ssl_options
     fi
 done
 
 for gw in "${gateways[@]}"
 do
     echo "Installing gateway: $gw"
-    helm install "$app_name-$gw" --namespace $namespace --set "ingress.hosts={$dns}" --values app.yaml --values inf.yaml --values $ingress_values_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.pullPolicy=$imagePullPolicy $gw 
+    helm install "$app_name-$gw" --namespace $namespace --set "ingress.hosts={$dns}" --set "ingress.gateways={$istio_gateway_name}" --values app.yaml --values inf.yaml --values $ingress_values_file --values $ingress_mesh_annotations_file --set app.name=$app_name --set inf.k8s.dns=$dns --set image.pullPolicy=$imagePullPolicy --set inf.tls.enabled=$ssl_enabled $ssl_options --set inf.mesh.linkerd=$use_linkerd --set inf.mesh.istio=$use_istio $gw 
 done
 
 echo "FINISHED: Helm charts installed."
