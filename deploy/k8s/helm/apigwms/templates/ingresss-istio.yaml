@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- if .Values.inf.k8s.istio -}}
+{{- if .Values.inf.mesh.istio -}}
 {{- $ingressPath := include "pathBase" . -}}
 {{- $serviceName := .Values.app.svc.mobileshoppingapigw -}}
 apiVersion: networking.istio.io/v1alpha3
@@ -15,7 +15,7 @@ metadata:
   annotations:
     cert-manager.io/issuer: {{ .Values.inf.tls.issuer }}
 {{- end }}
-{{- if .Values.inf.mesh.enabled }}
+{{- if .Values.inf.mesh.istio }}
 {{- with .Values.ingress.mesh.annotations }}
 {{ toYaml . | indent 4 }}
 {{- end }}
@@ -26,7 +26,9 @@ spec:
   - {{ . }}
   {{- end }}
   gateways:
-    - {{ .Values.ingress.gatewayName }}
+  {{- range .Values.ingress.gateways }}
+  - {{ . }}
+  {{- end }}
   http:
   {{- range .Values.ingress.hosts }}
   - route:

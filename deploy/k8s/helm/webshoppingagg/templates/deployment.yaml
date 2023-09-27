@@ -20,7 +20,7 @@ spec:
       labels:
         app: {{ template "webshoppingagg.name" . }}
         release: {{ .Release.Name }}
-      {{ if .Values.inf.mesh.enabled -}}
+      {{ if .Values.inf.mesh.linkerd -}}
       annotations:
         linkerd.io/inject: enabled
       {{- end }}             

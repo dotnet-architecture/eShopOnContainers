@@ -21,7 +21,7 @@ spec:
       labels:
         app: {{ template "ordering-api.name" . }}
         release: {{ .Release.Name }}
-      {{ if .Values.inf.mesh.enabled -}}
+      {{ if .Values.inf.mesh.linkerd -}}
       annotations:
         linkerd.io/inject: enabled
       {{- end }}             

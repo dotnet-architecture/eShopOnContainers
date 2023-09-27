@@ -1,10 +1,13 @@
-# This file contains common ingress annotations when using AKS with Http Application Routing
+# This file contains extra annotations to make Istio work.
+# ingress.mesh.annotations are inserted into ingress.annotations of the resource being generated, if mesh is deployed
+#
+# It is designed to work as a placehoder
+#
+# Check https://istio.io/latest/docs/reference/config/annotations/ for more info
+#
+# If using your custom file, use -ingressMeshAnnotationsFile parameter in deploy-all.ps1
+
 
 ingress:
-  gatewayName: istio-system/default-gateway
-  annotations:
-    kubernetes.io/ingress.class: public
-    ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
-    nginx.ingress.kubernetes.io/proxy-buffers: "4 256k"
+  mesh:
+    annotations: {}

@@ -12,7 +12,8 @@ Param(
     [parameter(Mandatory=$false)][string]$imageTag="latest",
     [parameter(Mandatory=$false)][bool]$useLocalk8s=$false,
     [parameter(Mandatory=$false)][bool]$useIstio=$false,
-    [parameter(Mandatory=$false)][bool]$useMesh=$false,
+    [parameter(Mandatory=$false)][string]$istioGatewayName="istio-system/default-gateway",
+    [parameter(Mandatory=$false)][bool]$useLinkerd=$false,
     [parameter(Mandatory=$false)][string][ValidateSet('Always','IfNotPresent','Never', IgnoreCase=$false)]$imagePullPolicy="Always",
     [parameter(Mandatory=$false)][string][ValidateSet('prod','staging','none','custom', IgnoreCase=$false)]$sslSupport = "none",
     [parameter(Mandatory=$false)][string]$tlsSecretName = "eshop-tls-custom",
@@ -64,9 +65,6 @@ if ($useLocalk8s -eq $true) {
     $ingressValuesFile="ingress_values_dockerk8s.yaml"
     $dns="localhost"
 }
-elseif ($useIstio -eq $true){
-    $ingressValuesFile="ingress_values_istio.yaml"
-}
 
 if ($externalDns -eq "aks") {
     if  ([string]::IsNullOrEmpty($aksName) -or [string]::IsNullOrEmpty($aksRg)) {
@@ -93,6 +91,10 @@ if ([string]::IsNullOrEmpty($dns)) {
     }
 }
 
+if ($useIstio -and $useLinkerd) {
+    Write-Host "You cannot enable both istio and linkerd." -ForegroundColor Red
+    exit 1
+}
 if ($useLocalk8s -and $sslEnabled) {
     Write-Host "SSL can'be enabled on local K8s." -ForegroundColor Red
     exit 1
@@ -129,7 +131,7 @@ $gateways = ("apigwms", "apigwws")
 if ($deployInfrastructure) {
     foreach ($infra in $infras) {
         Write-Host "Installing infrastructure: $infra" -ForegroundColor Green
-        helm install "$appName-$infra" --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}" $infra     
+        helm install "$appName-$infra" --values app.yaml --values inf.yaml --values $ingressValuesFile --set app.name=$appName --set inf.k8s.dns=$dns --set "ingress.hosts={$dns}" --set "ingress.gateways={$istioGatewayName}" $infra     
     }
 }
 else {
@@ -140,15 +142,14 @@ if ($deployCharts) {
     foreach ($chart in $charts) {
         if ($chartsToDeploy -eq "*" -or $chartsToDeploy.Contains($chart)) {
             Write-Host "Installing: $chart" -ForegroundColor Green
-            Install-Chart $chart "-f app.yaml --values inf.yaml -f $ingressValuesFile -f $ingressMeshAnnotationsFile --set app.name=$appName --set inf.k8s.dns=$dns --set ingress.hosts={$dns} --set image.tag=$imageTag --set image.pullPolicy=$imagePullPolicy --set inf.tls.enabled=$sslEnabled --set inf.mesh.enabled=$useMesh --set inf.k8s.local=$useLocalk8s --set inf.k8s.istio=$useIstio" $useCustomRegistry
+            Install-Chart $chart "-f app.yaml --values inf.yaml -f $ingressValuesFile -f $ingressMeshAnnotationsFile --set app.name=$appName --set inf.k8s.dns=$dns --set ingress.hosts={$dns} --set ingress.gateways={$istioGatewayName} --set image.tag=$imageTag --set image.pullPolicy=$imagePullPolicy --set inf.tls.enabled=$sslEnabled --set inf.mesh.linkerd=$useLinkerd --set inf.k8s.local=$useLocalk8s --set inf.mesh.istio=$useIstio" $useCustomRegistry
         }
     }
 
     foreach ($chart in $gateways) {
         if ($chartsToDeploy -eq "*" -or $chartsToDeploy.Contains($chart)) {
             Write-Host "Installing Api Gateway Chart: $chart" -ForegroundColor Green
-            Install-Chart $chart "-f app.yaml -f inf.yaml -f $ingressValuesFile  --set app.name=$appName --set inf.k8s.dns=$dns  --set image.pullPolicy=$imagePullPolicy --set inf.mesh.enabled=$useMesh --set ingress.hosts={$dns} --set inf.tls.enabled=$sslEnabled --set inf.k8s.local=$useLocalk8s --set inf.k8s.istio=$useIstio" $false
-            
+            Install-Chart $chart "-f app.yaml -f inf.yaml -f $ingressValuesFile -f $ingressMeshAnnotationsFile --set app.name=$appName --set inf.k8s.dns=$dns  --set image.pullPolicy=$imagePullPolicy --set inf.mesh.linkerd=$useLinkerd --set ingress.hosts={$dns} --set ingress.gateways={$istioGatewayName} --set inf.tls.enabled=$sslEnabled --set inf.k8s.local=$useLocalk8s --set inf.mesh.istio=$useIstio" $false
         }
     }
 }
