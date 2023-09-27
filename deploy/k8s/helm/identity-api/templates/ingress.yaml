@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled (not .Values.inf.mesh.istio) -}}
 {{- $ingressPath := include "pathBase" . -}}
 {{- $serviceName := .Values.app.svc.identity }}
 apiVersion: networking.k8s.io/v1
@@ -17,7 +17,7 @@ metadata:
 {{- if and .Values.inf.tls.enabled .Values.inf.tls.issuer }}
     cert-manager.io/issuer: {{ .Values.inf.tls.issuer }} 
 {{- end }}
-{{- if .Values.inf.mesh.enabled }} 
+{{- if .Values.inf.mesh.linkerd }} 
 {{- with .Values.ingress.mesh.annotations }}
 {{ toYaml . | indent 4 }}
 {{- end }}

@@ -7,6 +7,7 @@ import { BasketService } from './basket.service';
 import { IBasket } from '../shared/models/basket.model';
 import { IBasketItem } from '../shared/models/basketItem.model';
 import { BasketWrapperService } from '../shared/services/basket.wrapper.service';
+import { ConfigurationService } from '../shared/services/configuration.service';
 
 @Component({
     selector: 'esh-basket .esh-basket .mb-5',
@@ -18,9 +19,20 @@ export class BasketComponent implements OnInit {
     basket: IBasket;
     totalPrice: number = 0;
 
-    constructor(private basketSerive: BasketService, private router: Router, private basketWrapperService: BasketWrapperService) { }
+    constructor(private configurationService: ConfigurationService, private basketSerive: BasketService, private router: Router, private basketWrapperService: BasketWrapperService) { }
 
     ngOnInit() {
+        if (this.configurationService.isReady) {
+            this.loadBasketData();
+        } else {
+            // Subscribe to the settingsLoaded$ observable to know when settings are ready
+            this.configurationService.settingsLoaded$.subscribe(() => {
+                this.loadBasketData();
+            });
+        }
+    }
+    
+    private loadBasketData() {
         this.basketSerive.getBasket().subscribe(basket => {
             this.basket = basket;
             this.calculateTotalPrice();

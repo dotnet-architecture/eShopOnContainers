@@ -1,0 +1,13 @@
+# This file contains extra annotations to make Istio work.
+# ingress.mesh.annotations are inserted into ingress.annotations of the resource being generated, if mesh is deployed
+#
+# It is designed to work as a placehoder
+#
+# Check https://istio.io/latest/docs/reference/config/annotations/ for more info
+#
+# If using your custom file, use -ingressMeshAnnotationsFile parameter in deploy-all.ps1
+
+
+ingress:
+  mesh:
+    annotations: {}

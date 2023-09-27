@@ -3,7 +3,8 @@
 
 inf:
   mesh:
-    enabled: false          # True to enable Linkerd (set by deploy-all.ps1)
+    linkerd: false          # True to enable Linkerd (set by deploy-all.ps1)
+    istio: false            # True to enable Istio (set by deploy-all.ps1)
   tls:
     enabled: false          # True to enable TLS (set by deploy-all.ps1)
     issuer: ""              # cert-manager issuer to use for retrieving certs (set by deploy-all.ps1)
@@ -48,3 +49,9 @@ inf:
 #    login:                 # User login
 #    pwd:                   # User pwd
 
+env:
+  values:
+    - name: Kestrel__Endpoints__Http__Url
+      value: http://0.0.0.0:80
+    - name: Kestrel__Endpoints__gRPC__Url
+      value: http://0.0.0.0:81

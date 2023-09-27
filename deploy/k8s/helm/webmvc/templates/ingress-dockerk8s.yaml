@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled (not .Values.inf.mesh.istio) -}}
 {{- if .Values.inf.k8s.local -}}
 {{- $ingressPath := include "pathBase" . -}}
 {{- $serviceName := .Values.app.svc.mvc }}
@@ -16,7 +16,7 @@ metadata:
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}    
-{{- if .Values.inf.mesh.enabled }} 
+{{- if .Values.inf.mesh.linkerd }} 
 {{- with .Values.ingress.mesh.annotations }}
 {{ toYaml . | indent 4 }}
 {{- end }}

@@ -26,7 +26,7 @@ env:
   urls:
   # configmap declares variables which value is taken from the config map defined in template configmap.yaml (name is name of var and key the key in configmap).
   configmap:
-    - name: ConnectionString
+    - name: ConnectionStrings__CatalogDb
       key: catalog__ConnectionString
     - name: PicBaseUrl
       key: catalog__PicBaseUrl
@@ -34,7 +34,7 @@ env:
       key: catalog__AzureStorageEnabled
     - name: ApplicationInsights__InstrumentationKey
       key: all__InstrumentationKey
-    - name: EventBusConnection
+    - name: ConnectionStrings__EventBus
       key: all__EventBusConnection
     - name: AzureServiceBusEnabled
       key: all__UseAzureServiceBus

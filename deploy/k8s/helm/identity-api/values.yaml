@@ -30,7 +30,7 @@ affinity: {}
 env:
   urls:
   configmap:
-    - name: ConnectionString
+    - name: ConnectionStrings__IdentityDb
       key: identity__ConnectionString
     - name: DPConnectionString
       key: identity__keystore

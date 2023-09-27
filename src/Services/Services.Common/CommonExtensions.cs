@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
@@ -48,6 +49,15 @@ public static class CommonExtensions
 
     public static WebApplication UseServiceDefaults(this WebApplication app)
     {
+        var forwardingOptions = new ForwardedHeadersOptions()
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        };
+        forwardingOptions.KnownNetworks.Clear();
+        forwardingOptions.KnownProxies.Clear();
+
+        app.UseForwardedHeaders(forwardingOptions);
+
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdersService } from '../orders.service';
 import { IOrderDetail } from '../../shared/models/order-detail.model';
+import { ConfigurationService } from '../../shared/services/configuration.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -11,12 +12,18 @@ import { ActivatedRoute } from '@angular/router';
 export class OrdersDetailComponent implements OnInit {
     public order: IOrderDetail = <IOrderDetail>{};
 
-    constructor(private service: OrdersService, private route: ActivatedRoute) { }
+    constructor(private configurationService: ConfigurationService, private service: OrdersService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.route.params.subscribe(params => {
             let id = +params['id']; // (+) converts string 'id' to a number
-            this.getOrder(id);
+            if (this.configurationService.isReady) {
+                this.getOrder(id);
+            } else {
+                this.configurationService.settingsLoaded$.subscribe(x => {
+                    this.getOrder(id);
+                });
+            }
         });
     }
 
