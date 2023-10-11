@@ -7,6 +7,44 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script>
+      (function (h, o, u, n, d) {
+        h = h[d] = h[d] || { q: [], onReady: function (c) { h.q.push(c) } }
+        d = o.createElement(u); d.async = 1; d.src = n
+        n = o.getElementsByTagName(u)[0]; n.parentNode.insertBefore(d, n)
+      })(window, document, 'script', 'https://www.datadoghq-browser-agent.com/eu1/v4/datadog-rum.js', 'DD_RUM')
+      window.DD_RUM.onReady(function () {
+        window.DD_RUM.init({
+          clientToken: 'puba1cd58dbdb24544709b7206eaf2cd2a1',
+          applicationId: '1f1b5a0e-2a6c-425e-bf29-466a134b628e',
+          site: 'datadoghq.eu',
+          service: 'kristof-test-app',
+          env: 'dev',
+          // Specify a version number to identify the deployed version of your application in Datadog 
+          version: '1.0.0',
+          sessionSampleRate: 100,
+          sessionReplaySampleRate: 0,
+          trackUserInteractions: true,
+          trackResources: true,
+          trackLongTasks: true,
+          allowedTracingUrls: ["http://docker.for.mac.localhost"],
+
+          defaultPrivacyLevel: 'mask-user-input',
+        });
+
+      })
+    </script>
+    <script async src="https://install.dev.fullview.io" data-org="d7bdb7a5-ef7e-4ab9-8c9d-52438243d1b7"></script>
+    <script>
+      window.$fvIdentity = {
+        id: 'eshoptestuser',          // Required - anything unique in your organisation
+        name: 'eShop Test-User',                // Required - visible in Fullview dashboard
+        email: 'eshop@fullview.io',          // Optional - visible in Fullview dashboard
+        disableReplaysForUser: false,       // Optional - disable replays for specific users
+        env: 'dev',                       // Optional - for segmentation and environment-based settings
+        roles: ['owner', 'workspaceAdmin'], // Optional - for segmentation and role-based settings
+      };
+    </script>
 </head>
 <body>
   <esh-app>
