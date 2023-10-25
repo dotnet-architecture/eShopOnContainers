@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-internal static class Extensions
+﻿internal static class Extensions
 {
     public static IServiceCollection AddSignalR(this IServiceCollection services, IConfiguration configuration)
     {

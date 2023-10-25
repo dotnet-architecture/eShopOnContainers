@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Routing;
-
-namespace Catalog.API.Apis;
+﻿namespace Catalog.API.Apis;
 
 public static class PicApi
 {

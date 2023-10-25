@@ -1,5 +1,4 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using System.Threading.Tasks;
 
 namespace EventBus.Tests
 {

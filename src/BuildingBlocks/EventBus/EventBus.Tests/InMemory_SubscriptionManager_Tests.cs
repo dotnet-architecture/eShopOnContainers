@@ -1,5 +1,4 @@
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
-using System.Linq;
 using Xunit;
 
 namespace EventBus.Tests

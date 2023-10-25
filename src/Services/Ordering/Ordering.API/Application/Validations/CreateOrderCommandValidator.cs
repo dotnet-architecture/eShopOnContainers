@@ -1,7 +1,4 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Validations;
-
-using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
-
 public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
 {
     public CreateOrderCommandValidator(ILogger<CreateOrderCommandValidator> logger)
