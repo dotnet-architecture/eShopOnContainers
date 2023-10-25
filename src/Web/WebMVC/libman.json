@@ -3,7 +3,7 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "jquery@3.6.3",
+      "library": "jquery@3.6.4",
       "destination": "wwwroot/lib/jquery/"
     },
     {
