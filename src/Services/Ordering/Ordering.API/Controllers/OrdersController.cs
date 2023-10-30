@@ -138,4 +138,22 @@ public class OrdersController : ControllerBase
 
         return await _mediator.Send(createOrderDraftCommand);
     }
+
+    [Route("complete")]
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<CompleteOrderDTO>> CompleteOrderAsync([FromBody] CompleteOrderCommand command)
+    {
+        CompleteOrderDTO completeOrderDTO = new CompleteOrderDTO();
+        _logger.LogInformation(
+        "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+        command.GetGenericTypeName(),
+        nameof(command.OrderId),
+        command.OrderId,
+        command);
+
+        completeOrderDTO = await _mediator.Send(command);
+        return completeOrderDTO;
+    }
 }

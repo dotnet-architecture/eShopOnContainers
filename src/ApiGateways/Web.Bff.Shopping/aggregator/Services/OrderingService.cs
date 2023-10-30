@@ -1,14 +1,19 @@
-﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services;
+﻿using Newtonsoft.Json;
+using System.Text;
+
+namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services;
 
 public class OrderingService : IOrderingService
 {
     private readonly GrpcOrdering.OrderingGrpc.OrderingGrpcClient _orderingGrpcClient;
     private readonly ILogger<OrderingService> _logger;
+    private readonly HttpClient _httpClient;
 
-    public OrderingService(GrpcOrdering.OrderingGrpc.OrderingGrpcClient orderingGrpcClient, ILogger<OrderingService> logger)
+    public OrderingService(GrpcOrdering.OrderingGrpc.OrderingGrpcClient orderingGrpcClient, ILogger<OrderingService> logger, HttpClient httpClient)
     {
         _orderingGrpcClient = orderingGrpcClient;
         _logger = logger;
+        _httpClient = httpClient;
     }
 
     public async Task<OrderData> GetOrderDraftAsync(BasketData basketData)
@@ -67,6 +72,49 @@ public class OrderingService : IOrderingService
         }));
 
         return command;
+    }
+    /// <summary>
+    /// CompleteOrderAsync is the endpoint that will be called to indicate that the order is complete.
+    /// </summary>
+    /// <param name="orderId">Order number</param>
+    /// <returns></returns>
+    public async Task<CompleteData> CompleteOrderAsync(string orderId)
+    {
+        // TODO  Grpc OrderingGrpc bağlantı servisinde hata alınmaktadır.Bu nedenle httpclient sınıfı kullanılmıştır.
+        #region OrderingGrpc
+        //CompleteData completeData = new CompleteData();
+        //_logger.LogDebug("CompleteOrderAsync method called with orderId={@orderId}", orderId);
+
+        //var request = new GrpcOrdering.CompleteOrderCommand
+        //{
+        //    OrderId = orderId
+        //};
+
+        //var response = await _orderingGrpcClient.CompleteOrderAsync(request);
+
+        //_logger.LogDebug("gRPC CompleteOrder response: {@response}", response);
+        //completeData.CompleteStatus = response.CompleteStatus;
+        //return completeData;
+        #endregion
+        CompleteData completeData = new CompleteData();
+        _logger.LogDebug("CompleteOrderAsync method called with orderId={@orderId}", orderId);
+        var requestUrl = $"http://localhost:5102/ordering-api/api/v1/Orders/complete";
+        var command = new CompleteRequest { OrderId = orderId };
+        var jsonContent = JsonConvert.SerializeObject(command);
+        var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+        var response = await _httpClient.PutAsync(requestUrl, httpContent);
+        if (response.IsSuccessStatusCode)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var completeOrderDto = JsonConvert.DeserializeObject<CompleteData>(responseContent);
+            completeData.CompleteStatus = completeOrderDto.CompleteStatus;
+        }
+        else
+        {
+            _logger.LogError($"HTTP request failed with status code: {response.StatusCode}");
+        }
+
+        return completeData;
     }
 
 }

@@ -131,4 +131,34 @@ public class OrdersWebApiTest
         //Assert
         Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
     }
+    /// <summary>
+    /// Unit tests for CompleteOrderAsync.
+    /// </summary>
+    /// <returns></returns>
+    [Fact]
+    public async Task CompleteOrderAsync_WithValidCommand_ReturnsOkResult()
+    {
+        // Arrange
+        var validCommand = new CompleteOrderCommand(1);
+
+        var validOrderDTO = new CompleteOrderDTO
+        {
+            CompleteStatus = "Completed",
+
+        };
+
+        _mediatorMock.Setup(x => x.Send(It.IsAny<CompleteOrderCommand>(), default))
+            .ReturnsAsync(validOrderDTO);
+
+        // Act
+        var ordersController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
+        var actionResult = await ordersController.CompleteOrderAsync(validCommand) as ActionResult<CompleteOrderDTO>;
+
+        // Assert
+        var okResult = actionResult.Result as OkObjectResult;
+        Assert.NotNull(okResult);
+        Assert.Equal((int)System.Net.HttpStatusCode.OK, okResult.StatusCode);
+        var returnedOrderDTO = okResult.Value as CompleteOrderDTO;
+        Assert.Equal(validOrderDTO, returnedOrderDTO);
+    }
 }
