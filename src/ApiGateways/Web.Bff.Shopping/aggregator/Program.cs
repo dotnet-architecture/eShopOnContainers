@@ -4,7 +4,7 @@ builder.AddServiceDefaults();
 
 builder.Services.AddReverseProxy(builder.Configuration);
 builder.Services.AddControllers();
-
+builder.Services.AddHttpClient<OrderingService>();
 builder.Services.AddHealthChecks(builder.Configuration);
 builder.Services.AddCors(options =>
 {

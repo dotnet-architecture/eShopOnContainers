@@ -17,28 +17,28 @@ public class OrderingContextSeed
             var contentRootPath = env.ContentRootPath;
 
 
-            using (context)
+            //using (context)
+            //{
+            context.Database.Migrate();
+
+            if (!context.CardTypes.Any())
             {
-                context.Database.Migrate();
-
-                if (!context.CardTypes.Any())
-                {
-                    context.CardTypes.AddRange(useCustomizationData
-                                            ? GetCardTypesFromFile(contentRootPath, logger)
-                                            : GetPredefinedCardTypes());
-
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.OrderStatus.Any())
-                {
-                    context.OrderStatus.AddRange(useCustomizationData
-                                            ? GetOrderStatusFromFile(contentRootPath, logger)
-                                            : GetPredefinedOrderStatus());
-                }
+                context.CardTypes.AddRange(useCustomizationData
+                                        ? GetCardTypesFromFile(contentRootPath, logger)
+                                        : GetPredefinedCardTypes());
 
                 await context.SaveChangesAsync();
             }
+
+            if (!context.OrderStatus.Any())
+            {
+                context.OrderStatus.AddRange(useCustomizationData
+                                        ? GetOrderStatusFromFile(contentRootPath, logger)
+                                        : GetPredefinedOrderStatus());
+            }
+
+            await context.SaveChangesAsync();
+            //}
         });
     }
 
@@ -114,6 +114,7 @@ public class OrderingContextSeed
                                     .OnCaughtException(ex => { log.LogError(ex, "Error creating order status while seeding database"); return null; })
                                     .Where(x => x != null);
     }
+
 
     private OrderStatus CreateOrderStatus(string value, ref int id)
     {

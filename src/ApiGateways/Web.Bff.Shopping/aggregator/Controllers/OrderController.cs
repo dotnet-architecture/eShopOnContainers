@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers;
 
 [Route("api/v1/[controller]")]
-[Authorize]
+
 [ApiController]
 public class OrderController : ControllerBase
 {
@@ -32,5 +32,16 @@ public class OrderController : ControllerBase
         }
 
         return await _orderingService.GetOrderDraftAsync(basket);
+    }
+    [Route("complete")]
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<CompleteData>> CompleteOrderAsync(string orderId)
+    {
+        if (string.IsNullOrWhiteSpace(orderId))
+        {
+            return BadRequest("Need a valid orderId");
+        }
+        return await _orderingService.CompleteOrderAsync(orderId);
     }
 }
