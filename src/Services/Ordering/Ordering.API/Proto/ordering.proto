@@ -6,13 +6,16 @@ package OrderingApi;
 
 service OrderingGrpc {
 	rpc CreateOrderDraftFromBasketData(CreateOrderDraftCommand) returns (OrderDraftDTO) {}
+    rpc CompleteOrder(CompleteOrderCommand) returns (CompleteOrderDTO) {}
 }
 
 message CreateOrderDraftCommand {
 	string buyerId = 1;
     repeated BasketItem items = 2;
 }
-
+message CompleteOrderCommand {
+	string orderId = 1;
+}
 
 message BasketItem {
     string id = 1;
@@ -23,10 +26,12 @@ message BasketItem {
     int32 quantity = 6;
     string pictureUrl = 7;
 }
-
 message OrderDraftDTO {
     double total = 1;
     repeated OrderItemDTO orderItems = 2;
+}
+message CompleteOrderDTO {
+    string CompleteStatus = 1;
 }
 message OrderItemDTO {
     int32 productId = 1;
