@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+﻿using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
+
+namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 
 public class CatalogContextSeed
 {
@@ -60,14 +62,14 @@ public class CatalogContextSeed
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error reading CSV headers");
+            logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
             return GetPreconfiguredCatalogBrands();
         }
 
         return File.ReadAllLines(csvFileCatalogBrands)
                                     .Skip(1) // skip header row
-                                    .SelectTry(CreateCatalogBrand)
-                                    .OnCaughtException(ex => { logger.LogError(ex, "Error creating brand while seeding database"); return null; })
+                                    .SelectTry(x => CreateCatalogBrand(x))
+                                    .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                     .Where(x => x != null);
     }
 
@@ -75,9 +77,9 @@ public class CatalogContextSeed
     {
         brand = brand.Trim('"').Trim();
 
-        if (string.IsNullOrEmpty(brand))
+        if (String.IsNullOrEmpty(brand))
         {
-            throw new Exception("Catalog Brand Name is empty");
+            throw new Exception("catalog Brand Name is empty");
         }
 
         return new CatalogBrand
@@ -115,14 +117,14 @@ public class CatalogContextSeed
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error reading CSV headers");
+            logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
             return GetPreconfiguredCatalogTypes();
         }
 
         return File.ReadAllLines(csvFileCatalogTypes)
                                     .Skip(1) // skip header row
                                     .SelectTry(x => CreateCatalogType(x))
-                                    .OnCaughtException(ex => { logger.LogError(ex, "Error creating catalog type while seeding database"); return null; })
+                                    .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                     .Where(x => x != null);
     }
 
@@ -130,7 +132,7 @@ public class CatalogContextSeed
     {
         type = type.Trim('"').Trim();
 
-        if (string.IsNullOrEmpty(type))
+        if (String.IsNullOrEmpty(type))
         {
             throw new Exception("catalog Type Name is empty");
         }
@@ -170,7 +172,7 @@ public class CatalogContextSeed
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error reading CSV headers");
+            logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message);
             return GetPreconfiguredItems();
         }
 
@@ -181,11 +183,11 @@ public class CatalogContextSeed
                     .Skip(1) // skip header row
                     .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                     .SelectTry(column => CreateCatalogItem(column, csvheaders, catalogTypeIdLookup, catalogBrandIdLookup))
-                    .OnCaughtException(ex => { logger.LogError(ex, "Error creating catalog item while seeding database"); return null; })
+                    .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                     .Where(x => x != null);
     }
 
-    private CatalogItem CreateCatalogItem(string[] column, string[] headers, Dictionary<string, int> catalogTypeIdLookup, Dictionary<string, int> catalogBrandIdLookup)
+    private CatalogItem CreateCatalogItem(string[] column, string[] headers, Dictionary<String, int> catalogTypeIdLookup, Dictionary<String, int> catalogBrandIdLookup)
     {
         if (column.Count() != headers.Count())
         {
@@ -205,7 +207,7 @@ public class CatalogContextSeed
         }
 
         string priceString = column[Array.IndexOf(headers, "price")].Trim('"').Trim();
-        if (!decimal.TryParse(priceString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimal price))
+        if (!Decimal.TryParse(priceString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out Decimal price))
         {
             throw new Exception($"price={priceString}is not a valid decimal number");
         }
@@ -224,7 +226,7 @@ public class CatalogContextSeed
         if (availableStockIndex != -1)
         {
             string availableStockString = column[availableStockIndex].Trim('"').Trim();
-            if (!string.IsNullOrEmpty(availableStockString))
+            if (!String.IsNullOrEmpty(availableStockString))
             {
                 if (int.TryParse(availableStockString, out int availableStock))
                 {
@@ -241,7 +243,7 @@ public class CatalogContextSeed
         if (restockThresholdIndex != -1)
         {
             string restockThresholdString = column[restockThresholdIndex].Trim('"').Trim();
-            if (!string.IsNullOrEmpty(restockThresholdString))
+            if (!String.IsNullOrEmpty(restockThresholdString))
             {
                 if (int.TryParse(restockThresholdString, out int restockThreshold))
                 {
@@ -258,7 +260,7 @@ public class CatalogContextSeed
         if (maxStockThresholdIndex != -1)
         {
             string maxStockThresholdString = column[maxStockThresholdIndex].Trim('"').Trim();
-            if (!string.IsNullOrEmpty(maxStockThresholdString))
+            if (!String.IsNullOrEmpty(maxStockThresholdString))
             {
                 if (int.TryParse(maxStockThresholdString, out int maxStockThreshold))
                 {
@@ -275,7 +277,7 @@ public class CatalogContextSeed
         if (onReorderIndex != -1)
         {
             string onReorderString = column[onReorderIndex].Trim('"').Trim();
-            if (!string.IsNullOrEmpty(onReorderString))
+            if (!String.IsNullOrEmpty(onReorderString))
             {
                 if (bool.TryParse(onReorderString, out bool onReorder))
                 {
@@ -316,7 +318,7 @@ public class CatalogContextSeed
 
         if (csvheaders.Count() < requiredHeaders.Count())
         {
-            throw new Exception($"requiredHeader count '{requiredHeaders.Count()}' is bigger then csv header count '{csvheaders.Count()}' ");
+            throw new Exception($"requiredHeader count '{ requiredHeaders.Count()}' is bigger then csv header count '{csvheaders.Count()}' ");
         }
 
         if (optionalHeaders != null)
@@ -361,7 +363,7 @@ public class CatalogContextSeed
                 sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
                 onRetry: (exception, timeSpan, retry, ctx) =>
                 {
-                    logger.LogWarning(exception, "[{prefix}] Error seeding database (attempt {retry} of {retries})", prefix, retry, retries);
+                    logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
                 }
             );
     }

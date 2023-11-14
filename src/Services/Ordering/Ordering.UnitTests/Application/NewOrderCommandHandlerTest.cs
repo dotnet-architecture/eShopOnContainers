@@ -29,9 +29,9 @@ public class NewOrderRequestHandlerTest
         { ["cardExpiration"] = DateTime.Now.AddYears(1) });
 
         _orderRepositoryMock.Setup(orderRepo => orderRepo.GetAsync(It.IsAny<int>()))
-            .Returns(Task.FromResult(FakeOrder()));
+            .Returns(Task.FromResult<Order>(FakeOrder()));
 
-        _orderRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default))
+        _orderRepositoryMock.Setup(buyerRepo => buyerRepo.UnitOfWork.SaveChangesAsync(default(CancellationToken)))
             .Returns(Task.FromResult(1));
 
         _identityServiceMock.Setup(svc => svc.GetUserIdentity()).Returns(buyerId);
@@ -39,7 +39,7 @@ public class NewOrderRequestHandlerTest
         var LoggerMock = new Mock<ILogger<CreateOrderCommandHandler>>();
         //Act
         var handler = new CreateOrderCommandHandler(_mediator.Object, _orderingIntegrationEventService.Object, _orderRepositoryMock.Object, _identityServiceMock.Object, LoggerMock.Object);
-        var cltToken = new CancellationToken();
+        var cltToken = new System.Threading.CancellationToken();
         var result = await handler.Handle(fakeOrderCmd, cltToken);
 
         //Assert

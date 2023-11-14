@@ -1,5 +1,13 @@
-﻿using System.Net.Http.Formatting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Threading.Tasks;
+using WebhookClient.Models;
+using System.Text.Json;
 
 namespace WebhookClient.Pages
 {
@@ -7,7 +15,7 @@ namespace WebhookClient.Pages
 
     public class RegisterWebhookModel : PageModel
     {
-        private readonly WebhookClientOptions _options;
+        private readonly Settings _settings;
         private readonly IHttpClientFactory _httpClientFactory;
 
         [BindProperty] public string Token { get; set; }
@@ -18,23 +26,23 @@ namespace WebhookClient.Pages
         public string ResponseMessage { get; set; }
         public string RequestBodyJson { get; set; }
 
-        public RegisterWebhookModel(IOptions<WebhookClientOptions> options, IHttpClientFactory httpClientFactory)
+        public RegisterWebhookModel(IOptions<Settings> settings, IHttpClientFactory httpClientFactory)
         {
-            _options = options.Value;
+            _settings = settings.Value;
             _httpClientFactory = httpClientFactory;
         }
 
         public void OnGet()
         {
             ResponseCode = (int)HttpStatusCode.OK;
-            Token = _options.Token;
+            Token = _settings.Token;
         }
 
         public async Task<IActionResult> OnPost()
         {
             ResponseCode = (int)HttpStatusCode.OK;
             var protocol = Request.IsHttps ? "https" : "http";
-            var selfurl = !string.IsNullOrEmpty(_options.SelfUrl) ? _options.SelfUrl : $"{protocol}://{Request.Host}/{Request.PathBase}";
+            var selfurl = !string.IsNullOrEmpty(_settings.SelfUrl) ? _settings.SelfUrl : $"{protocol}://{Request.Host}/{Request.PathBase}";
             if (!selfurl.EndsWith("/"))
             {
                 selfurl = selfurl + "/";
@@ -50,7 +58,7 @@ namespace WebhookClient.Pages
                 Url = url,
                 Token = Token
             };
-            var response = await client.PostAsync(_options.WebhooksUrl + "/api/v1/webhooks", payload, new JsonMediaTypeFormatter());
+            var response = await client.PostAsync<WebhookSubscriptionRequest>(_settings.WebhooksUrl + "/api/v1/webhooks", payload, new JsonMediaTypeFormatter());
 
             if (response.IsSuccessStatusCode)
             {

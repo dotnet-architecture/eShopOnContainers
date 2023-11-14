@@ -37,7 +37,7 @@ public abstract class Entity
 
     public bool IsTransient()
     {
-        return this.Id == default;
+        return this.Id == default(Int32);
     }
 
     public override bool Equals(object obj)

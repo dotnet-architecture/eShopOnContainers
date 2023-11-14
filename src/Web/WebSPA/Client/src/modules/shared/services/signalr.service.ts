@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 export class SignalrService {
     private _hubConnection: HubConnection;
     private SignalrHubUrl: string = '';
-    private msgSignalrSource = new Subject<void>();
+    private msgSignalrSource = new Subject();
     msgReceived$ = this.msgSignalrSource.asObservable();
 
     constructor(

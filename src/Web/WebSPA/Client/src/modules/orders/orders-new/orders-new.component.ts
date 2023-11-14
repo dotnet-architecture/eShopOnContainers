@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { OrdersService } from '../orders.service';
@@ -7,7 +7,7 @@ import { BasketService } from '../../basket/basket.service';
 import { IOrder }                                   from '../../shared/models/order.model';
 import { BasketWrapperService }                     from '../../shared/services/basket.wrapper.service';
 
-import { UntypedFormGroup, UntypedFormBuilder, Validators  }      from '@angular/forms';
+import { FormGroup, FormBuilder, Validators  }      from '@angular/forms';
 import { Router }                                   from '@angular/router';
 
 @Component({
@@ -16,12 +16,12 @@ import { Router }                                   from '@angular/router';
     templateUrl: './orders-new.component.html'
 })
 export class OrdersNewComponent implements OnInit {
-    newOrderForm: UntypedFormGroup;  // new order form
+    newOrderForm: FormGroup;  // new order form
     isOrderProcessing: boolean;
     errorReceived: boolean;
     order: IOrder;
 
-    constructor(private orderService: OrdersService, private basketService: BasketService, fb: UntypedFormBuilder, private router: Router) {
+    constructor(private orderService: OrdersService, private basketService: BasketService, fb: FormBuilder, private router: Router) {
         // Obtain user profile information
         this.order = orderService.mapOrderAndIdentityInfoNewOrder();
         this.newOrderForm = fb.group({
@@ -51,10 +51,10 @@ export class OrdersNewComponent implements OnInit {
         this.order.cardsecuritynumber = this.newOrderForm.controls['securitycode'].value;
         let basketCheckout = this.basketService.mapBasketInfoCheckout(this.order);
         this.basketService.setBasketCheckout(basketCheckout)
-            .pipe(catchError((error) => {
+            .pipe(catchError((errMessage) => {
                 this.errorReceived = true;
                 this.isOrderProcessing = false;
-                return throwError(() => error); 
+                return Observable.throw(errMessage); 
             }))
             .subscribe(res => {
                 this.router.navigate(['orders']);

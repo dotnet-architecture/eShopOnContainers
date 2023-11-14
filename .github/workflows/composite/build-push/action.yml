@@ -31,9 +31,11 @@ runs:
         mkdir -p ~/.docker
         echo $'{\n  "experimental": "enabled"\n}' | sudo tee ~/.docker/config.json
         sudo service docker restart
+        docker version -f '{{.Client.Experimental}}'
+        docker version -f '{{.Server.Experimental}}'
 
   - name: Login to Container Registry
-    uses: docker/login-action@v2
+    uses: docker/login-action@v1
     with:
       registry: ${{ inputs.registry_host }}
       username: ${{ inputs.registry_username }}

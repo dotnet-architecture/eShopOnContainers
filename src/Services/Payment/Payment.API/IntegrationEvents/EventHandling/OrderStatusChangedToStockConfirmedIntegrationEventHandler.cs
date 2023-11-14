@@ -1,5 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Payment.API.IntegrationEvents.EventHandling;
-
+    
 public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
     IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
 {
@@ -14,16 +14,16 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
     {
         _eventBus = eventBus;
         _settings = settings.Value;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
 
         _logger.LogTrace("PaymentSettings: {@PaymentSettings}", _settings);
     }
 
     public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
     {
-        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new("IntegrationEventContext", @event.Id) }))
+        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
         {
-            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
             IntegrationEvent orderPaymentIntegrationEvent;
 
@@ -42,7 +42,7 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
                 orderPaymentIntegrationEvent = new OrderPaymentFailedIntegrationEvent(@event.OrderId);
             }
 
-            _logger.LogInformation("Publishing integration event: {IntegrationEventId} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, orderPaymentIntegrationEvent);
+            _logger.LogInformation("----- Publishing integration event: {IntegrationEventId} from {AppName} - ({@IntegrationEvent})", orderPaymentIntegrationEvent.Id, Program.AppName, orderPaymentIntegrationEvent);
 
             _eventBus.Publish(orderPaymentIntegrationEvent);
 

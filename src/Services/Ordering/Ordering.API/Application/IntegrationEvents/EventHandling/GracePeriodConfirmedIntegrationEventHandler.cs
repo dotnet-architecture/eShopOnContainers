@@ -10,7 +10,7 @@ public class GracePeriodConfirmedIntegrationEventHandler : IIntegrationEventHand
         ILogger<GracePeriodConfirmedIntegrationEventHandler> logger)
     {
         _mediator = mediator;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
     }
 
     /// <summary>
@@ -23,14 +23,14 @@ public class GracePeriodConfirmedIntegrationEventHandler : IIntegrationEventHand
     /// <returns></returns>
     public async Task Handle(GracePeriodConfirmedIntegrationEvent @event)
     {
-        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new("IntegrationEventContext", @event.Id) }))
+        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
         {
-            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
             var command = new SetAwaitingValidationOrderStatusCommand(@event.OrderId);
 
             _logger.LogInformation(
-                "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 command.GetGenericTypeName(),
                 nameof(command.OrderNumber),
                 command.OrderNumber,

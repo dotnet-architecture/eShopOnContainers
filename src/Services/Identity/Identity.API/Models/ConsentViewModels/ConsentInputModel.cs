@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ConsentViewModels
+﻿using System.Collections.Generic;
+
+namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.ConsentViewModels
 {
     public class ConsentInputModel
     {

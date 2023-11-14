@@ -1,30 +1,101 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿var configuration = GetConfiguration();
 
-builder.AddServiceDefaults();
+Log.Logger = CreateSerilogLogger(configuration);
 
-builder.Services.AddGrpc();
-builder.Services.AddControllers();
-builder.Services.AddProblemDetails();
+try
+{
+    Log.Information("Configuring web host ({ApplicationContext})...", Program.AppName);
+    var host = BuildWebHost(configuration, args);
 
-builder.Services.AddHealthChecks(builder.Configuration);
-builder.Services.AddRedis(builder.Configuration);
+    Log.Information("Starting web host ({ApplicationContext})...", Program.AppName);
+    host.Run();
 
-builder.Services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
-builder.Services.AddTransient<OrderStartedIntegrationEventHandler>();
+    return 0;
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Program.AppName);
+    return 1;
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
-builder.Services.AddTransient<IBasketRepository, RedisBasketRepository>();
-builder.Services.AddTransient<IIdentityService, IdentityService>();
+IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
+    WebHost.CreateDefaultBuilder(args)
+        .CaptureStartupErrors(false)
+        .ConfigureKestrel(options =>
+        {
+            var ports = GetDefinedPorts(configuration);
+            options.Listen(IPAddress.Any, ports.httpPort, listenOptions =>
+            {
+                listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+            });
 
-var app = builder.Build();
+            options.Listen(IPAddress.Any, ports.grpcPort, listenOptions =>
+            {
+                listenOptions.Protocols = HttpProtocols.Http2;
+            });
 
-app.UseServiceDefaults();
+        })
+        .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
+        .UseFailing(options =>
+        {
+            options.ConfigPath = "/Failing";
+            options.NotFilteredPaths.AddRange(new[] { "/hc", "/liveness" });
+        })
+        .UseStartup<Startup>()
+        .UseContentRoot(Directory.GetCurrentDirectory())
+        .UseSerilog()
+        .Build();
 
-app.MapGrpcService<BasketService>();
-app.MapControllers();
+Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+{
+    var seqServerUrl = configuration["Serilog:SeqServerUrl"];
+    var logstashUrl = configuration["Serilog:LogstashgUrl"];
+    return new LoggerConfiguration()
+        .MinimumLevel.Verbose()
+        .Enrich.WithProperty("ApplicationContext", Program.AppName)
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+        .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl, null)
+        .ReadFrom.Configuration(configuration)
+        .CreateLogger();
+}
 
-var eventBus = app.Services.GetRequiredService<IEventBus>();
+IConfiguration GetConfiguration()
+{
+    var builder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddEnvironmentVariables();
 
-eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
-eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
+    var config = builder.Build();
 
-await app.RunAsync();
+    if (config.GetValue<bool>("UseVault", false))
+    {
+        TokenCredential credential = new ClientSecretCredential(
+            config["Vault:TenantId"],
+            config["Vault:ClientId"],
+            config["Vault:ClientSecret"]);
+        builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"), credential);
+    }
+
+    return builder.Build();
+}
+
+(int httpPort, int grpcPort) GetDefinedPorts(IConfiguration config)
+{
+    var grpcPort = config.GetValue("GRPC_PORT", 5001);
+    var port = config.GetValue("PORT", 80);
+    return (port, grpcPort);
+}
+
+public partial class Program
+{
+
+    public static string Namespace = typeof(Startup).Namespace;
+    public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
+}

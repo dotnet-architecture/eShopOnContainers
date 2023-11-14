@@ -17,7 +17,7 @@ public class WebhooksController : ControllerBase
 
     [Authorize]
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<WebhookSubscription>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<WebhookSubscription>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> ListByUser()
     {
         var userId = _identityService.GetUserIdentity();
@@ -27,8 +27,8 @@ public class WebhooksController : ControllerBase
 
     [Authorize]
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(WebhookSubscription), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(WebhookSubscription), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetByUserAndId(int id)
     {
         var userId = _identityService.GetUserIdentity();
@@ -42,9 +42,9 @@ public class WebhooksController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status418ImATeapot)]
+    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(418)]
     public async Task<IActionResult> SubscribeWebhook(WebhookSubscriptionRequest request)
     {
         if (!ModelState.IsValid)
@@ -71,14 +71,14 @@ public class WebhooksController : ControllerBase
         }
         else
         {
-            return StatusCode(StatusCodes.Status418ImATeapot, "Grant URL invalid");
+            return StatusCode(418, "Grant url can't be validated");
         }
     }
 
     [Authorize]
     [HttpDelete("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.Accepted)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> UnsubscribeWebhook(int id)
     {
         var userId = _identityService.GetUserIdentity();

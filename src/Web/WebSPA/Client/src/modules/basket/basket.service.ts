@@ -24,7 +24,7 @@ export class BasketService {
     };
 
     //observable that is fired when item is removed from basket
-    private basketUpdateSource = new Subject<void>();
+    private basketUpdateSource = new Subject();
     basketUpdate$ = this.basketUpdateSource.asObservable();
 
     constructor(private service: DataService, private authService: SecurityService, private basketWrapperService: BasketWrapperService, private router: Router, private configurationService: ConfigurationService, private storageService: StorageService) {

@@ -2,16 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <DebugType>portable</DebugType>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>Catalog.API</AssemblyName>
     <PackageId>Catalog.API</PackageId>
     <UserSecretsId>aspnet-Catalog.API-20161122013618</UserSecretsId>
-    <ImplicitUsings>enable</ImplicitUsings>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>    
   </PropertyGroup>
+
 
   <ItemGroup>
     <Content Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Include="Pics\**\*;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -19,33 +26,71 @@
     <Content Include="Setup\**\*;">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <None Include="IntegrationEvents\EventHandling\AnyFutureIntegrationEventHandler.cs.txt" />
+    <Content Remove="Setup\Catalogitems - Copy.zip" />
+    <None Remove="Setup\Catalogitems - Copy.zip" />
+    <Compile Include="IntegrationEvents\EventHandling\AnyFutureIntegrationEventHandler.cs.txt" />
+    <Content Update="web.config;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Proto\catalog.proto" GrpcServices="Server" />
+    <Protobuf Include="Proto\catalog.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
+    <Content Include="@(Protobuf)" />
+    <None Remove="@(Protobuf)" />
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="Catalog.FunctionalTests" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.AzureStorage" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" />
-    <PackageReference Include="Grpc.AspNetCore" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
+	  <PackageReference Include="Azure.Identity" Version="1.9.0-beta.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="6.0.4" />
+    <PackageReference Include="AspNetCore.HealthChecks.AzureStorage" Version="6.1.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.21.9" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.50.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.51.0-pre1" PrivateAssets="All" />    
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0-beta1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.22.0-beta1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.24" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0-dev-00289" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.1-dev-00787" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.5.0-dev-00359" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.1-dev-00896" />
+    <PackageReference Include="Serilog.Sinks.Http" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.3-dev-00260" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
+    <PackageReference Include="System.Data.SqlClient" version="4.8.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj" />
-    <ProjectReference Include="..\..\Services.Common\Services.Common.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Pics\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Setup\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

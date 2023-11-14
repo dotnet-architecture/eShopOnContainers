@@ -1,8 +1,11 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Identity.API;
+using System.Threading.Tasks;
+using System;
+
+namespace Microsoft.eShopOnContainers.Services.Identity.API;
 
 public class SeedData
 {
-    public static async Task EnsureSeedData(IServiceScope scope, IConfiguration configuration, ILogger logger)
+    public static async Task EnsureSeedData(IServiceScope scope, IConfiguration configuration, Microsoft.Extensions.Logging.ILogger logger)
     {
         var retryPolicy = CreateRetryPolicy(configuration, logger);
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -92,7 +95,7 @@ public class SeedData
         });
     }
 
-    private static AsyncPolicy CreateRetryPolicy(IConfiguration configuration, ILogger logger)
+    private static AsyncPolicy CreateRetryPolicy(IConfiguration configuration, Microsoft.Extensions.Logging.ILogger logger)
     {
         var retryMigrations = false;
         bool.TryParse(configuration["RetryMigrations"], out retryMigrations);
@@ -104,7 +107,16 @@ public class SeedData
             return Policy.Handle<Exception>().
                 WaitAndRetryForeverAsync(
                     sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                    onRetry: (exception, retry, timeSpan) => logger.LogWarning(exception, "Error migrating database (retry attempt {retry})", retry));
+                    onRetry: (exception, retry, timeSpan) =>
+                    {
+                        logger.LogWarning(
+                            exception,
+                            "Exception {ExceptionType} with message {Message} detected during database migration (retry attempt {retry})",
+                            exception.GetType().Name,
+                            exception.Message,
+                            retry);
+                    }
+                );
         }
 
         return Policy.NoOpAsync();

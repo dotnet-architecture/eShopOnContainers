@@ -86,29 +86,45 @@
 
     @RenderSection("scripts", required: false)
 
+
+    @using Microsoft.AspNetCore.Authentication;
+    @using Microsoft.Extensions.Options
+    @inject IOptions<AppSettings> settings
+
     <script type="text/javascript">
         if ('@User.Identity.IsAuthenticated' === 'True') {
             var timerId;
 
-            connect();
+            stablishConnection((conn) => registerNotificationHandlers(conn));                                  
         }
 
-        async function connect() {
+        function stablishConnection(cb) {
             let connection = new signalR.HubConnectionBuilder()
-                .withUrl('/hub/notificationhub')
+                .withUrl('@settings.Value.SignalrHubUrl/hub/notificationhub', {
+                    accessTokenFactory: () => {
+                        return "Authorization", getToken();
+                    }
+                })
                 .withAutomaticReconnect()
-                .build();
+                .build(); 
+            
+            connection.start().then(function () {
+                console.log('User Registered to Signalr Hub');
+                cb(connection);
+            });       
+        }
 
-            await connection.start();
-
-            console.log('User Registered to Signalr Hub');
-
+        function registerNotificationHandlers(connection) {
             connection.on("UpdatedOrderState", (message) => {
                 toastr.success('Updated to status: ' + message.status, 'Order Id: ' + message.orderId);
                 if (window.location.pathname.split("/").pop() === 'Order') {
                     refreshOrderList();
                 }
             });
+        }
+
+        function getToken() {
+            return '@Context.GetTokenAsync("access_token").Result';
         }
 
         function refreshOrderList() {

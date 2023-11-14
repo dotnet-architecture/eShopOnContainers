@@ -44,7 +44,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104
       - XamarinCallback=http://${ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP}:5105/xamarincallback
-      - ConnectionStrings__IdentityDb=${ESHOP_AZURE_IDENTITY_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.IdentityDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
+      - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
       - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
@@ -61,19 +61,20 @@ services:
   basket-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
-      - Kestrel__Endpoints__GRPC__Url=http://0.0.0.0:81
-      - Kestrel__Endpoints__GRPC__Protocols=Http2
-      - ConnectionStrings__Redis=${ESHOP_AZURE_REDIS_BASKET_DB:-basketdata}
-      - ConnectionStrings__EventBus=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - Identity__Url=http://identity-api
-      - Identity__ExternalUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - EventBus__UserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBus__Password=${ESHOP_SERVICE_BUS_PASSWORD}
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${ESHOP_AZURE_REDIS_BASKET_DB:-basketdata}
+      - identityUrl=http://identity-api
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - AzureServiceBusEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
       - PATH_BASE=/basket-api
+      - GRPC_PORT=81
+      - PORT=80
     ports:
       - "5103:80"
       - "9103:81"
@@ -81,20 +82,20 @@ services:
   catalog-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
-      - Kestrel__Endpoints__GRPC__Url=http://0.0.0.0:81
-      - Kestrel__Endpoints__GRPC__Protocols=Http2
-      - ConnectionStrings__CatalogDb=${ESHOP_AZURE_CATALOG_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
-      - ConnectionStrings__EventBus=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
       - PicBaseUrl=${ESHOP_STORAGE_CATALOG_URL}
-      - EventBus__UserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBus__Password=${ESHOP_SERVICE_BUS_PASSWORD}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
       - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
       - AzureStorageEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - GRPC_PORT=81
+      - PORT=80
       - PATH_BASE=/catalog-api
     ports:
       - "5101:80"
@@ -103,21 +104,21 @@ services:
   ordering-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
-      - Kestrel__Endpoints__GRPC__Url=http://0.0.0.0:81
-      - Kestrel__Endpoints__GRPC__Protocols=Http2
-      - ConnectionStrings__OrderingDb=${ESHOP_AZURE_ORDERING_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
-      - ConnectionStrings__EventBus=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - Identity__Url=http://identity-api
-      - Identity__ExternalUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - EventBus__UserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBus__Password=${ESHOP_SERVICE_BUS_PASSWORD}
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
+      - identityUrl=http://identity-api
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - UseCustomizationData=True
       - AzureServiceBusEnabled=False
       - CheckUpdateTime=30000
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
+      - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
+      - Serilog__MinimumLevel__Override__ordering-api=Verbose
       - PATH_BASE=/ordering-api
       - GRPC_PORT=81
       - PORT=80
@@ -129,10 +130,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionStrings__OrderingDb=${ESHOP_AZURE_ORDERING_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
-      - ConnectionStrings__EventBus=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - EventBus__UserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBus__Password=${ESHOP_SERVICE_BUS_PASSWORD}
+      - ConnectionString=${ESHOP_AZURE_ORDERING_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - UseCustomizationData=True
       - AzureServiceBusEnabled=False
       - CheckUpdateTime=30000
@@ -140,6 +141,7 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
       - UseLoadTest=${USE_LOADTEST:-False}
+      - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
     ports:
       - "5111:80"
 
@@ -147,12 +149,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionStrings__EventBus=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - EventBus__UserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBus__Password=${ESHOP_SERVICE_BUS_PASSWORD}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - AzureServiceBusEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - Serilog__MinimumLevel__Override__payment-api.IntegrationEvents.EventHandling=Verbose
+      - Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ=Verbose
     ports:
       - "5108:80"
 
@@ -160,14 +164,28 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionStrings__WebhooksDb=${ESHOP_AZURE_WEBHOOKS_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.WebhooksDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
-      - ConnectionStrings__EventBus=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - EventBus__UserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBus__Password=${ESHOP_SERVICE_BUS_PASSWORD}
-      - Identity__Url=http://identity-api
-      - Identity__ExternalUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - ConnectionString=${ESHOP_AZURE_WEBHOOKS_DB:-Server=sqldata;Database=Microsoft.eShopOnContainers.Services.WebhooksDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
+      - IdentityUrl=http://identity-api
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5113:80"
+
+  mobileshoppingapigw:
+    volumes:
+      - ./ApiGateways/Envoy/config/mobileshopping:/etc/envoy
+    ports:
+    - "5200:80"
+    - "15200:8001"
+
+  webshoppingapigw:
+    volumes:
+      - ./ApiGateways/Envoy/config/webshopping:/etc/envoy
+    ports:
+    - "5202:80"
+    - "15202:8001"
 
   mobileshoppingagg:
     environment:
@@ -184,8 +202,7 @@ services:
       - IdentityUrlHC=http://identity-api/hc
       - BasketUrlHC=http://basket-api/hc
       - PaymentUrlHC=http://payment-api/hc
-      - Identity__Url=http://identity-api
-      - Identity__ExternalUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5120:80"
 
@@ -199,17 +216,12 @@ services:
       - urls__grpcBasket=http://basket-api:81
       - urls__grpcCatalog=http://catalog-api:81
       - urls__grpcOrdering=http://ordering-api:81
-      - ReverseProxy__Clusters__basket__Destinations__destination0__Address=http://basket-api
-      - ReverseProxy__Clusters__catalog__Destinations__destination0__Address=http://catalog-api
-      - ReverseProxy__Clusters__orders__Destinations__destination0__Address=http://ordering-api
-      - ReverseProxy__Clusters__signalr__Destinations__destination0__Address=http://ordering-signalrhub
       - CatalogUrlHC=http://catalog-api/hc
       - OrderingUrlHC=http://ordering-api/hc
       - IdentityUrlHC=http://identity-api/hc
       - BasketUrlHC=http://basket-api/hc
       - PaymentUrlHC=http://payment-api/hc
-      - Identity__Url=http://identity-api
-      - Identity__ExternalUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
     ports:
       - "5121:80"
 
@@ -217,13 +229,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionStrings__EventBus=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-      - EventBus__UserName=${ESHOP_SERVICE_BUS_USERNAME}
-      - EventBus__Password=${ESHOP_SERVICE_BUS_PASSWORD}
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}
       - AzureServiceBusEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
-      - Identity__Url=http://identity-api
+      - identityUrl=http://identity-api
     ports:
       - "5112:80"
 
@@ -263,12 +275,12 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - PurchaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
+      - PurchaseUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
       - IdentityUrlHC=http://identity-api/hc
-      - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
     ports:
       - "5104:80"
 
@@ -276,9 +288,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - PurchaseUrl=http://webshoppingagg
+      - PurchaseUrl=http://webshoppingapigw
       - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-      - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
+      - SignalrHubUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5202
       - IdentityUrlHC=http://identity-api/hc
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}

@@ -3,63 +3,78 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <UserSecretsId>aspnet-eShopOnContainers.Identity-90487118-103c-4ff0-b9da-e5e26f7ab0c5</UserSecretsId>
-    <ImplicitUsings>enable</ImplicitUsings>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>    
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" />
-    <PackageReference Include="Duende.IdentityServer.EntityFramework" />
-    <PackageReference Include="Duende.IdentityServer.Storage" />
-    <PackageReference Include="Duende.IdentityServer" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="6.2.0" />
+    <PackageReference Include="Duende.IdentityServer.EntityFramework.Storage" Version="6.2.0" />
+    <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="6.2.0" />
+    <PackageReference Include="Duende.IdentityServer.Storage" Version="6.2.0" />
+    <PackageReference Include="Duende.IdentityServer" Version="6.2.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0-beta1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.22.0-beta1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-    <PackageReference Include="Microsoft.Web.LibraryManager.Build" />
-    <PackageReference Include="Polly" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.0" />
+
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.24" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
+    <PackageReference Include="Polly" Version="7.2.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0-dev-00289" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.1-dev-00787" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.5.0-dev-00359" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.1-dev-00896" />
+    <PackageReference Include="Serilog.Sinks.Http" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.3-dev-00260" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
+	  <PackageReference Include="System.Data.SqlClient" version="4.8.5" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
+    <PackageReference Include="Azure.Identity" Version="1.9.0-beta.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Views\Account\AccessDenied.cshtml" />
-    <None Include="Views\Account\LoggedOut.cshtml" />
-    <None Include="Views\Account\Login.cshtml" />
-    <None Include="Views\Account\Logout.cshtml" />
-    <None Include="Views\Consent\Index.cshtml" />
-    <None Include="Views\Device\Success.cshtml" />
-    <None Include="Views\Device\UserCodeCapture.cshtml" />
-    <None Include="Views\Device\UserCodeConfirmation.cshtml" />
-    <None Include="Views\Diagnostics\Index.cshtml" />
-    <None Include="Views\Grants\Index.cshtml" />
-    <None Include="Views\Home\Index.cshtml" />
-    <None Include="Views\Shared\Error.cshtml" />
-    <None Include="Views\Shared\Redirect.cshtml" />
-    <None Include="Views\Shared\_Layout.cshtml" />
-    <None Include="Views\Shared\_ScopeListItem.cshtml" />
-    <None Include="Views\Shared\_ValidationSummary.cshtml" />
-    <None Include="Views\_ViewImports.cshtml" />
-    <None Include="Views\_ViewStart.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Services.Common\Services.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="appsettings.Development.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties appsettings_1json__JsonSchema="" />
-    </VisualStudio>
-  </ProjectExtensions>
+	<ItemGroup>
+	  <None Include="Views\Account\AccessDenied.cshtml" />
+	  <None Include="Views\Account\LoggedOut.cshtml" />
+	  <None Include="Views\Account\Login.cshtml" />
+	  <None Include="Views\Account\Logout.cshtml" />
+	  <None Include="Views\Consent\Index.cshtml" />
+	  <None Include="Views\Device\Success.cshtml" />
+	  <None Include="Views\Device\UserCodeCapture.cshtml" />
+	  <None Include="Views\Device\UserCodeConfirmation.cshtml" />
+	  <None Include="Views\Diagnostics\Index.cshtml" />
+	  <None Include="Views\Grants\Index.cshtml" />
+	  <None Include="Views\Home\Index.cshtml" />
+	  <None Include="Views\Shared\Error.cshtml" />
+	  <None Include="Views\Shared\Redirect.cshtml" />
+	  <None Include="Views\Shared\_Layout.cshtml" />
+	  <None Include="Views\Shared\_ScopeListItem.cshtml" />
+	  <None Include="Views\Shared\_ValidationSummary.cshtml" />
+	  <None Include="Views\_ViewImports.cshtml" />
+	  <None Include="Views\_ViewStart.cshtml" />
+	</ItemGroup>
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties appsettings_1json__JsonSchema="" />
+		</VisualStudio>
+	</ProjectExtensions>
 </Project>

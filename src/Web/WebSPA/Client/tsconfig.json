@@ -6,8 +6,9 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "ES2022",
+    "target": "es2015",
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -15,8 +16,7 @@
       "es2016",
       "dom"
     ],
-    "module": "esnext",
-    "useDefineForClassFields": false
+    "module": "esnext"
   },
   "angularCompilerOptions": {
     "enableIvy": false

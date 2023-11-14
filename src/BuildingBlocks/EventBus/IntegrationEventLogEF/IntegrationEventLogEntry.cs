@@ -2,16 +2,16 @@
 
 public class IntegrationEventLogEntry
 {
-    private static readonly JsonSerializerOptions s_indentedOptions = new() { WriteIndented = true };
-    private static readonly JsonSerializerOptions s_caseInsensitiveOptions = new() { PropertyNameCaseInsensitive = true };
-
     private IntegrationEventLogEntry() { }
     public IntegrationEventLogEntry(IntegrationEvent @event, Guid transactionId)
     {
         EventId = @event.Id;
         CreationTime = @event.CreationDate;
-        EventTypeName = @event.GetType().FullName;
-        Content = JsonSerializer.Serialize(@event, @event.GetType(), s_indentedOptions);
+        EventTypeName = @event.GetType().FullName;                     
+        Content = JsonSerializer.Serialize(@event, @event.GetType(), new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
         State = EventStateEnum.NotPublished;
         TimesSent = 0;
         TransactionId = transactionId.ToString();
@@ -29,8 +29,8 @@ public class IntegrationEventLogEntry
     public string TransactionId { get; private set; }
 
     public IntegrationEventLogEntry DeserializeJsonContent(Type type)
-    {
-        IntegrationEvent = JsonSerializer.Deserialize(Content, type, s_caseInsensitiveOptions) as IntegrationEvent;
+    {            
+        IntegrationEvent = JsonSerializer.Deserialize(Content, type, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }) as IntegrationEvent;
         return this;
     }
 }

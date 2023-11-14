@@ -1,28 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-
 namespace Catalog.FunctionalTests;
 
 public class CatalogScenariosBase
 {
-    private class CatalogApplication : WebApplicationFactory<Program>
-    {
-        protected override IHost CreateHost(IHostBuilder builder)
-        {
-            builder.ConfigureAppConfiguration(c =>
-            {
-                var directory = Path.GetDirectoryName(typeof(CatalogScenariosBase).Assembly.Location)!;
-
-                c.AddJsonFile(Path.Combine(directory, "appsettings.Catalog.json"), optional: false);
-            });
-
-            return base.CreateHost(builder);
-        }
-    }
-
     public TestServer CreateServer()
     {
-        var factory = new CatalogApplication();
-        return factory.Server;
+        var path = Assembly.GetAssembly(typeof(CatalogScenariosBase))
+            .Location;
+
+        var hostBuilder = new WebHostBuilder()
+            .UseContentRoot(Path.GetDirectoryName(path))
+            .ConfigureAppConfiguration(cb =>
+            {
+                cb.AddJsonFile("appsettings.json", optional: false)
+                .AddEnvironmentVariables();
+            })
+            .UseStartup<Startup>();
+
+
+        var testServer = new TestServer(hostBuilder);
+
+        testServer.Host
+            .MigrateDbContext<CatalogContext>((context, services) =>
+            {
+                var env = services.GetService<IWebHostEnvironment>();
+                var settings = services.GetService<IOptions<CatalogSettings>>();
+                var logger = services.GetService<ILogger<CatalogContextSeed>>();
+
+                new CatalogContextSeed()
+                .SeedAsync(context, env, settings, logger)
+                .Wait();
+            })
+            .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
+
+        return testServer;
     }
 
     public static class Get
@@ -64,10 +74,5 @@ public class CatalogScenariosBase
         {
             return $"?pageIndex={pageIndex}&pageSize={pageCount}";
         }
-    }
-
-    public static class Put
-    {
-        public static string UpdateCatalogProduct = "api/v1/catalog/items";
     }
 }

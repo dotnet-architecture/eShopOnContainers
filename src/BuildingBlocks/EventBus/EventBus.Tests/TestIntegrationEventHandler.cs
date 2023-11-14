@@ -1,4 +1,8 @@
 ﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace EventBus.Tests
 {
@@ -11,10 +15,9 @@ namespace EventBus.Tests
             Handled = false;
         }
 
-        public Task Handle(TestIntegrationEvent @event)
+        public async Task Handle(TestIntegrationEvent @event)
         {
             Handled = true;
-            return Task.CompletedTask;
         }
     }
 }
