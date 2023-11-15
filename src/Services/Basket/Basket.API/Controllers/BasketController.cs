@@ -23,6 +23,7 @@ public class BasketController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<CustomerBasket>> GetBasketByIdAsync(string id)
     {
         var basket = await _repository.GetBasketAsync(id);
@@ -31,6 +32,7 @@ public class BasketController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync([FromBody] CustomerBasket value)
     {
         return Ok(await _repository.UpdateBasketAsync(value));
@@ -38,8 +40,8 @@ public class BasketController : ControllerBase
 
     [Route("checkout")]
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.Accepted)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult> CheckoutAsync([FromBody] BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
     {
         var userId = _identityService.GetUserIdentity();
@@ -54,7 +56,7 @@ public class BasketController : ControllerBase
             return BadRequest();
         }
 
-        var userName = User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
+        var userName = this.HttpContext.User.FindFirst(x => x.Type == ClaimTypes.Name).Value;
 
         var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, userName, basketCheckout.City, basketCheckout.Street,
             basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber, basketCheckout.CardHolderName,
@@ -69,7 +71,7 @@ public class BasketController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error Publishing integration event: {IntegrationEventId}", eventMessage.Id);
+            _logger.LogError(ex, "ERROR Publishing integration event: {IntegrationEventId} from {AppName}", eventMessage.Id, Program.AppName);
 
             throw;
         }
@@ -79,7 +81,7 @@ public class BasketController : ControllerBase
 
     // DELETE api/values/5
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
     public async Task DeleteBasketByIdAsync(string id)
     {
         await _repository.DeleteBasketAsync(id);

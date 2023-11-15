@@ -1,7 +1,4 @@
 ﻿namespace FunctionalTests.Services;
-
-using Basket.FunctionalTests.Base;
-using Catalog.FunctionalTests;
 using Microsoft.eShopOnContainers.Services.Basket.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
@@ -15,7 +12,7 @@ public class IntegrationEventsScenarios
         string userId = "JohnId";
 
         using var catalogServer = new CatalogScenariosBase().CreateServer();
-        using var basketServer = new BasketScenarioBase().CreateServer();
+        using var basketServer = new BasketScenariosBase().CreateServer();
         var catalogClient = catalogServer.CreateClient();
         var basketClient = basketServer.CreateClient();
 
@@ -25,7 +22,7 @@ public class IntegrationEventsScenarios
         // AND a user basket filled with products   
         var basket = ComposeBasket(userId, originalCatalogProducts.Data.Take(3));
         var res = await basketClient.PostAsync(
-            BasketScenarioBase.Post.Basket,
+            BasketScenariosBase.Post.CreateBasket,
             new StringContent(JsonSerializer.Serialize(basket), UTF8Encoding.UTF8, "application/json")
             );
 
@@ -63,7 +60,7 @@ public class IntegrationEventsScenarios
         while (continueLoop && counter < 20)
         {
             //get the basket and verify that the price of the modified product is updated
-            var basketGetResponse = await basketClient.GetAsync(BasketScenarioBase.Get.GetBasketByCustomer(userId));
+            var basketGetResponse = await basketClient.GetAsync(BasketScenariosBase.Get.GetBasketByCustomer(userId));
             var basketUpdated = JsonSerializer.Deserialize<CustomerBasket>(await basketGetResponse.Content.ReadAsStringAsync(), new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
@@ -87,7 +84,7 @@ public class IntegrationEventsScenarios
 
     private async Task<PaginatedItemsViewModel<CatalogItem>> GetCatalogAsync(HttpClient catalogClient)
     {
-        var response = await catalogClient.GetAsync(CatalogScenariosBase.Get.Items(paginated: false));
+        var response = await catalogClient.GetAsync(CatalogScenariosBase.Get.Items);
         var items = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<PaginatedItemsViewModel<CatalogItem>>(items, new JsonSerializerOptions
         {

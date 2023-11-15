@@ -23,7 +23,10 @@ public class CatalogService : ICatalogService
 
         var responseString = await _httpClient.GetStringAsync(uri);
 
-        var catalog = JsonSerializer.Deserialize<Catalog>(responseString, JsonDefaults.CaseInsensitiveOptions);
+        var catalog = JsonSerializer.Deserialize<Catalog>(responseString, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
 
         return catalog;
     }
@@ -37,10 +40,10 @@ public class CatalogService : ICatalogService
         var items = new List<SelectListItem>();
 
         items.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
-
+            
         using var brands = JsonDocument.Parse(responseString);
 
-        foreach (JsonElement brand in brands.RootElement.EnumerateArray())
+        foreach (JsonElement brand  in brands.RootElement.EnumerateArray())
         {
             items.Add(new SelectListItem()
             {
@@ -60,7 +63,7 @@ public class CatalogService : ICatalogService
 
         var items = new List<SelectListItem>();
         items.Add(new SelectListItem() { Value = null, Text = "All", Selected = true });
-
+            
         using var catalogTypes = JsonDocument.Parse(responseString);
 
         foreach (JsonElement catalogType in catalogTypes.RootElement.EnumerateArray())

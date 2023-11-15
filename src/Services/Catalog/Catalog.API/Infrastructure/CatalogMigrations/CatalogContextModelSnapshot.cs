@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 
 namespace Catalog.API.Infrastructure.Migrations
 {

@@ -1,11 +1,26 @@
 {
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:58017/",
+      "sslPort": 0
+    }
+  },
   "profiles": {
-    "Basket.API": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Microsoft.eShopOnContainers.Services.Basket.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5221",
+      "launchUrl": "http://localhost:55103/",
       "environmentVariables": {
-        "Identity__Url": "http://localhost:5223",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }

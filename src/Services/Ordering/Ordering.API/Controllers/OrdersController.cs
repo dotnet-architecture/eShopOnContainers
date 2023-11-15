@@ -1,7 +1,9 @@
-﻿using CardType = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries.CardType;
-using Order = Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries.Order;
+﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers;
 
-namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Extensions;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
+using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Services;
 
 [Route("api/v1/[controller]")]
 [Authorize]
@@ -27,8 +29,8 @@ public class OrdersController : ControllerBase
 
     [Route("cancel")]
     [HttpPut]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CancelOrderAsync([FromBody] CancelOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
     {
         bool commandResult = false;
@@ -38,7 +40,7 @@ public class OrdersController : ControllerBase
             var requestCancelOrder = new IdentifiedCommand<CancelOrderCommand, bool>(command, guid);
 
             _logger.LogInformation(
-                "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 requestCancelOrder.GetGenericTypeName(),
                 nameof(requestCancelOrder.Command.OrderNumber),
                 requestCancelOrder.Command.OrderNumber,
@@ -57,8 +59,8 @@ public class OrdersController : ControllerBase
 
     [Route("ship")]
     [HttpPut]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> ShipOrderAsync([FromBody] ShipOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
     {
         bool commandResult = false;
@@ -68,7 +70,7 @@ public class OrdersController : ControllerBase
             var requestShipOrder = new IdentifiedCommand<ShipOrderCommand, bool>(command, guid);
 
             _logger.LogInformation(
-                "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 requestShipOrder.GetGenericTypeName(),
                 nameof(requestShipOrder.Command.OrderNumber),
                 requestShipOrder.Command.OrderNumber,
@@ -87,9 +89,9 @@ public class OrdersController : ControllerBase
 
     [Route("{orderId:int}")]
     [HttpGet]
-    [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Order>> GetOrderAsync(int orderId)
+    [ProducesResponseType(typeof(Order), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<ActionResult> GetOrderAsync(int orderId)
     {
         try
         {
@@ -97,7 +99,7 @@ public class OrdersController : ControllerBase
             //var order customer = await _mediator.Send(new GetOrderByIdQuery(orderId));
             var order = await _orderQueries.GetOrderAsync(orderId);
 
-            return order;
+            return Ok(order);
         }
         catch
         {
@@ -106,7 +108,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<OrderSummary>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<OrderSummary>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IEnumerable<OrderSummary>>> GetOrdersAsync()
     {
         var userid = _identityService.GetUserIdentity();
@@ -117,7 +119,7 @@ public class OrdersController : ControllerBase
 
     [Route("cardtypes")]
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<CardType>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<CardType>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IEnumerable<CardType>>> GetCardTypesAsync()
     {
         var cardTypes = await _orderQueries.GetCardTypesAsync();
@@ -130,7 +132,7 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult<OrderDraftDTO>> CreateOrderDraftFromBasketDataAsync([FromBody] CreateOrderDraftCommand createOrderDraftCommand)
     {
         _logger.LogInformation(
-            "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+            "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
             createOrderDraftCommand.GetGenericTypeName(),
             nameof(createOrderDraftCommand.BuyerId),
             createOrderDraftCommand.BuyerId,

@@ -28,7 +28,7 @@ public class GrpcExceptionInterceptor : Interceptor
         }
         catch (RpcException e)
         {
-            _logger.LogError(e, "Error calling via gRPC: {Status}", e.Status);
+            _logger.LogError("Error calling via grpc: {Status} - {Message}", e.Status, e.Message);
             return default;
         }
     }

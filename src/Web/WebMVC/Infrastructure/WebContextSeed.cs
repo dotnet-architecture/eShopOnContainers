@@ -1,12 +1,14 @@
 ﻿namespace WebMVC.Infrastructure;
+using Serilog;
 
 public class WebContextSeed
 {
     public static void Seed(IApplicationBuilder applicationBuilder, IWebHostEnvironment env)
     {
-        var settings = applicationBuilder
+        var log = Serilog.Log.Logger;
+
+        var settings = (AppSettings)applicationBuilder
             .ApplicationServices.GetRequiredService<IOptions<AppSettings>>().Value;
-        var log = applicationBuilder.ApplicationServices.GetRequiredService<ILogger<WebContextSeed>>();
 
         var useCustomizationData = settings.UseCustomizationData;
         var contentRootPath = env.ContentRootPath;
@@ -27,7 +29,7 @@ public class WebContextSeed
             string overrideCssFile = Path.Combine(contentRootPath, "Setup", "override.css");
             if (!File.Exists(overrideCssFile))
             {
-                log.LogError("Override css file '{FileName}' does not exists.", overrideCssFile);
+                log.Error("Override css file '{FileName}' does not exists.", overrideCssFile);
                 return;
             }
 
@@ -36,7 +38,7 @@ public class WebContextSeed
         }
         catch (Exception ex)
         {
-            log.LogError(ex, "Error getting preconfigured css");
+            log.Error(ex, "EXCEPTION ERROR: {Message}", ex.Message);
         }
     }
 
@@ -47,7 +49,7 @@ public class WebContextSeed
             string imagesZipFile = Path.Combine(contentRootPath, "Setup", "images.zip");
             if (!File.Exists(imagesZipFile))
             {
-                log.LogError("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
+                log.Error("Zip file '{ZipFileName}' does not exists.", imagesZipFile);
                 return;
             }
 
@@ -68,13 +70,13 @@ public class WebContextSeed
                 }
                 else
                 {
-                    log.LogWarning("Skipped file '{FileName}' in zip file '{ZipFileName}'", entry.Name, imagesZipFile);
+                    log.Warning("Skipped file '{FileName}' in zipfile '{ZipFileName}'", entry.Name, imagesZipFile);
                 }
             }
         }
         catch (Exception ex)
         {
-            log.LogError(ex, "Error getting preconfigured images");
+            log.Error(ex, "EXCEPTION ERROR: {Message}", ex.Message);
         }
     }
 

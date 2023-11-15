@@ -1,35 +1,68 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿var configuration = GetConfiguration();
 
-builder.AddServiceDefaults();
+Log.Logger = CreateSerilogLogger(configuration);
 
-builder.Services.AddHttpForwarder();
-builder.Services.AddControllersWithViews();
+try
+{
+    Log.Information("Configuring web host ({ApplicationContext})...", Program.AppName);
+    var host = BuildWebHost(configuration, args);
 
-builder.Services.AddHealthChecks(builder.Configuration);
-builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddAuthenticationServices(builder.Configuration);
-builder.Services.AddHttpClientServices();
+    Log.Information("Starting web host ({ApplicationContext})...", Program.AppName);
+    host.Run();
 
-var app = builder.Build();
+    return 0;
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Program.AppName);
+    return 1;
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
-app.UseServiceDefaults();
+IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
+    WebHost.CreateDefaultBuilder(args)
+        .CaptureStartupErrors(false)
+        .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
+        .UseStartup<Startup>()
+        .UseSerilog()
+        .Build();
 
-app.UseStaticFiles();
+Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+{
+    var seqServerUrl = configuration["Serilog:SeqServerUrl"];
+    var logstashUrl = configuration["Serilog:LogstashgUrl"];
+    var cfg = new LoggerConfiguration()
+        .ReadFrom.Configuration(configuration)
+        .Enrich.WithProperty("ApplicationContext", Program.AppName)
+        .Enrich.FromLogContext()
+        .WriteTo.Console();
+    if (!string.IsNullOrWhiteSpace(seqServerUrl))
+    {
+        cfg.WriteTo.Seq(seqServerUrl);
+    }
+    if (!string.IsNullOrWhiteSpace(logstashUrl))
+    {
+        cfg.WriteTo.Http(logstashUrl,null);
+    }
+    return cfg.CreateLogger();
+}
 
-// Fix samesite issue when running eShop from docker-compose locally as by default http protocol is being used
-// Refer to https://github.com/dotnet-architecture/eShopOnContainers/issues/1391
-app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
+IConfiguration GetConfiguration()
+{
+    var builder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddEnvironmentVariables();
 
-app.UseRouting();
+    return builder.Build();
+}
 
-app.UseAuthentication();
-app.UseAuthorization();
 
-app.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
-app.MapControllerRoute("defaultError", "{controller=Error}/{action=Error}");
-app.MapControllers();
-app.MapForwardSignalR();
-
-WebContextSeed.Seed(app, app.Environment);
-
-await app.RunAsync();
+public partial class Program
+{
+    private static readonly string _namespace = typeof(Startup).Namespace;
+    public static readonly string AppName = _namespace.Substring(_namespace.LastIndexOf('.', _namespace.LastIndexOf('.') - 1) + 1);
+}

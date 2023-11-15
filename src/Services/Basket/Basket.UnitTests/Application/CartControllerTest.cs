@@ -79,7 +79,7 @@ public class CartControllerTest
         //Arrange
         var fakeCatalogItem = GetFakeCatalogItem();
 
-        _basketServiceMock.Setup(x => x.AddItemToBasket(It.IsAny<ApplicationUser>(), It.IsAny<int>()))
+        _basketServiceMock.Setup(x => x.AddItemToBasket(It.IsAny<ApplicationUser>(), It.IsAny<Int32>()))
             .Returns(Task.FromResult(1));
 
         //Act

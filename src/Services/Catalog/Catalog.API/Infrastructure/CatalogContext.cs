@@ -1,4 +1,6 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
+﻿using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
+
+namespace Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 
 public class CatalogContext : DbContext
 {

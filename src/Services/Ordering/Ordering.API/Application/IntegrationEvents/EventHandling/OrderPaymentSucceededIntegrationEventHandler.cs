@@ -1,5 +1,5 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents.EventHandling;
-
+   
 public class OrderPaymentSucceededIntegrationEventHandler :
     IIntegrationEventHandler<OrderPaymentSucceededIntegrationEvent>
 {
@@ -16,14 +16,14 @@ public class OrderPaymentSucceededIntegrationEventHandler :
 
     public async Task Handle(OrderPaymentSucceededIntegrationEvent @event)
     {
-        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new("IntegrationEventContext", @event.Id) }))
+        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
         {
-            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
             var command = new SetPaidOrderStatusCommand(@event.OrderId);
 
             _logger.LogInformation(
-                "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 command.GetGenericTypeName(),
                 nameof(command.OrderNumber),
                 command.OrderNumber,

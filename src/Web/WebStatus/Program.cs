@@ -1,49 +1,110 @@
-﻿var builder = WebApplication.CreateBuilder(args);
-if (builder.Configuration.GetValue("UseVault", false))
+﻿var configuration = GetConfiguration();
+
+Log.Logger = CreateSerilogLogger(configuration);
+
+try
 {
-    TokenCredential credential = new ClientSecretCredential(
-        builder.Configuration["Vault:TenantId"],
-        builder.Configuration["Vault:ClientId"],
-        builder.Configuration["Vault:ClientSecret"]);
-    builder.Configuration.AddAzureKeyVault(new Uri($"https://{builder.Configuration["Vault:Name"]}.vault.azure.net/"), credential);
+    Log.Information("Configuring web host ({ApplicationContext})...", Program.AppName);
+    var host = BuildWebHost(configuration, args);
+
+    LogPackagesVersionInfo();
+
+    Log.Information("Starting web host ({ApplicationContext})...", Program.AppName);
+    host.Run();
+
+    return 0;
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Program.AppName);
+    return 1;
+}
+finally
+{
+    Log.CloseAndFlush();
 }
 
-builder.WebHost.CaptureStartupErrors(false);
-builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
-builder.Services.AddApplicationInsightsKubernetesEnricher();
-builder.Services.AddMvc();
-builder.Services.AddHealthChecks()
-    .AddCheck("self", () => HealthCheckResult.Healthy());
-builder.Services
-    .AddHealthChecksUI()
-    .AddInMemoryStorage();
+IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
+    WebHost.CreateDefaultBuilder(args)
+        .CaptureStartupErrors(false)
+        .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
+        .UseStartup<Startup>()
+        .UseContentRoot(Directory.GetCurrentDirectory())
+        .UseSerilog()
+        .Build();
 
-var app = builder.Build();
-
-if (!app.Environment.IsDevelopment())
+Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
 {
-    app.UseExceptionHandler("/Home/Error");
+    var seqServerUrl = configuration["Serilog:SeqServerUrl"];
+    var logstashUrl = configuration["Serilog:LogstashgUrl"];
+    return new LoggerConfiguration()
+        .MinimumLevel.Verbose()
+        .Enrich.WithProperty("ApplicationContext", Program.AppName)
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+        .WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl, null)
+        .ReadFrom.Configuration(configuration)
+        .CreateLogger();
 }
 
-var pathBase = app.Configuration["PATH_BASE"];
-if (!string.IsNullOrEmpty(pathBase))
+IConfiguration GetConfiguration()
 {
-    app.UsePathBase(pathBase);
+    var builder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddEnvironmentVariables();
+
+    var config = builder.Build();
+
+    if (config.GetValue<bool>("UseVault", false))
+    {
+        TokenCredential credential = new ClientSecretCredential(
+            config["Vault:TenantId"],
+            config["Vault:ClientId"],
+            config["Vault:ClientSecret"]);
+        builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"), credential);
+    }
+
+    return builder.Build();
 }
 
-app.UseHealthChecksUI(config =>
+string GetVersion(Assembly assembly)
 {
-    config.ResourcesPath = string.IsNullOrEmpty(pathBase) ? "/ui/resources" : $"{pathBase}/ui/resources";
-    config.UIPath = "/hc-ui";
-});
+    try
+    {
+        return $"{assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version} ({assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split()[0]})";
+    }
+    catch
+    {
+        return string.Empty;
+    }
+}
 
-app.UseStaticFiles();
-
-app.UseRouting();
-app.MapDefaultControllerRoute();
-app.MapHealthChecks("/liveness", new HealthCheckOptions
+void LogPackagesVersionInfo()
 {
-    Predicate = r => r.Name.Contains("self")
-});
+    var assemblies = new List<Assembly>();
 
-await app.RunAsync();
+    foreach (var dependencyName in typeof(Program).Assembly.GetReferencedAssemblies())
+    {
+        try
+        {
+            // Try to load the referenced assembly...
+            assemblies.Add(Assembly.Load(dependencyName));
+        }
+        catch
+        {
+            // Failed to load assembly. Skip it.
+        }
+    }
+
+    var versionList = assemblies.Select(a => $"-{a.GetName().Name} - {GetVersion(a)}").OrderBy(value => value);
+
+    Log.Logger.ForContext("PackageVersions", string.Join("\n", versionList)).Information("Package versions ({ApplicationContext})", Program.AppName);
+}
+
+public partial class Program
+{
+    private static readonly string _namespace = typeof(Startup).Namespace;
+    public static readonly string AppName = _namespace;
+}

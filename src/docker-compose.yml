@@ -78,6 +78,9 @@ services:
     depends_on:
       - sqldata
 
+  mobileshoppingapigw:
+    image: envoyproxy/envoy:v1.11.1
+
   mobileshoppingagg:
     image: ${REGISTRY:-eshop}/mobileshoppingagg:${PLATFORM:-linux}-${TAG:-latest}
     build:
@@ -132,9 +135,10 @@ services:
       context: .
       dockerfile: Web/WebSPA/Dockerfile
       args:
-        NODE_IMAGE: ${NODE_IMAGE:-node:16-bullseye}
+        NODE_IMAGE: ${NODE_IMAGE:-node:12.0}
     depends_on:
       - webshoppingagg
+      - webshoppingapigw
 
   webmvc:
     image: ${REGISTRY:-eshop}/webmvc:${PLATFORM:-linux}-${TAG:-latest}
@@ -143,6 +147,7 @@ services:
       dockerfile: Web/WebMVC/Dockerfile
     depends_on:
       - webshoppingagg
+      - webshoppingapigw
 
   webhooks-client:
     image: ${REGISTRY:-eshop}/webhooks.client:${PLATFORM:-linux}-${TAG:-latest}
@@ -151,3 +156,6 @@ services:
       dockerfile: Web/WebhookClient/Dockerfile
     depends_on:
       - webhooks-api
+
+  webshoppingapigw:
+    image: envoyproxy/envoy:v1.11.1

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.EventHandling;
+namespace Microsoft.eShopOnContainers.Services.Ordering.SignalrHub.IntegrationEvents.EventHandling;
 
 public class OrderStatusChangedToSubmittedIntegrationEventHandler :
     IIntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent>
@@ -17,9 +17,9 @@ public class OrderStatusChangedToSubmittedIntegrationEventHandler :
 
     public async Task Handle(OrderStatusChangedToSubmittedIntegrationEvent @event)
     {
-        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new("IntegrationEventContext", @event.Id) }))
+        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
         {
-            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
             await _hubContext.Clients
                 .Group(@event.BuyerName)

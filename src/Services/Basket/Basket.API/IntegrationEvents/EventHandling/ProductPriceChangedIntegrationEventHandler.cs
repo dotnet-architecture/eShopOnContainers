@@ -15,9 +15,9 @@ public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandl
 
     public async Task Handle(ProductPriceChangedIntegrationEvent @event)
     {
-        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new("IntegrationEventContext", @event.Id) }))
+        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
         {
-            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
             var userIds = _repository.GetUsers();
 
@@ -36,7 +36,7 @@ public class ProductPriceChangedIntegrationEventHandler : IIntegrationEventHandl
 
         if (itemsToUpdate != null)
         {
-            _logger.LogInformation("ProductPriceChangedIntegrationEventHandler - Updating items in basket for user: {BuyerId} ({@Items})", basket.BuyerId, itemsToUpdate);
+            _logger.LogInformation("----- ProductPriceChangedIntegrationEventHandler - Updating items in basket for user: {BuyerId} ({@Items})", basket.BuyerId, itemsToUpdate);
 
             foreach (var item in itemsToUpdate)
             {

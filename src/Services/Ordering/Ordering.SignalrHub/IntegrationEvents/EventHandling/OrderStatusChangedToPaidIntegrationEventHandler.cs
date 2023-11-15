@@ -16,9 +16,9 @@ public class OrderStatusChangedToPaidIntegrationEventHandler : IIntegrationEvent
 
     public async Task Handle(OrderStatusChangedToPaidIntegrationEvent @event)
     {
-        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new("IntegrationEventContext", @event.Id) }))
+        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
         {
-            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
             await _hubContext.Clients
                 .Group(@event.BuyerName)

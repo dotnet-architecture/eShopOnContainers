@@ -1,4 +1,6 @@
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace EventBus.Tests
@@ -16,7 +18,7 @@ namespace EventBus.Tests
         public void After_One_Event_Subscription_Should_Contain_The_Event()
         {
             var manager = new InMemoryEventBusSubscriptionsManager();
-            manager.AddSubscription<TestIntegrationEvent, TestIntegrationEventHandler>();
+            manager.AddSubscription<TestIntegrationEvent,TestIntegrationEventHandler>();
             Assert.True(manager.HasSubscriptionsForEvent<TestIntegrationEvent>());
         }
 

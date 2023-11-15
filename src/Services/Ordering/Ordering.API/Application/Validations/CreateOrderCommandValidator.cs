@@ -1,4 +1,7 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Validations;
+
+using static Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands.CreateOrderCommand;
+
 public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
 {
     public CreateOrderCommandValidator(ILogger<CreateOrderCommandValidator> logger)
@@ -15,7 +18,7 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
         RuleFor(command => command.CardTypeId).NotEmpty();
         RuleFor(command => command.OrderItems).Must(ContainOrderItems).WithMessage("No order items found");
 
-        logger.LogTrace("INSTANCE CREATED - {ClassName}", GetType().Name);
+        logger.LogTrace("----- INSTANCE CREATED - {ClassName}", GetType().Name);
     }
 
     private bool BeValidExpirationDate(DateTime dateTime)

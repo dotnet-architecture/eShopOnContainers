@@ -21,7 +21,7 @@ public class OrdersWebApiTest
     public async Task Cancel_order_with_requestId_success()
     {
         //Arrange
-        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default))
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default(CancellationToken)))
             .Returns(Task.FromResult(true));
 
         //Act
@@ -29,7 +29,7 @@ public class OrdersWebApiTest
         var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
 
         //Assert
-        Assert.Equal((int)System.Net.HttpStatusCode.OK, actionResult.StatusCode);
+        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
 
     }
 
@@ -37,22 +37,22 @@ public class OrdersWebApiTest
     public async Task Cancel_order_bad_request()
     {
         //Arrange
-        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default))
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CancelOrderCommand, bool>>(), default(CancellationToken)))
             .Returns(Task.FromResult(true));
 
         //Act
         var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
-        var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), string.Empty) as BadRequestResult;
+        var actionResult = await orderController.CancelOrderAsync(new CancelOrderCommand(1), String.Empty) as BadRequestResult;
 
         //Assert
-        Assert.Equal((int)System.Net.HttpStatusCode.BadRequest, actionResult.StatusCode);
+        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.BadRequest);
     }
 
     [Fact]
     public async Task Ship_order_with_requestId_success()
     {
         //Arrange
-        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<ShipOrderCommand, bool>>(), default))
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<ShipOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
             .Returns(Task.FromResult(true));
 
         //Act
@@ -60,7 +60,7 @@ public class OrdersWebApiTest
         var actionResult = await orderController.ShipOrderAsync(new ShipOrderCommand(1), Guid.NewGuid().ToString()) as OkResult;
 
         //Assert
-        Assert.Equal((int)System.Net.HttpStatusCode.OK, actionResult.StatusCode);
+        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
 
     }
 
@@ -68,15 +68,15 @@ public class OrdersWebApiTest
     public async Task Ship_order_bad_request()
     {
         //Arrange
-        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default))
+        _mediatorMock.Setup(x => x.Send(It.IsAny<IdentifiedCommand<CreateOrderCommand, bool>>(), default(System.Threading.CancellationToken)))
             .Returns(Task.FromResult(true));
 
         //Act
         var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
-        var actionResult = await orderController.ShipOrderAsync(new ShipOrderCommand(1), string.Empty) as BadRequestResult;
+        var actionResult = await orderController.ShipOrderAsync(new ShipOrderCommand(1), String.Empty) as BadRequestResult;
 
         //Assert
-        Assert.Equal((int)System.Net.HttpStatusCode.BadRequest, actionResult.StatusCode);
+        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.BadRequest);
     }
 
     [Fact]
@@ -110,10 +110,10 @@ public class OrdersWebApiTest
 
         //Act
         var orderController = new OrdersController(_mediatorMock.Object, _orderQueriesMock.Object, _identityServiceMock.Object, _loggerMock.Object);
-        var actionResult = await orderController.GetOrderAsync(fakeOrderId);
+        var actionResult = await orderController.GetOrderAsync(fakeOrderId) as OkObjectResult;
 
         //Assert
-        Assert.Same(actionResult.Value, fakeDynamicResult);
+        Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
     }
 
     [Fact]

@@ -1,15 +1,16 @@
 ﻿namespace Basket.FunctionalTests;
 
-public class BasketScenarios :
-    BasketScenarioBase
+public class BasketScenarios
+    : BasketScenarioBase
 {
     [Fact]
     public async Task Post_basket_and_response_ok_status_code()
     {
         using var server = CreateServer();
         var content = new StringContent(BuildBasket(), UTF8Encoding.UTF8, "application/json");
-        var uri = "/api/v1/basket/";
-        var response = await server.CreateClient().PostAsync(uri, content);
+        var response = await server.CreateClient()
+            .PostAsync(Post.Basket, content);
+
         response.EnsureSuccessStatusCode();
     }
 
@@ -19,6 +20,7 @@ public class BasketScenarios :
         using var server = CreateServer();
         var response = await server.CreateClient()
             .GetAsync(Get.GetBasket(1));
+
         response.EnsureSuccessStatusCode();
     }
 
@@ -31,12 +33,9 @@ public class BasketScenarios :
         await server.CreateClient()
             .PostAsync(Post.Basket, contentBasket);
 
-        var contentCheckout = new StringContent(BuildCheckout(), UTF8Encoding.UTF8, "application/json")
-        {
-            Headers = { { "x-requestid", Guid.NewGuid().ToString() } }
-        };
+        var contentCheckout = new StringContent(BuildCheckout(), UTF8Encoding.UTF8, "application/json");
 
-        var response = await server.CreateClient()
+        var response = await server.CreateIdempotentClient()
             .PostAsync(Post.CheckoutOrder, contentCheckout);
 
         response.EnsureSuccessStatusCode();

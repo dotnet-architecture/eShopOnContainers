@@ -9,14 +9,14 @@ public class OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandle
         ILogger<OrderStockRejectedIntegrationEventHandler> logger)
     {
         _mediator = mediator;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
     }
 
     public async Task Handle(OrderStockRejectedIntegrationEvent @event)
     {
-        using (_logger.BeginScope(new List<KeyValuePair<string, object>> { new("IntegrationEventContext", @event.Id) }))
+        using (LogContext.PushProperty("IntegrationEventContext", $"{@event.Id}-{Program.AppName}"))
         {
-            _logger.LogInformation("Handling integration event: {IntegrationEventId} - ({@IntegrationEvent})", @event.Id, @event);
+            _logger.LogInformation("----- Handling integration event: {IntegrationEventId} at {AppName} - ({@IntegrationEvent})", @event.Id, Program.AppName, @event);
 
             var orderStockRejectedItems = @event.OrderStockItems
                 .FindAll(c => !c.HasStock)
@@ -26,7 +26,7 @@ public class OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandle
             var command = new SetStockRejectedOrderStatusCommand(@event.OrderId, orderStockRejectedItems);
 
             _logger.LogInformation(
-                "Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
+                "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 command.GetGenericTypeName(),
                 nameof(command.OrderNumber),
                 command.OrderNumber,
