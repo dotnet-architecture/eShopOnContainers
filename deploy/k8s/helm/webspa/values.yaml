@@ -47,7 +47,7 @@ env:
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
   values:
     - name: ASPNETCORE_ENVIRONMENT
-      value: Development
+      value: Production
     - name: ASPNETCORE_URLS
       value: http://0.0.0.0:80
     - name: OrchestratorType
